@@ -295,3 +295,10 @@ model Withdrawal {
   @@index([freelancerId])
   @@index([status, createdAt])
 }
+
+model PlatformSetting {
+  id                    String   @id @default("default")
+  platformFeePercentage Float    @default(10.0)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
