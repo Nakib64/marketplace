@@ -6,48 +6,49 @@ The purpose of Phase 11 is to provide administrators with enterprise-grade **Tru
 ---
 
 ## 2. What To Do
-- [ ] Create `AdminUsersController` and `AdminUsersService` inside `src/admin/`.
-- [ ] Implement `UserQueryDto`:
+- [x] Create `AdminUsersController`, `AdminUsersQueryService`, and `AdminUsersActionsService` inside `src/admin/`.
+- [x] Implement `UserQueryDto`:
   - `role?`: `@IsOptional()`, `@IsEnum(Role)`.
   - `isBanned?`: `@IsOptional()`, `@IsBoolean()`.
   - `search?`: `@IsOptional()`, `@IsString()` (search by email).
   - `page?`: `@IsOptional()`, `@Type(() => Number)`, `@Min(1)`.
   - `limit?`: `@IsOptional()`, `@Type(() => Number)`, `@Min(1)`, `@Max(50)`.
-- [ ] Implement `UpdateUserStatusDto`:
+- [x] Implement `UpdateUserStatusDto`:
   - `isBanned`: `@IsBoolean()`.
   - `reason?`: `@IsOptional()`, `@IsString()`, `@MaxLength(500)`.
-- [ ] Implement `GET /admin/users` (Restricted to `ADMIN` role):
+- [x] Implement `GET /admin/users` (Restricted to `ADMIN` role):
   - Paginated user list with role, ban status, and search filters.
   - Return lifetime stats: `clientProfile.totalSpent`, `freelancerProfile.earnings`, `walletBalance`.
-- [ ] Implement `GET /admin/users/:id` (Restricted to `ADMIN` role):
+- [x] Implement `GET /admin/users/:id` (Restricted to `ADMIN` role):
   - Complete user profile dossier including posted jobs, contracts, proposals, withdrawals, and reviews.
-- [ ] Implement `PATCH /admin/users/:id/status` (Restricted to `ADMIN` role):
+- [x] Implement `PATCH /admin/users/:id/status` (Restricted to `ADMIN` role):
   - Toggle user `isBanned` flag.
   - Prevent self-banning (admin cannot ban their own account).
   - Immediately invalidates access in authentication checks.
-- [ ] Implement `PATCH /admin/users/:id/verify` (Restricted to `ADMIN` role):
+- [x] Implement `PATCH /admin/users/:id/verify` (Restricted to `ADMIN` role):
   - Manually override `isEmailVerified: true` for users with delivery issues.
-- [ ] Implement `POST /admin/users/:id/impersonate` (Restricted to `ADMIN` role):
-  - Generates a signed, temporary JWT token (e.g. 1-hour expiration) with payload:
+- [x] Implement `POST /admin/users/:id/impersonate` (Restricted to `ADMIN` role):
+  - Generates a signed, temporary JWT token (1-hour expiration) with payload:
     `{ id: targetUser.id, email: targetUser.email, role: targetUser.role, isImpersonated: true, impersonatedBy: adminId }`.
   - Enables customer support agents to view the app through the client/freelancer's eyes.
-- [ ] Write unit & integration tests covering user queries, self-ban prevention, sanction toggling, and impersonation token payload verification.
+- [x] Write unit & integration tests covering user queries, self-ban prevention, sanction toggling, and impersonation token payload verification.
 
 ---
 
 ## 3. How To Do It (Implementation Details)
 
-### A. Modular File Layout inside `src/admin/`
+### A. Modular Sub-Service Architecture inside `src/admin/`
 ```
 src/admin/
 ├── dto/
-│   ├── user-query.dto.ts           # Filtering & pagination schema
-│   └── update-user-status.dto.ts   # Ban/unban sanction schema
+│   ├── user-query.dto.ts                 # Filtering & pagination schema (~30 lines)
+│   └── update-user-status.dto.ts         # Ban/unban sanction schema (~15 lines)
 ├── controllers/
-│   └── admin-users.controller.ts   # User directory, sanctions, verification & impersonation routes
+│   └── admin-users.controller.ts         # User directory, sanctions, verification & impersonation routes (~50 lines)
 ├── services/
-│   └── admin-users.service.ts      # Query filters, account updates & JWT token issuance
-└── admin-users.service.spec.ts     # Vitest unit test suite
+│   ├── admin-users-query.service.ts      # User filtering, pagination & dossier retrieval (~60 lines)
+│   └── admin-users-actions.service.ts    # Sanctions, email verify & impersonation JWT signing (~65 lines)
+└── admin-users.service.spec.ts           # Vitest unit test suite
 ```
 
 ### B. Validation Schemas (`dto/`)
@@ -219,11 +220,11 @@ export class AdminUsersService {
 ---
 
 ## 4. Status & What Is Done
-- [ ] `UserQueryDto` and `UpdateUserStatusDto`: **Pending**
-- [ ] `GET /admin/users` (Paginated search with financial stats): **Pending**
-- [ ] `GET /admin/users/:id` (Full user dossier): **Pending**
-- [ ] `PATCH /admin/users/:id/status` (Ban/unban toggle with self-ban protection): **Pending**
-- [ ] `PATCH /admin/users/:id/verify` (Manual email verification override): **Pending**
-- [ ] `POST /admin/users/:id/impersonate` (Signed support JWT issuance): **Pending**
-- [ ] Vitest unit test suite (query filtering, ban safety & impersonation tokens): **Pending**
-- [ ] TypeScript compilation (`npm run build` 0 errors): **Pending**
+- [x] `UserQueryDto` and `UpdateUserStatusDto`: **Completed**
+- [x] `GET /admin/users` (Paginated search with financial stats): **Completed**
+- [x] `GET /admin/users/:id` (Full user dossier): **Completed**
+- [x] `PATCH /admin/users/:id/status` (Ban/unban toggle with self-ban protection): **Completed**
+- [x] `PATCH /admin/users/:id/verify` (Manual email verification override): **Completed**
+- [x] `POST /admin/users/:id/impersonate` (Signed support JWT issuance): **Completed**
+- [x] Vitest unit test suite (query filtering, ban safety & impersonation tokens): **Completed**
+- [x] TypeScript compilation (`npm run build` 0 errors): **Completed**

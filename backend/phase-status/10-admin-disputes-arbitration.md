@@ -6,31 +6,31 @@ The purpose of Phase 10 is to implement an enterprise-grade **Arbitration Court*
 ---
 
 ## 2. What To Do
-- [ ] Create `AdminDisputesController` and `AdminDisputesService` inside `src/admin/`.
-- [ ] Implement `DisputeSplitDto`:
+- [x] Create `AdminDisputesController`, `AdminDisputesQueryService`, and `AdminDisputesVerdictsService` inside `src/admin/`.
+- [x] Implement `DisputeSplitDto`:
   - `clientRefundPercentage`: `@IsNumber()`, `@Min(1)`, `@Max(99)`.
   - `adminNotes`: `@IsString()`, `@MinLength(10)`, `@MaxLength(1000)`.
-- [ ] Implement `DisputeResolutionDto`:
+- [x] Implement `DisputeResolutionDto`:
   - `adminNotes`: `@IsString()`, `@MinLength(10)`, `@MaxLength(1000)`.
-- [ ] Implement `GET /admin/disputes` (Restricted to `ADMIN` role):
+- [x] Implement `GET /admin/disputes` (Restricted to `ADMIN` role):
   - Retrieve all contracts in `ContractStatus.DISPUTED`.
   - Include client (`id`, `email`), freelancer (`id`, `email`), job title, and escrow amount.
   - Sort by latest dispute creation or update.
-- [ ] Implement `GET /admin/disputes/:id` (Restricted to `ADMIN` role):
+- [x] Implement `GET /admin/disputes/:id` (Restricted to `ADMIN` role):
   - Detailed arbitration dossier: original job post, accepted proposal, cover letter, work history/portfolios attached, contract timeline, escrow details, and existing messages/reviews.
-- [ ] Implement Verdict 1: **Full Client Refund** (`POST /admin/disputes/:id/refund`):
+- [x] Implement Verdict 1: **Full Client Refund** (`POST /admin/disputes/:id/refund`):
   - Verify contract is currently `DISPUTED`.
   - Transactionally mark contract `REFUNDED` and job `CANCELED`.
   - Refund 100% of `escrowAmount` to Client's `User.walletBalance`.
   - Insert permanent `Refund` record with `adminNotes`.
-- [ ] Implement Verdict 2: **Full Freelancer Release** (`POST /admin/disputes/:id/release`):
+- [x] Implement Verdict 2: **Full Freelancer Release** (`POST /admin/disputes/:id/release`):
   - Verify contract is currently `DISPUTED`.
   - Transactionally mark contract `COMPLETED` and job `COMPLETED`.
   - Deduct platform fee (`(escrowAmount * feePercentage) / 100`).
   - Credit net payout (`escrowAmount - platformFee`) to Freelancer's `User.walletBalance`.
   - Increment `FreelancerProfile.earnings` and `FreelancerProfile.totalProjects`.
   - Increment `ClientProfile.totalSpent`.
-- [ ] Implement Verdict 3: **Split Settlement** (`POST /admin/disputes/:id/split`):
+- [x] Implement Verdict 3: **Split Settlement** (`POST /admin/disputes/:id/split`):
   - Proportional division of `escrowAmount`:
     $$\text{clientRefund} = \frac{\text{escrowAmount} \times \text{clientRefundPercentage}}{100}$$
     $$\text{freelancerGross} = \text{escrowAmount} - \text{clientRefund}$$
@@ -38,23 +38,24 @@ The purpose of Phase 10 is to implement an enterprise-grade **Arbitration Court*
     $$\text{freelancerNet} = \text{freelancerGross} - \text{fee}$$
   - Transactionally credit `clientRefund` to client wallet and `freelancerNet` to freelancer wallet.
   - Mark contract `COMPLETED` (or `REFUNDED` with partial refund log).
-- [ ] Write unit & integration tests covering dispute verification, double-resolution prevention, and split monetary mathematics.
+- [x] Write unit & integration tests covering dispute verification, double-resolution prevention, and split monetary mathematics.
 
 ---
 
 ## 3. How To Do It (Implementation Details)
 
-### A. Modular File Layout inside `src/admin/`
+### A. Modular Sub-Service Architecture inside `src/admin/`
 ```
 src/admin/
 ├── dto/
-│   ├── dispute-resolution.dto.ts   # Admin notes schema for full refund/release
-│   └── dispute-split.dto.ts        # Proportional split schema with percentage and notes
+│   ├── dispute-resolution.dto.ts         # Admin notes schema for full refund/release (~15 lines)
+│   └── dispute-split.dto.ts              # Proportional split schema with percentage and notes (~20 lines)
 ├── controllers/
-│   └── admin-disputes.controller.ts # Dispute queue, dossier, refund, release & split routes
+│   └── admin-disputes.controller.ts      # Dispute queue, dossier, refund, release & split routes (~45 lines)
 ├── services/
-│   └── admin-disputes.service.ts   # Dispute state transitions & atomic monetary allocations
-└── admin-disputes.service.spec.ts  # Vitest unit test suite
+│   ├── admin-disputes-query.service.ts   # Dispute queue and dossier retrieval (~45 lines)
+│   └── admin-disputes-verdicts.service.ts# Atomic refund, release and split transactions (~90 lines)
+└── admin-disputes.service.spec.ts        # Vitest unit test suite
 ```
 
 ### B. Validation Schemas (`dto/`)
@@ -237,11 +238,11 @@ async resolveSplitSettlement(adminId: string, contractId: string, dto: DisputeSp
 ---
 
 ## 4. Status & What Is Done
-- [ ] `DisputeResolutionDto` and `DisputeSplitDto`: **Pending**
-- [ ] `GET /admin/disputes` (Queue of active disputed contracts): **Pending**
-- [ ] `GET /admin/disputes/:id` (Full arbitration dossier): **Pending**
-- [ ] `POST /admin/disputes/:id/refund` (100% Client refund): **Pending**
-- [ ] `POST /admin/disputes/:id/release` (100% Freelancer release): **Pending**
-- [ ] `POST /admin/disputes/:id/split` (Proportional split settlement): **Pending**
-- [ ] Vitest unit test suite (testing dispute validations, fee splits & refunds): **Pending**
-- [ ] TypeScript compilation (`npm run build` 0 errors): **Pending**
+- [x] `DisputeResolutionDto` and `DisputeSplitDto`: **Completed**
+- [x] `GET /admin/disputes` (Queue of active disputed contracts): **Completed**
+- [x] `GET /admin/disputes/:id` (Full arbitration dossier): **Completed**
+- [x] `POST /admin/disputes/:id/refund` (100% Client refund): **Completed**
+- [x] `POST /admin/disputes/:id/release` (100% Freelancer release): **Completed**
+- [x] `POST /admin/disputes/:id/split` (Proportional split settlement): **Completed**
+- [x] Vitest unit test suite (testing dispute validations, fee splits & refunds): **Completed**
+- [x] TypeScript compilation (`npm run build` 0 errors): **Completed**
