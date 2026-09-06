@@ -1,6 +1,6 @@
-# SQL Database Schema & ER Diagram
+# Relational Database Schema & Architecture Documentation
 
-This document contains the Entity-Relationship (ER) Diagram and relational SQL schema documentation for the Freelance Marketplace application based on PostgreSQL and Prisma ORM.
+This document contains the Entity-Relationship (ER) Diagram, relational database architecture, and schema documentation for the Freelance Marketplace backend powered by **PostgreSQL** and **Prisma ORM**.
 
 ---
 
@@ -8,24 +8,67 @@ This document contains the Entity-Relationship (ER) Diagram and relational SQL s
 
 ```mermaid
 erDiagram
+    %% Core Actor Separation
+    Admin ||--o{ AuditLog : "executes administrative actions"
+    
     User ||--o| ClientProfile : "has 1:1"
     User ||--o| FreelancerProfile : "has 1:1"
+    User ||--o{ WorkHistory : "maintains history"
     User ||--o{ Job : "posts as Client"
     User ||--o{ Proposal : "submits as Freelancer"
-    User ||--o{ Contract : "contracted as Client"
-    User ||--o{ Contract : "contracted as Freelancer"
-    User ||--o{ Review : "gives as Reviewer"
-    User ||--o{ Review : "receives as Reviewee"
-    User ||--o{ Withdrawal : "requests withdrawal"
-    
-    Job ||--o{ Proposal : "receives proposals"
-    Job ||--o{ Contract : "associated contracts"
-    
+    User ||--o{ Contract : "client in contracts"
+    User ||--o{ Contract : "freelancer in contracts"
+    User ||--o{ Review : "author of review"
+    User ||--o{ Review : "subject of review"
+    User ||--o{ Withdrawal : "payout requests"
+    User ||--o{ Refund : "client refund recipient"
+    User ||--o{ JobReport : "reports violating jobs"
+    User ||--o{ Conversation : "client participant"
+    User ||--o{ Conversation : "freelancer participant"
+    User ||--o{ Message : "sends messages"
+
+    %% Freelancer Profiles & Portfolios
+    FreelancerProfile ||--o{ PortfolioItem : "showcases"
+    PortfolioItem ||--o{ PortfolioImage : "contains screenshots"
+
+    %% Taxonomy & Classifications
+    Category ||--o{ SubCategory : "has subcategories"
+    Category ||--o{ Job : "classifies jobs"
+    SubCategory ||--o{ Job : "sub-classifies jobs"
+
+    %% Jobs, Proposals, and Workflow
+    Job ||--o{ Proposal : "receives"
+    Job ||--o{ Contract : "spawns contracts"
+    Job ||--o{ JobReport : "subject of reports"
+    Job ||--o{ Conversation : "chat threads"
+
+    %% Proposals & Contracts
     Proposal ||--o| Contract : "converts to 1:1"
-    Contract ||--o{ Review : "produces reviews"
+    Proposal ||--o| Conversation : "originates chat"
+    Contract ||--o{ Review : "yields reviews"
+    Contract ||--o| Refund : "disputed refunds"
+
+    %% Messaging & Attachments
+    Conversation ||--o{ Message : "contains"
+    Message ||--o{ MessageAttachment : "includes files"
+
+    %% Entity Attributes
+    Admin {
+        uuid id PK
+        string email UK
+        string passwordHash
+        string name
+        AdminRole role
+        boolean isActive
+        string twoFactorSecret
+        boolean twoFactorEnabled
+        datetime lastLoginAt
+        datetime createdAt
+        datetime updatedAt
+    }
 
     User {
-        string id PK
+        uuid id PK
         string email UK
         string passwordHash
         Role role
@@ -37,58 +80,74 @@ erDiagram
     }
 
     ClientProfile {
-        string id PK
-        string userId FK, UK
+        uuid id PK
+        uuid userId FK, UK
         string companyName
         string billingDetails
         int totalJobPosts
         decimal totalSpent
+        float rating
+        int totalReviews
         datetime createdAt
         datetime updatedAt
     }
 
     FreelancerProfile {
-        string id PK
-        string userId FK, UK
-        string bio
+        uuid id PK
+        uuid userId FK, UK
+        string title
+        string description
         decimal hourlyRate
         string_array skills
         int totalProjects
         decimal earnings
+        float rating
+        int totalReviews
         float successRate
         datetime createdAt
         datetime updatedAt
     }
 
     Job {
-        string id PK
-        string clientId FK
+        uuid id PK
+        uuid clientId FK
         string title
         string description
+        uuid categoryId FK
+        uuid subCategoryId FK
+        string categoryName
+        string subCategoryName
         decimal budget
         string_array skills
         JobStatus status
+        boolean isFlagged
+        string flagReason
         datetime createdAt
         datetime updatedAt
     }
 
     Proposal {
-        string id PK
-        string jobId FK
-        string freelancerId FK
+        uuid id PK
+        uuid jobId FK
+        uuid freelancerId FK
         decimal bidAmount
         string coverLetter
+        string_array workHistoryIds
+        string_array portfolioItemIds
+        boolean isViewed
         ProposalStatus status
+        boolean isFlagged
+        string flagReason
         datetime createdAt
         datetime updatedAt
     }
 
     Contract {
-        string id PK
-        string proposalId FK, UK
-        string jobId FK
-        string clientId FK
-        string freelancerId FK
+        uuid id PK
+        uuid proposalId FK, UK
+        uuid jobId FK
+        uuid clientId FK
+        uuid freelancerId FK
         decimal escrowAmount
         decimal platformFee
         string sslcommerzId UK
@@ -97,179 +156,204 @@ erDiagram
         datetime updatedAt
     }
 
-    Review {
-        string id PK
-        string contractId FK
-        string reviewerId FK
-        string revieweeId FK
-        int rating
-        string feedback
-        string counterFeedback
-        ReviewStatus status
+    Conversation {
+        uuid id PK
+        uuid jobId FK
+        uuid proposalId FK, UK
+        uuid clientId FK
+        uuid freelancerId FK
+        string lastMessageText
+        datetime lastMessageAt
         datetime createdAt
         datetime updatedAt
     }
 
-    Withdrawal {
-        string id PK
-        string freelancerId FK
-        decimal amount
-        WithdrawalMethod method
-        string accountNumber
-        WithdrawalStatus status
+    Message {
+        uuid id PK
+        uuid conversationId FK
+        uuid senderId FK
+        string content
+        MessageType messageType
+        boolean isRead
+        datetime readAt
+        boolean isFlagged
+        string flagReason
         datetime createdAt
         datetime updatedAt
+    }
+
+    MessageAttachment {
+        uuid id PK
+        uuid messageId FK
+        string fileName
+        string fileUrl
+        string fileType
+        int fileSize
+        datetime createdAt
+    }
+
+    AuditLog {
+        uuid id PK
+        uuid adminId FK
+        string action
+        string targetType
+        string targetId
+        string details
+        string ipAddress
+        datetime createdAt
     }
 ```
 
 ---
 
-## 2. PostgreSQL DDL SQL Reference
+## 2. Relational Schema Specification
 
-Below is the equivalent DDL SQL script representing the relational database tables, data types, indexes, and constraints.
+### 2.1 Enums
 
-```sql
--- ENUMS
-CREATE TYPE "Role" AS ENUM ('CLIENT', 'FREELANCER', 'ADMIN');
-CREATE TYPE "JobStatus" AS ENUM ('OPEN', 'IN_PROGRESS', 'COMPLETED', 'CANCELED');
-CREATE TYPE "ProposalStatus" AS ENUM ('PENDING', 'ACCEPTED', 'REJECTED');
-CREATE TYPE "ContractStatus" AS ENUM ('FUNDED', 'PENDING_APPROVAL', 'COMPLETED', 'DISPUTED');
-CREATE TYPE "ReviewStatus" AS ENUM ('HIDDEN', 'PUBLISHED');
-CREATE TYPE "WithdrawalStatus" AS ENUM ('PENDING', 'APPROVED', 'REJECTED');
-CREATE TYPE "WithdrawalMethod" AS ENUM ('BKASH', 'NAGAD');
-
--- 1. Users Table
-CREATE TABLE "User" (
-    "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "email" VARCHAR(255) UNIQUE NOT NULL,
-    "passwordHash" TEXT NOT NULL,
-    "role" "Role" NOT NULL,
-    "isEmailVerified" BOOLEAN NOT NULL DEFAULT FALSE,
-    "isBanned" BOOLEAN NOT NULL DEFAULT FALSE,
-    "walletBalance" NUMERIC(12, 2) NOT NULL DEFAULT 0.00,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL
-);
-CREATE INDEX "User_email_idx" ON "User"("email");
-CREATE INDEX "User_role_idx" ON "User"("role");
-
--- 2. Client Profiles Table (1:1 with User)
-CREATE TABLE "ClientProfile" (
-    "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "userId" UUID UNIQUE NOT NULL REFERENCES "User"("id") ON DELETE CASCADE,
-    "companyName" TEXT,
-    "billingDetails" TEXT,
-    "totalJobPosts" INT NOT NULL DEFAULT 0,
-    "totalSpent" NUMERIC(12, 2) NOT NULL DEFAULT 0.00,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL
-);
-
--- 3. Freelancer Profiles Table (1:1 with User)
-CREATE TABLE "FreelancerProfile" (
-    "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "userId" UUID UNIQUE NOT NULL REFERENCES "User"("id") ON DELETE CASCADE,
-    "bio" TEXT,
-    "hourlyRate" NUMERIC(10, 2),
-    "skills" TEXT[] NOT NULL DEFAULT '{}',
-    "totalProjects" INT NOT NULL DEFAULT 0,
-    "earnings" NUMERIC(12, 2) NOT NULL DEFAULT 0.00,
-    "successRate" DOUBLE PRECISION NOT NULL DEFAULT 0.0,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL
-);
-
--- 4. Jobs Table
-CREATE TABLE "Job" (
-    "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "clientId" UUID NOT NULL REFERENCES "User"("id") ON DELETE CASCADE,
-    "title" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "budget" NUMERIC(12, 2) NOT NULL,
-    "skills" TEXT[] NOT NULL DEFAULT '{}',
-    "status" "JobStatus" NOT NULL DEFAULT 'OPEN',
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL
-);
-CREATE INDEX "Job_status_createdAt_idx" ON "Job"("status", "createdAt");
-CREATE INDEX "Job_clientId_idx" ON "Job"("clientId");
-
--- 5. Proposals Table
-CREATE TABLE "Proposal" (
-    "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "jobId" UUID NOT NULL REFERENCES "Job"("id") ON DELETE CASCADE,
-    "freelancerId" UUID NOT NULL REFERENCES "User"("id") ON DELETE CASCADE,
-    "bidAmount" NUMERIC(12, 2) NOT NULL,
-    "coverLetter" TEXT NOT NULL,
-    "status" "ProposalStatus" NOT NULL DEFAULT 'PENDING',
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    CONSTRAINT "Proposal_jobId_freelancerId_key" UNIQUE ("jobId", "freelancerId")
-);
-CREATE INDEX "Proposal_jobId_status_idx" ON "Proposal"("jobId", "status");
-CREATE INDEX "Proposal_freelancerId_idx" ON "Proposal"("freelancerId");
-
--- 6. Contracts Table
-CREATE TABLE "Contract" (
-    "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "proposalId" UUID UNIQUE NOT NULL REFERENCES "Proposal"("id") ON DELETE CASCADE,
-    "jobId" UUID NOT NULL REFERENCES "Job"("id") ON DELETE CASCADE,
-    "clientId" UUID NOT NULL REFERENCES "User"("id") ON DELETE CASCADE,
-    "freelancerId" UUID NOT NULL REFERENCES "User"("id") ON DELETE CASCADE,
-    "escrowAmount" NUMERIC(12, 2) NOT NULL,
-    "platformFee" NUMERIC(12, 2) NOT NULL,
-    "sslcommerzId" VARCHAR(255) UNIQUE,
-    "status" "ContractStatus" NOT NULL DEFAULT 'FUNDED',
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL
-);
-CREATE INDEX "Contract_clientId_idx" ON "Contract"("clientId");
-CREATE INDEX "Contract_freelancerId_idx" ON "Contract"("freelancerId");
-CREATE INDEX "Contract_status_idx" ON "Contract"("status");
-
--- 7. Reviews Table
-CREATE TABLE "Review" (
-    "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "contractId" UUID NOT NULL REFERENCES "Contract"("id") ON DELETE CASCADE,
-    "reviewerId" UUID NOT NULL REFERENCES "User"("id"),
-    "revieweeId" UUID NOT NULL REFERENCES "User"("id"),
-    "rating" INT NOT NULL,
-    "feedback" TEXT NOT NULL,
-    "counterFeedback" TEXT,
-    "status" "ReviewStatus" NOT NULL DEFAULT 'HIDDEN',
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    CONSTRAINT "Review_contractId_reviewerId_key" UNIQUE ("contractId", "reviewerId")
-);
-CREATE INDEX "Review_contractId_idx" ON "Review"("contractId");
-CREATE INDEX "Review_revieweeId_status_idx" ON "Review"("revieweeId", "status");
-
--- 8. Withdrawals Table
-CREATE TABLE "Withdrawal" (
-    "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "freelancerId" UUID NOT NULL REFERENCES "User"("id") ON DELETE CASCADE,
-    "amount" NUMERIC(12, 2) NOT NULL,
-    "method" "WithdrawalMethod" NOT NULL,
-    "accountNumber" VARCHAR(255) NOT NULL,
-    "status" "WithdrawalStatus" NOT NULL DEFAULT 'PENDING',
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL
-);
-CREATE INDEX "Withdrawal_freelancerId_idx" ON "Withdrawal"("freelancerId");
-CREATE INDEX "Withdrawal_status_createdAt_idx" ON "Withdrawal"("status", "createdAt");
-```
+| Enum Name | Allowed Values | Usage |
+| :--- | :--- | :--- |
+| `Role` | `CLIENT`, `FREELANCER`, `ADMIN` (deprecated) | Marketplace user actor types |
+| `AdminRole` | `SUPER_ADMIN`, `ADMIN`, `MODERATOR`, `SUPPORT` | Internal back-office staff permission levels |
+| `JobStatus` | `OPEN`, `IN_PROGRESS`, `COMPLETED`, `CANCELED` | Lifecycle state of posted jobs |
+| `ProposalStatus` | `PENDING`, `ACCEPTED`, `REJECTED` | Freelancer proposal status |
+| `ContractStatus` | `FUNDED`, `PENDING_APPROVAL`, `COMPLETED`, `DISPUTED`, `REFUNDED` | Escrow contract progression |
+| `ReviewStatus` | `HIDDEN`, `PUBLISHED` | Blind review submission system |
+| `WithdrawalStatus`| `PENDING`, `APPROVED`, `REJECTED` | Freelancer payout requests |
+| `WithdrawalMethod`| `BKASH`, `NAGAD` | Mobile Financial Service (MFS) payout channels |
+| `MessageType` | `TEXT`, `FILE`, `SYSTEM` | Chat message payload types |
 
 ---
 
-## 3. Entity Summary & Cardinality Relationships
+### 2.2 Core Tables & Models
 
-| Entity / Table | Description | Primary Key | Foreign Keys & Cardinality |
-| :--- | :--- | :--- | :--- |
-| **`User`** | System users (Clients, Freelancers, Admins) | `id` (UUID) | None |
-| **`ClientProfile`** | Client profile metadata & spending | `id` (UUID) | 1:1 with `User` (`userId` UNIQUE FK) |
-| **`FreelancerProfile`** | Freelancer bio, rates, skills & earnings | `id` (UUID) | 1:1 with `User` (`userId` UNIQUE FK) |
-| **`Job`** | Posted project requirements & budget | `id` (UUID) | 1:N with `User` (`clientId` FK) |
-| **`Proposal`** | Freelancer bid for a job | `id` (UUID) | N:1 with `Job` (`jobId`), N:1 with `User` (`freelancerId`) |
-| **`Contract`** | Active/completed contract with escrow | `id` (UUID) | 1:1 with `Proposal` (`proposalId`), N:1 with `Job`, `User` (Client & Freelancer) |
-| **`Review`** | Double-blind review system | `id` (UUID) | N:1 with `Contract`, N:1 with `User` (Reviewer & Reviewee) |
-| **`Withdrawal`** | Freelancer payout requests (bKash/Nagad) | `id` (UUID) | N:1 with `User` (`freelancerId`) |
+#### `Admin` (Internal Back-Office Staff)
+Physically isolated from customer users to guarantee front-office vs. back-office segregation.
+- `id` (UUID, PK)
+- `email` (VARCHAR, Unique Index)
+- `passwordHash` (VARCHAR, Bcrypt hashed)
+- `name` (VARCHAR)
+- `role` (`AdminRole`, Default: `ADMIN`)
+- `isActive` (BOOLEAN, Default: `true`)
+- `twoFactorSecret` (VARCHAR, Nullable - for TOTP Google Authenticator)
+- `twoFactorEnabled` (BOOLEAN, Default: `false`)
+- `lastLoginAt` (TIMESTAMPTZ, Nullable)
+- `createdAt` / `updatedAt` (TIMESTAMPTZ)
+
+#### `User` (Marketplace Clients & Freelancers)
+Customer identity table handling public signups, wallet balances, and profile relationships.
+- `id` (UUID, PK)
+- `email` (VARCHAR, Unique Index)
+- `passwordHash` (VARCHAR)
+- `role` (`Role`: `CLIENT` or `FREELANCER`)
+- `isEmailVerified` (BOOLEAN, Default: `false`)
+- `isBanned` (BOOLEAN, Default: `false`)
+- `walletBalance` (DECIMAL(12, 2), Default: `0.00`)
+- `createdAt` / `updatedAt` (TIMESTAMPTZ)
+- *Indexes*: `[email]`, `[role]`
+
+#### `ClientProfile` (1:1 with User)
+- `id` (UUID, PK)
+- `userId` (UUID, Unique, FK -> `User.id` ON DELETE CASCADE)
+- `companyName` (VARCHAR, Nullable)
+- `billingDetails` (TEXT, Nullable)
+- `totalJobPosts` (INT, Default: 0)
+- `totalSpent` (DECIMAL(12, 2), Default: 0.00)
+- `rating` (FLOAT, Default: 0.0)
+- `totalReviews` (INT, Default: 0)
+
+#### `FreelancerProfile` (1:1 with User)
+- `id` (UUID, PK)
+- `userId` (UUID, Unique, FK -> `User.id` ON DELETE CASCADE)
+- `title` (VARCHAR, Nullable)
+- `description` (TEXT, Nullable)
+- `hourlyRate` (DECIMAL(10, 2), Nullable)
+- `skills` (VARCHAR[], Array of skill tags)
+- `totalProjects` (INT, Default: 0)
+- `earnings` (DECIMAL(12, 2), Default: 0.00)
+- `rating` (FLOAT, Default: 0.0)
+- `totalReviews` (INT, Default: 0)
+- `successRate` (FLOAT, Default: 0.0)
+
+#### `WorkHistory` & `PortfolioItem`
+- `WorkHistory`: Past client engagements, employment, and external projects (`userId`, `title`, `company`, `startDate`, `endDate`, `isCurrent`).
+- `PortfolioItem`: Freelancer showcased projects (`freelancerProfileId`, `title`, `details`, `liveLink`).
+- `PortfolioImage`: Image attachments for portfolio items with ordering support.
+
+#### `Category` & `SubCategory` & `Skill`
+Platform taxonomy for jobs and freelancer discovery:
+- `Category`: `name`, `slug` (Unique), `isActive`.
+- `SubCategory`: `categoryId` (FK), `name`, `slug`, `isActive`. Unique composite on `[categoryId, slug]`.
+- `Skill`: Tag taxonomy (`name`, `slug`, `category`).
+
+#### `Job` (Client Job Posts)
+- `id` (UUID, PK)
+- `clientId` (UUID, FK -> `User.id` ON DELETE CASCADE)
+- `title` (VARCHAR)
+- `description` (TEXT)
+- `categoryId` / `subCategoryId` (FKs -> `Category.id`, `SubCategory.id` ON DELETE SET NULL)
+- `budget` (DECIMAL(12, 2))
+- `skills` (VARCHAR[])
+- `status` (`JobStatus`: `OPEN`, `IN_PROGRESS`, `COMPLETED`, `CANCELED`)
+- `isFlagged` (BOOLEAN, Default: `false`)
+- `flagReason` (VARCHAR, Nullable)
+- *Indexes*: `[status, createdAt]`, `[clientId]`, `[categoryId, subCategoryId]`, `[isFlagged]`
+
+#### `Proposal` (Freelancer Bids)
+- `id` (UUID, PK)
+- `jobId` (UUID, FK -> `Job.id` ON DELETE CASCADE)
+- `freelancerId` (UUID, FK -> `User.id` ON DELETE CASCADE)
+- `bidAmount` (DECIMAL(12, 2))
+- `coverLetter` (TEXT)
+- `workHistoryIds` / `portfolioItemIds` (VARCHAR[])
+- `isViewed` (BOOLEAN, Default: `false`)
+- `status` (`ProposalStatus`: `PENDING`, `ACCEPTED`, `REJECTED`)
+- `isFlagged` (BOOLEAN, Default: `false` - auto-flagged by Redis background moderation queue)
+- `flagReason` (VARCHAR, Nullable)
+- *Unique Constraint*: `[jobId, freelancerId]` (One proposal per freelancer per job)
+- *Indexes*: `[jobId, status]`, `[freelancerId]`, `[jobId, isViewed]`, `[isFlagged]`
+
+#### `Contract` (Funded Escrow Milestone)
+- `id` (UUID, PK)
+- `proposalId` (UUID, Unique, FK -> `Proposal.id` ON DELETE CASCADE)
+- `jobId` (UUID, FK -> `Job.id` ON DELETE CASCADE)
+- `clientId` (UUID, FK -> `User.id` ON DELETE CASCADE)
+- `freelancerId` (UUID, FK -> `User.id` ON DELETE CASCADE)
+- `escrowAmount` (DECIMAL(12, 2))
+- `platformFee` (DECIMAL(12, 2))
+- `sslcommerzId` (VARCHAR, Unique, Nullable)
+- `status` (`ContractStatus`: `FUNDED`, `PENDING_APPROVAL`, `COMPLETED`, `DISPUTED`, `REFUNDED`)
+- *Indexes*: `[clientId]`, `[freelancerId]`, `[status]`
+
+#### `Conversation` & `Message` & `MessageAttachment` (Real-Time Chat)
+- `Conversation`: Thread between client and freelancer initiated from a proposal (`jobId`, `proposalId`, `clientId`, `freelancerId`, `lastMessageText`, `lastMessageAt`). Unique composite on `[jobId, freelancerId]`.
+- `Message`: Sent messages (`conversationId`, `senderId`, `content`, `messageType`, `isRead`, `readAt`, `isFlagged`, `flagReason`).
+- `MessageAttachment`: Files uploaded in chat (`messageId`, `fileName`, `fileUrl`, `fileType`, `fileSize`).
+
+#### `Review` (Blind Feedback System)
+- `id` (UUID, PK)
+- `contractId` (UUID, FK -> `Contract.id` ON DELETE CASCADE)
+- `reviewerId` (UUID, FK -> `User.id`)
+- `revieweeId` (UUID, FK -> `User.id`)
+- `rating` (INT, 1-5)
+- `feedback` (TEXT)
+- `counterFeedback` (TEXT, Nullable)
+- `status` (`ReviewStatus`: `HIDDEN` until both submit, then `PUBLISHED`)
+- *Unique Constraint*: `[contractId, reviewerId]`
+
+#### `Withdrawal` & `Refund`
+- `Withdrawal`: Payout requests via bKash/Nagad (`freelancerId`, `amount`, `method`, `accountNumber`, `status`).
+- `Refund`: Admin-processed escrow refunds (`contractId`, `clientId`, `amount`, `reason`, `adminId`).
+
+#### `AuditLog` (Administrative Trail)
+- `id` (UUID, PK)
+- `adminId` (UUID, FK -> `Admin.id` ON DELETE CASCADE)
+- `action` (VARCHAR, e.g. `USER_BANNED`, `DISPUTE_RESOLVED`, `WITHDRAWAL_APPROVED`)
+- `targetType` (VARCHAR, e.g. `USER`, `JOB`, `CONTRACT`, `WITHDRAWAL`)
+- `targetId` (VARCHAR, Nullable)
+- `details` (TEXT, Nullable)
+- `ipAddress` (VARCHAR, Nullable)
+- `createdAt` (TIMESTAMPTZ, Default: `now()`)
+- *Indexes*: `[adminId]`, `[action]`, `[targetType]`, `[createdAt]`
+
+#### `PlatformSetting`
+- Global platform configuration (e.g. `platformFeePercentage` defaulting to 10.0%).
