@@ -21,6 +21,10 @@ export class AuthCredentialsService {
       throw new ConflictException('An account with this email address already exists.');
     }
 
+    if (dto.role !== Role.CLIENT && dto.role !== Role.FREELANCER) {
+      throw new ConflictException('Invalid role. Only CLIENT and FREELANCER registrations are permitted.');
+    }
+
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
     return await this.prisma.$transaction(async (tx) => {

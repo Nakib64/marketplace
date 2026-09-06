@@ -8,6 +8,7 @@ export interface JwtPayload {
   sub: string;
   email: string;
   role: string;
+  userType?: 'USER' | 'ADMIN';
 }
 
 @Injectable()
@@ -24,6 +25,31 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: JwtPayload) {
+    if (payload.userType === 'ADMIN') {
+      const admin = await this.prisma.admin.findUnique({
+        where: { id: payload.sub },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          role: true,
+          isActive: true,
+        },
+      });
+
+      if (!admin || !admin.isActive) {
+        throw new UnauthorizedException('Admin account is inactive or not found.');
+      }
+
+      return {
+        id: admin.id,
+        email: admin.email,
+        name: admin.name,
+        role: admin.role,
+        userType: 'ADMIN' as const,
+      };
+    }
+
     const user = await this.prisma.user.findUnique({
       where: { id: payload.sub },
       select: {
@@ -39,6 +65,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       throw new UnauthorizedException('User account is invalid or suspended.');
     }
 
-    return user;
+    return {
+      ...user,
+      userType: 'USER' as const,
+    };
   }
 }

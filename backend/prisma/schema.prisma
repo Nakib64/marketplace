@@ -9,7 +9,32 @@ generator client {
 enum Role {
   CLIENT
   FREELANCER
+  ADMIN // Deprecated legacy role; customer registration is restricted to CLIENT/FREELANCER
+}
+
+enum AdminRole {
+  SUPER_ADMIN
   ADMIN
+  MODERATOR
+  SUPPORT
+}
+
+model Admin {
+  id               String       @id @default(uuid())
+  email            String       @unique
+  passwordHash     String
+  name             String
+  role             AdminRole    @default(ADMIN)
+  isActive         Boolean      @default(true)
+  twoFactorSecret  String?
+  twoFactorEnabled Boolean      @default(false)
+  lastLoginAt      DateTime?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  auditLogs        AuditLog[]
+
+  @@index([email])
 }
 
 enum JobStatus {
@@ -344,6 +369,7 @@ model Refund {
 model AuditLog {
   id         String   @id @default(uuid())
   adminId    String
+  admin      Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
   action     String
   targetType String
   targetId   String?

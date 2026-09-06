@@ -1,5 +1,5 @@
 import { Role } from '@prisma/client';
-import { IsEmail, IsEnum, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsIn, IsString, MinLength } from 'class-validator';
 
 export class RegisterDto {
   @IsEmail({}, { message: 'Please provide a valid email address.' })
@@ -9,6 +9,8 @@ export class RegisterDto {
   @MinLength(8, { message: 'Password must be at least 8 characters long.' })
   password: string;
 
-  @IsEnum(Role, { message: 'Role must be either CLIENT or FREELANCER.' })
+  @IsIn([Role.CLIENT, Role.FREELANCER], {
+    message: 'Role must be either CLIENT or FREELANCER.',
+  })
   role: Role;
 }
