@@ -6,6 +6,8 @@ import { AppService } from './app.service.js';
 import { AuthModule } from './auth/auth.module.js';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard.js';
 import { RolesGuard } from './auth/guards/roles.guard.js';
+import { RateLimitGuard } from './auth/guards/rate-limit.guard.js';
+import { EmailVerifiedGuard } from './auth/guards/email-verified.guard.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 
 import { AdminModule } from './admin/admin.module.js';
@@ -44,11 +46,19 @@ import { QueuesModule } from './queues/queues.module.js';
     AppService,
     {
       provide: APP_GUARD,
+      useClass: RateLimitGuard,
+    },
+    {
+      provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
     {
       provide: APP_GUARD,
       useClass: RolesGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: EmailVerifiedGuard,
     },
   ],
 })

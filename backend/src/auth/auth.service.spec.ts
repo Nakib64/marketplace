@@ -1,14 +1,19 @@
 import { ConflictException, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { Role } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthService } from './auth.service.js';
+import { AuthCredentialsService } from './services/auth-credentials.service.js';
+import { AuthTokensService } from './services/auth-tokens.service.js';
 
-describe('AuthService', () => {
+describe('AuthService (Facade & Sub-Services)', () => {
   let authService: AuthService;
+  let credentialsService: AuthCredentialsService;
+  let tokensService: AuthTokensService;
   let prismaMock: any;
   let jwtServiceMock: any;
+  let configServiceMock: any;
+  let redisMock: any;
 
   beforeEach(() => {
     prismaMock = {
@@ -25,10 +30,33 @@ describe('AuthService', () => {
     };
 
     jwtServiceMock = {
-      signAsync: vi.fn().mockResolvedValue('mocked_jwt_token'),
+      signAsync: vi
+        .fn()
+        .mockImplementation((payload, opts) => {
+          if (opts?.expiresIn === '15m') return Promise.resolve('mocked_access_jwt_token');
+          return Promise.resolve('mocked_refresh_jwt_token');
+        }),
+      verifyAsync: vi.fn(),
     };
 
-    authService = new AuthService(prismaMock, jwtServiceMock);
+    configServiceMock = {
+      get: vi.fn().mockReturnValue('secret'),
+    };
+
+    redisMock = {
+      set: vi.fn().mockResolvedValue('OK'),
+      get: vi.fn(),
+      del: vi.fn().mockResolvedValue(1),
+    };
+
+    credentialsService = new AuthCredentialsService(prismaMock);
+    tokensService = new AuthTokensService(
+      jwtServiceMock,
+      configServiceMock,
+      redisMock,
+      prismaMock,
+    );
+    authService = new AuthService(credentialsService, tokensService);
   });
 
   describe('register', () => {
@@ -91,7 +119,7 @@ describe('AuthService', () => {
   });
 
   describe('login', () => {
-    it('should return access token on valid login', async () => {
+    it('should return dual tokens (15m access + 7d refresh) on valid login', async () => {
       const hashedPassword = await bcrypt.hash('password123', 10);
       prismaMock.user.findUnique.mockResolvedValue({
         id: 'user-uuid-1',
@@ -107,8 +135,15 @@ describe('AuthService', () => {
         password: 'password123',
       });
 
-      expect(result.accessToken).toBe('mocked_jwt_token');
+      expect(result.accessToken).toBe('mocked_access_jwt_token');
+      expect(result.refreshToken).toBe('mocked_refresh_jwt_token');
+      expect(result.expiresIn).toBe('15m');
       expect(result.user.email).toBe('user@example.com');
+      expect(redisMock.set).toHaveBeenCalledWith(
+        'auth:refresh:user-uuid-1',
+        'mocked_refresh_jwt_token',
+        604800,
+      );
     });
 
     it('should throw UnauthorizedException for invalid email or password', async () => {
@@ -120,6 +155,14 @@ describe('AuthService', () => {
           password: 'password123',
         }),
       ).rejects.toThrow(UnauthorizedException);
+    });
+  });
+
+  describe('logout', () => {
+    it('should revoke active refresh token in redis upon logout', async () => {
+      const res = await authService.logout('user-uuid-1');
+      expect(res.message).toBe('Logged out successfully.');
+      expect(redisMock.del).toHaveBeenCalledWith('auth:refresh:user-uuid-1');
     });
   });
 });

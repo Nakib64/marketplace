@@ -12,6 +12,7 @@ import {
 import { Role } from '@prisma/client';
 import { CurrentUser } from '../../auth/decorators/current-user.decorator.js';
 import { Roles } from '../../auth/decorators/roles.decorator.js';
+import { RequireEmailVerified } from '../../auth/decorators/require-email-verified.decorator.js';
 import { CreateProposalDto } from '../dto/create-proposal.dto.js';
 import { UpdateProposalDto } from '../dto/update-proposal.dto.js';
 import { ProposalsService } from '../services/proposals.service.js';
@@ -21,6 +22,7 @@ import { ProposalsService } from '../services/proposals.service.js';
 export class ProposalsController {
   constructor(private readonly proposalsService: ProposalsService) {}
 
+  @RequireEmailVerified()
   @Post('job/:jobId')
   @HttpCode(HttpStatus.CREATED)
   async submitProposal(
