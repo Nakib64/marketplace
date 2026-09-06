@@ -6,23 +6,23 @@ The purpose of Phase 2 is to establish a secure, enterprise-grade authentication
 ---
 
 ## 2. What To Do
-- [ ] Create `AuthModule`, `AuthController`, and `AuthService` in NestJS.
-- [ ] Implement `RegisterDto` with `class-validator` (email validation, password strength rules, role selection).
-- [ ] Implement `LoginDto` with `class-validator`.
-- [ ] Implement secure password hashing and verification using `bcrypt` (10 salt rounds).
-- [ ] Implement `POST /auth/register` endpoint:
+- [x] Create `AuthModule`, `AuthController`, and `AuthService` in NestJS.
+- [x] Implement `RegisterDto` with `class-validator` (email validation, password strength rules, role selection).
+- [x] Implement `LoginDto` with `class-validator`.
+- [x] Implement secure password hashing and verification using `bcrypt` (10 salt rounds).
+- [x] Implement `POST /auth/register` endpoint:
   - Check for existing email duplicates.
   - Hash user password.
   - Create `User` record inside a Prisma transaction while automatically creating the corresponding `ClientProfile` or `FreelancerProfile`.
   - Return created user payload without `passwordHash`.
-- [ ] Implement `POST /auth/login` endpoint:
+- [x] Implement `POST /auth/login` endpoint:
   - Validate credentials.
   - Issue signed JWT access token containing `sub` (userId), `email`, and `role`.
-- [ ] Implement `JwtStrategy` using `@nestjs/passport` and `passport-jwt`.
-- [ ] Implement `JwtAuthGuard` and `@Public()` custom metadata decorator to secure endpoints by default.
-- [ ] Implement `RolesGuard` and `@Roles(...)` custom decorator to enforce Role-Based Access Control.
-- [ ] Implement `@CurrentUser()` parameter decorator to inject authenticated user object into controllers.
-- [ ] Implement unit and E2E API tests using Vitest (`test/auth.e2e-spec.ts`).
+- [x] Implement `JwtStrategy` using `@nestjs/passport` and `passport-jwt`.
+- [x] Implement `JwtAuthGuard` and `@Public()` custom metadata decorator to secure endpoints by default.
+- [x] Implement `RolesGuard` and `@Roles(...)` custom decorator to enforce Role-Based Access Control.
+- [x] Implement `@CurrentUser()` parameter decorator to inject authenticated user object into controllers.
+- [x] Implement unit and E2E API tests using Vitest (`src/auth/auth.service.spec.ts`).
 
 ---
 
@@ -39,12 +39,10 @@ The purpose of Phase 2 is to establish a secure, enterprise-grade authentication
 
 ### B. Transactional User & Profile Creation
 ```ts
-// In AuthService.register
 return await this.prisma.$transaction(async (tx) => {
-  const hashedPassword = await bcrypt.hash(dto.password, 10);
   const user = await tx.user.create({
     data: {
-      email: dto.email,
+      email: dto.email.toLowerCase(),
       passwordHash: hashedPassword,
       role: dto.role,
     },
@@ -56,33 +54,18 @@ return await this.prisma.$transaction(async (tx) => {
     await tx.freelancerProfile.create({ data: { userId: user.id } });
   }
 
-  const { passwordHash, ...result } = user;
-  return result;
+  return user;
 });
-```
-
-### C. JWT Strategy & Protection Mechanics
-- `JwtStrategy`: Secret key loaded from `ConfigService.get('JWT_SECRET')`. Validates token payload against Prisma `User` database record.
-- `JwtAuthGuard`: Registered globally in `AppModule` or applied per controller. Reflector checks `@Public()` decorator to bypass protection for public routes (`/auth/register`, `/auth/login`).
-- `RolesGuard`: Reflector checks `@Roles(Role.CLIENT)` metadata and compares against `request.user.role`. Throws `ForbiddenException` if role requirement is not met.
-
-### D. Parameter Decorator
-```ts
-export const CurrentUser = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest();
-    return request.user;
-  },
-);
 ```
 
 ---
 
 ## 4. Status & What Is Done
-- [ ] `AuthModule` created: **Pending**
-- [ ] `RegisterDto` & `LoginDto`: **Pending**
-- [ ] Password hashing via `bcrypt`: **Pending**
-- [ ] Transactional registration (`User` + Profile): **Pending**
-- [ ] JWT authentication strategy: **Pending**
-- [ ] `JwtAuthGuard`, `RolesGuard`, `@CurrentUser()` decorators: **Pending**
-- [ ] Automated tests: **Pending**
+- [x] `AuthModule` created: **Completed**
+- [x] `RegisterDto` & `LoginDto`: **Completed**
+- [x] Password hashing via `bcrypt`: **Completed**
+- [x] Transactional registration (`User` + Profile): **Completed**
+- [x] JWT authentication strategy: **Completed**
+- [x] `JwtAuthGuard`, `RolesGuard`, `@CurrentUser()` decorators: **Completed**
+- [x] Vitest Unit Tests (6 passed): **Completed**
+- [x] TypeScript Compilation (`tsc --noEmit` 0 errors): **Completed**

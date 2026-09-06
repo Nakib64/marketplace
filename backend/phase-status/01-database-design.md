@@ -1,7 +1,7 @@
 # Phase 1: Database Design & Architecture
 
 ## 1. Purpose
-The purpose of Phase 1 is to construct a scalable, high-integrity relational database schema for the Freelance Marketplace application using **PostgreSQL** and **Prisma ORM 7**. A robust database model ensures strict data consistency, efficient indexing for search & query performance, and financial data integrity for client-freelancer transactions, escrow, double-blind reviews, and local payout processing.
+The purpose of Phase 1 is to construct a scalable, high-integrity relational database schema for the Freelance Marketplace application using **PostgreSQL** and **Prisma ORM 7**. A robust database model ensures strict data consistency, efficient indexing for search & query performance, and financial data integrity for client-freelancer transactions, escrow, double-blind reviews, portfolios, and local payout processing.
 
 ---
 
@@ -11,13 +11,16 @@ The purpose of Phase 1 is to construct a scalable, high-integrity relational dat
 - [x] Define relational data models in `schema.prisma`:
   - `User`: Core authentication entity with role (`CLIENT`, `FREELANCER`, `ADMIN`) and `walletBalance`.
   - `ClientProfile` & `FreelancerProfile`: `1:1` polymorphic profiles linked to `User`.
+  - `WorkHistory`: Work experience history for both Clients and Freelancers (`title`, `company`, `startDate`, `endDate`, `description`).
+  - `PortfolioItem`: Freelancer portfolio project entries (`title`, `details`, `liveLink`).
+  - `PortfolioImage`: Portfolio project media (up to 7 images per item with image URL and subtitle).
   - `Job`: Posted requirements, skills, budget, and job status.
   - `Proposal`: Freelancer bids on jobs with cover letters and bid amounts.
   - `Contract`: Escrow agreement linking client, freelancer, job, and proposal.
   - `Review`: Double-blind review and rating system post-contract completion.
   - `Withdrawal`: Local payment payout requests (bKash & Nagad).
 - [x] Set up strict database integrity constraints (Unique keys on dual profiles, job proposals, double reviews, and payment IDs).
-- [x] Add high-performance indexes on frequent query paths (emails, roles, job statuses, contract statuses, withdrawal queues).
+- [x] Add high-performance indexes on frequent query paths.
 - [x] Execute DDL database push to synchronize schema with local PostgreSQL instance (`marketplace_db`).
 - [x] Generate type-safe Prisma Client (`v7.10.0`).
 
@@ -40,14 +43,12 @@ export default defineConfig({
 });
 ```
 
-### B. Schema Relations & Enums Definition
-Defined enum types for clear state management (`Role`, `JobStatus`, `ProposalStatus`, `ContractStatus`, `ReviewStatus`, `WithdrawalStatus`, `WithdrawalMethod`).
-
-### C. Visual Entity-Relationship (ER) Diagram
+### B. Visual Entity-Relationship (ER) Diagram
 ```mermaid
 erDiagram
     User ||--o| ClientProfile : "has 1:1"
     User ||--o| FreelancerProfile : "has 1:1"
+    User ||--o{ WorkHistory : "has work experiences"
     User ||--o{ Job : "posts as Client"
     User ||--o{ Proposal : "submits as Freelancer"
     User ||--o{ Contract : "contracted as Client"
@@ -55,6 +56,9 @@ erDiagram
     User ||--o{ Review : "gives as Reviewer"
     User ||--o{ Review : "receives as Reviewee"
     User ||--o{ Withdrawal : "requests payout"
+
+    FreelancerProfile ||--o{ PortfolioItem : "showcases portfolio"
+    PortfolioItem ||--o{ PortfolioImage : "has media (max 7)"
 
     Job ||--o{ Proposal : "receives bids"
     Job ||--o{ Contract : "associated contracts"
@@ -65,24 +69,20 @@ erDiagram
     User {
         UUID id PK
         String email UK
-        String passwordHash
         Role role
-        Boolean isEmailVerified
-        Boolean isBanned
         Decimal walletBalance
         DateTime createdAt
-        DateTime updatedAt
     }
 
-    ClientProfile {
+    WorkHistory {
         UUID id PK
-        UUID userId FK, UK
-        String companyName
-        String billingDetails
-        Int totalJobPosts
-        Decimal totalSpent
-        DateTime createdAt
-        DateTime updatedAt
+        UUID userId FK
+        String title
+        String company
+        String description
+        DateTime startDate
+        DateTime endDate
+        Boolean isCurrent
     }
 
     FreelancerProfile {
@@ -91,81 +91,31 @@ erDiagram
         String bio
         Decimal hourlyRate
         String[] skills
-        Int totalProjects
-        Decimal earnings
         Float successRate
-        DateTime createdAt
-        DateTime updatedAt
     }
 
-    Job {
+    PortfolioItem {
         UUID id PK
-        UUID clientId FK
+        UUID freelancerProfileId FK
         String title
-        String description
-        Decimal budget
-        String[] skills
-        JobStatus status
-        DateTime createdAt
-        DateTime updatedAt
+        String details
+        String liveLink
     }
 
-    Proposal {
+    PortfolioImage {
         UUID id PK
-        UUID jobId FK
-        UUID freelancerId FK
-        Decimal bidAmount
-        String coverLetter
-        ProposalStatus status
-        DateTime createdAt
-        DateTime updatedAt
-    }
-
-    Contract {
-        UUID id PK
-        UUID proposalId FK, UK
-        UUID jobId FK
-        UUID clientId FK
-        UUID freelancerId FK
-        Decimal escrowAmount
-        Decimal platformFee
-        String sslcommerzId UK
-        ContractStatus status
-        DateTime createdAt
-        DateTime updatedAt
-    }
-
-    Review {
-        UUID id PK
-        UUID contractId FK
-        UUID reviewerId FK
-        UUID revieweeId FK
-        Int rating
-        String feedback
-        String counterFeedback
-        ReviewStatus status
-        DateTime createdAt
-        DateTime updatedAt
-    }
-
-    Withdrawal {
-        UUID id PK
-        UUID freelancerId FK
-        Decimal amount
-        WithdrawalMethod method
-        String accountNumber
-        WithdrawalStatus status
-        DateTime createdAt
-        DateTime updatedAt
+        UUID portfolioItemId FK
+        String imageUrl
+        String subtitle
+        Int order
     }
 ```
 
 ---
 
 ## 4. Status & What Is Done
-- [x] **Database Engine & ORM**: PostgreSQL installed, running locally on port 5432. Prisma 7 (`7.10.0`) configured.
-- [x] **Prisma Configuration**: `prisma.config.ts` initialized and verified.
+- [x] **Database Engine & ORM**: PostgreSQL installed, Prisma 7 (`7.10.0`) configured.
+- [x] **Schema Expansion**: Added `WorkHistory`, `PortfolioItem`, and `PortfolioImage` models to `schema.prisma`.
 - [x] **Prisma Client**: Generated successfully to `node_modules/@prisma/client`.
-- [x] **Database Sync**: Executed `npx prisma db push --force-reset` to establish database tables.
-- [x] **NestJS Integration**: `PrismaService` updated for Prisma 7 compatibility in NestJS.
+- [x] **Database Sync**: Executed `npx prisma db push` — `marketplace_db` fully in sync.
 - [x] **Build Verification**: `npx tsc --noEmit` verified with 0 errors.

@@ -68,6 +68,7 @@ model User {
   givenReviews        Review[]           @relation("GivenReviews")
   receivedReviews     Review[]           @relation("ReceivedReviews")
   withdrawals         Withdrawal[]
+  workHistories       WorkHistory[]
 
   @@index([email])
   @@index([role])
@@ -86,17 +87,60 @@ model ClientProfile {
 }
 
 model FreelancerProfile {
-  id            String   @id @default(uuid())
-  userId        String   @unique
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  bio           String?
-  hourlyRate    Decimal? @db.Decimal(10, 2)
-  skills        String[]
-  totalProjects Int      @default(0)
-  earnings      Decimal  @default(0.00) @db.Decimal(12, 2)
-  successRate   Float    @default(0.0)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id             String          @id @default(uuid())
+  userId         String          @unique
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bio            String?
+  hourlyRate     Decimal?        @db.Decimal(10, 2)
+  skills         String[]
+  totalProjects  Int             @default(0)
+  earnings       Decimal         @default(0.00) @db.Decimal(12, 2)
+  successRate    Float           @default(0.0)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  portfolioItems PortfolioItem[]
+}
+
+model WorkHistory {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  company     String
+  description String?
+  startDate   DateTime
+  endDate     DateTime?
+  isCurrent   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model PortfolioItem {
+  id                  String           @id @default(uuid())
+  freelancerProfileId String
+  freelancerProfile   FreelancerProfile @relation(fields: [freelancerProfileId], references: [id], onDelete: Cascade)
+  title               String
+  details             String
+  liveLink            String?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  images              PortfolioImage[]
+
+  @@index([freelancerProfileId])
+}
+
+model PortfolioImage {
+  id              String        @id @default(uuid())
+  portfolioItemId String
+  portfolioItem   PortfolioItem @relation(fields: [portfolioItemId], references: [id], onDelete: Cascade)
+  imageUrl        String
+  subtitle        String?
+  order           Int           @default(0)
+  createdAt       DateTime      @default(now())
+
+  @@index([portfolioItemId])
 }
 
 model Job {
