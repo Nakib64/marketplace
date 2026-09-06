@@ -13,6 +13,7 @@ import { Role } from '@prisma/client';
 import { CurrentUser } from '../../auth/decorators/current-user.decorator.js';
 import { Roles } from '../../auth/decorators/roles.decorator.js';
 import { CreateJobDto } from '../dto/create-job.dto.js';
+import { ReportJobDto } from '../dto/report-job.dto.js';
 import { UpdateJobDto } from '../dto/update-job.dto.js';
 import { JobsService } from '../services/jobs.service.js';
 
@@ -50,5 +51,15 @@ export class JobsController {
     @Param('id') jobId: string,
   ) {
     return this.jobsService.cancelJob(clientId, jobId);
+  }
+
+  @Roles(Role.CLIENT, Role.FREELANCER, Role.ADMIN)
+  @Post(':id/report')
+  async reportJob(
+    @CurrentUser('id') userId: string,
+    @Param('id') jobId: string,
+    @Body() dto: ReportJobDto,
+  ) {
+    return this.jobsService.reportJob(userId, jobId, dto);
   }
 }

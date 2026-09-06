@@ -6,28 +6,28 @@ The purpose of Phase 13 is to protect marketplace integrity, enforce platform po
 ---
 
 ## 2. What To Do
-- [ ] Update `schema.prisma` with `JobReport` and moderation flag columns:
+- [x] Update `schema.prisma` with `JobReport` and moderation flag columns:
   - `Job.isFlagged`: `Boolean @default(false)`
   - `Job.flagReason`: `String?`
   - `JobReport` model linking reporter, target job, reason, and status (`PENDING`, `RESOLVED`, `DISMISSED`).
-- [ ] Create `AdminModerationController` and `AdminModerationService` inside `src/admin/`.
-- [ ] Implement `AntiCircumventionScanner`:
+- [x] Create `AdminModerationController` and `AdminModerationService` inside `src/admin/`.
+- [x] Implement `AntiCircumventionScanner`:
   - Regex pattern matching for Bangladeshi mobile numbers (`01XXXXXXXXX`, `+8801...`).
   - Blacklist keywords: `whatsapp`, `telegram`, `imo`, `gmail.com`, `yahoo.com`, `direct payment`, `offline`, `outside payment`, `personal bkash`.
-- [ ] Implement `ModerateJobDto`:
-  - `action`: `@IsEnum(['APPROVE', 'TERMINATE', 'EDIT_REQUIRED'])`.
-  - `adminNotes`: `@IsString()`, `@MinLength(5)`, `@MaxLength(500)`.
-- [ ] Implement `GET /admin/moderation/jobs` (Restricted to `ADMIN` role):
+- [x] Implement `ModerateJobDto`:
+  - `action`: `@IsEnum(['APPROVE', 'TERMINATE'])`.
+  - `adminNotes`: `@IsOptional()`, `@IsString()`, `@MaxLength(500)`.
+- [x] Implement `GET /admin/moderation/jobs` (Restricted to `ADMIN` role):
   - List jobs flagged by automated anti-circumvention scans or user reports.
-- [ ] Implement `PATCH /admin/moderation/jobs/:id/action` (Restricted to `ADMIN` role):
+- [x] Implement `PATCH /admin/moderation/jobs/:id/action` (Restricted to `ADMIN` role):
   - `APPROVE`: Clears flag, restores status to `OPEN`.
   - `TERMINATE`: Changes job status to `CANCELED`, cancels any pending proposals, logs reason.
-- [ ] Implement `GET /admin/moderation/reviews` (Restricted to `ADMIN` role):
+- [x] Implement `GET /admin/moderation/reviews` (Restricted to `ADMIN` role):
   - List reported or disputed reviews.
-- [ ] Implement `DELETE /admin/moderation/reviews/:id` (Restricted to `ADMIN` role):
+- [x] Implement `DELETE /admin/moderation/reviews/:id` (Restricted to `ADMIN` role):
   - Permanently remove defamatory or policy-violating reviews.
-  - Automatically recompute affected freelancer's `successRate`.
-- [ ] Write unit & integration tests covering keyword scanning, regex phone detection, job termination, and review removal side effects.
+  - Automatically recompute affected freelancer's and client's average ratings, review count, and success rate.
+- [x] Write unit & integration tests covering keyword scanning, regex phone detection, job termination, and review removal side effects.
 
 ---
 

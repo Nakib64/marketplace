@@ -26,7 +26,11 @@ describe('Jobs Sub-Services', () => {
       $transaction: vi.fn(async (cb) => cb(prismaMock)),
     };
 
-    jobsService = new JobsService(prismaMock);
+    const antiCircumventionMock = {
+      scanContent: vi.fn().mockReturnValue({ isFlagged: false, reasons: [] }),
+    };
+
+    jobsService = new JobsService(prismaMock, antiCircumventionMock as any);
     jobsSearchService = new JobsSearchService(prismaMock);
   });
 

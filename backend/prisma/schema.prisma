@@ -71,6 +71,7 @@ model User {
   withdrawals         Withdrawal[]
   refunds             Refund[]
   workHistories       WorkHistory[]
+  reportedJobs        JobReport[]        @relation("ReportedJobs")
 
   @@index([email])
   @@index([role])
@@ -215,10 +216,14 @@ model Job {
 
   proposals Proposal[]
   contracts Contract[]
+  isFlagged Boolean    @default(false)
+  flagReason String?
+  jobReports JobReport[]
 
   @@index([status, createdAt])
   @@index([clientId])
   @@index([categoryId, subCategoryId])
+  @@index([isFlagged])
 }
 
 model Proposal {
@@ -281,6 +286,8 @@ model Review {
   feedback        String
   counterFeedback String?
   status          ReviewStatus @default(HIDDEN)
+  isFlagged       Boolean      @default(false)
+  flagReason      String?
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
 
@@ -340,4 +347,20 @@ model AuditLog {
   @@index([action])
   @@index([targetType])
   @@index([createdAt])
+}
+
+model JobReport {
+  id         String   @id @default(uuid())
+  jobId      String
+  job        Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  reporterId String
+  reporter   User     @relation("ReportedJobs", fields: [reporterId], references: [id], onDelete: Cascade)
+  reason     String
+  status     String   @default("PENDING")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([jobId])
+  @@index([reporterId])
+  @@index([status])
 }

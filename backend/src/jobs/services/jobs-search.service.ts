@@ -33,6 +33,7 @@ export class JobsSearchService {
     // 2. Build Prisma Where Clause
     const where: Prisma.JobWhereInput = {
       ...(query.status ? { status: query.status } : { status: JobStatus.OPEN }),
+      isFlagged: false,
       ...(query.clientId ? { clientId: query.clientId } : {}),
       ...(query.category
         ? {

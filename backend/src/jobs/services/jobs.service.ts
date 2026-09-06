@@ -1,12 +1,17 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { JobStatus } from '@prisma/client';
+import { AntiCircumventionService } from '../../admin/moderation/services/anti-circumvention.service.js';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import { CreateJobDto } from '../dto/create-job.dto.js';
+import { ReportJobDto } from '../dto/report-job.dto.js';
 import { UpdateJobDto } from '../dto/update-job.dto.js';
 
 @Injectable()
 export class JobsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly antiCircumventionService: AntiCircumventionService,
+  ) {}
 
   async createJob(clientId: string, dto: CreateJobDto) {
     const clientProfile = await this.prisma.clientProfile.findUnique({
@@ -16,6 +21,13 @@ export class JobsService {
     if (!clientProfile) {
       throw new NotFoundException('Client profile not found. Only clients can post jobs.');
     }
+
+    const titleScan = this.antiCircumventionService.scanContent(dto.title);
+    const descScan = this.antiCircumventionService.scanContent(dto.description);
+    const isFlagged = titleScan.isFlagged || descScan.isFlagged;
+    const flagReason = isFlagged
+      ? [...titleScan.reasons, ...descScan.reasons].join('; ')
+      : null;
 
     return await this.prisma.$transaction(async (tx) => {
       const job = await tx.job.create({
@@ -28,6 +40,8 @@ export class JobsService {
           budget: dto.budget,
           skills: dto.skills,
           status: JobStatus.OPEN,
+          isFlagged,
+          flagReason,
         },
       });
 
@@ -67,13 +81,63 @@ export class JobsService {
 
     const { category, subCategory, ...rest } = dto;
 
+    let isFlagged = job.isFlagged;
+    let flagReason = job.flagReason;
+
+    if (dto.title !== undefined || dto.description !== undefined) {
+      const titleToScan = dto.title ?? job.title;
+      const descToScan = dto.description ?? job.description;
+      const titleScan = this.antiCircumventionService.scanContent(titleToScan);
+      const descScan = this.antiCircumventionService.scanContent(descToScan);
+      isFlagged = titleScan.isFlagged || descScan.isFlagged;
+      flagReason = isFlagged
+        ? [...titleScan.reasons, ...descScan.reasons].join('; ')
+        : null;
+    }
+
     return this.prisma.job.update({
       where: { id: jobId },
       data: {
         ...rest,
         ...(category && { categoryName: category }),
         ...(subCategory !== undefined && { subCategoryName: subCategory }),
+        isFlagged,
+        flagReason,
       },
+    });
+  }
+
+  async reportJob(reporterId: string, jobId: string, dto: ReportJobDto) {
+    const job = await this.prisma.job.findUnique({
+      where: { id: jobId },
+    });
+
+    if (!job) {
+      throw new NotFoundException('Job listing not found.');
+    }
+
+    return await this.prisma.$transaction(async (tx) => {
+      const report = await tx.jobReport.create({
+        data: {
+          jobId,
+          reporterId,
+          reason: dto.reason,
+          status: 'PENDING',
+        },
+      });
+
+      // Quarantine job if not already flagged
+      if (!job.isFlagged) {
+        await tx.job.update({
+          where: { id: jobId },
+          data: {
+            isFlagged: true,
+            flagReason: `Community report: ${dto.reason}`,
+          },
+        });
+      }
+
+      return report;
     });
   }
 
