@@ -58,7 +58,7 @@ describe('Users Sub-Services', () => {
         id: 'user-123',
         email: 'test@example.com',
         role: 'FREELANCER',
-        freelancerProfile: { bio: 'Web Dev' },
+        freelancerProfile: { title: 'Web Developer', description: 'Web Dev' },
         workHistories: [],
       });
 

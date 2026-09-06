@@ -44,9 +44,9 @@ The purpose of Phase 10 is to implement an enterprise-grade **Arbitration Court*
 
 ## 3. How To Do It (Implementation Details)
 
-### A. Modular Sub-Service Architecture inside `src/admin/`
+### A. Modular Sub-Service Architecture inside `src/admin/disputes/`
 ```
-src/admin/
+src/admin/disputes/
 ├── dto/
 │   ├── dispute-resolution.dto.ts         # Admin notes schema for full refund/release (~15 lines)
 │   └── dispute-split.dto.ts              # Proportional split schema with percentage and notes (~20 lines)
@@ -55,8 +55,10 @@ src/admin/
 ├── services/
 │   ├── admin-disputes-query.service.ts   # Dispute queue and dossier retrieval (~45 lines)
 │   └── admin-disputes-verdicts.service.ts# Atomic refund, release and split transactions (~90 lines)
+├── admin-disputes.module.ts              # Dedicated Disputes Arbitration submodule
 └── admin-disputes.service.spec.ts        # Vitest unit test suite
 ```
+
 
 ### B. Validation Schemas (`dto/`)
 ```ts

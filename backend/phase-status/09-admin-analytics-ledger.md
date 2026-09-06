@@ -35,7 +35,7 @@ The purpose of Phase 9 is to provide C-level executive visibility and real-time 
 
 ### A. Modular Sub-Service Architecture inside `src/admin/`
 ```
-src/admin/
+src/admin/analytics/
 ├── dto/
 │   └── analytics-query.dto.ts            # Timeframe filter schema ('24h' | '7d' | '30d' | 'year' | 'all')
 ├── utils/
@@ -46,9 +46,10 @@ src/admin/
 │   ├── admin-financials.service.ts       # GMV, net revenue & liability aggregations (~65 lines)
 │   ├── admin-liquidity.service.ts        # Funnel fill rate, TTH & dispute rate (~75 lines)
 │   └── admin-categories-stats.service.ts # Category GMV & top 10 earner/spender rankings (~70 lines)
-├── admin-analytics.service.spec.ts        # Vitest unit test suite
-└── admin.module.ts                       # Admin module registration
+├── admin-analytics.module.ts             # Dedicated Analytics submodule
+└── admin-analytics.service.spec.ts       # Vitest unit test suite
 ```
+
 
 ### B. Validation Schema (`analytics-query.dto.ts`)
 ```ts

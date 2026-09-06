@@ -3,8 +3,13 @@ import { IsArray, IsNumber, IsOptional, IsString, MaxLength, Min } from 'class-v
 export class UpdateFreelancerProfileDto {
   @IsOptional()
   @IsString()
-  @MaxLength(1000, { message: 'Bio cannot exceed 1000 characters.' })
-  bio?: string;
+  @MaxLength(120, { message: 'Title cannot exceed 120 characters.' })
+  title?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(2000, { message: 'Description cannot exceed 2000 characters.' })
+  description?: string;
 
   @IsOptional()
   @IsNumber()

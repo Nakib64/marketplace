@@ -37,9 +37,9 @@ The purpose of Phase 11 is to provide administrators with enterprise-grade **Tru
 
 ## 3. How To Do It (Implementation Details)
 
-### A. Modular Sub-Service Architecture inside `src/admin/`
+### A. Modular Sub-Service Architecture inside `src/admin/users/`
 ```
-src/admin/
+src/admin/users/
 ├── dto/
 │   ├── user-query.dto.ts                 # Filtering & pagination schema (~30 lines)
 │   └── update-user-status.dto.ts         # Ban/unban sanction schema (~15 lines)
@@ -48,8 +48,10 @@ src/admin/
 ├── services/
 │   ├── admin-users-query.service.ts      # User filtering, pagination & dossier retrieval (~60 lines)
 │   └── admin-users-actions.service.ts    # Sanctions, email verify & impersonation JWT signing (~65 lines)
+├── admin-users.module.ts                 # Dedicated Users Moderation submodule
 └── admin-users.service.spec.ts           # Vitest unit test suite
 ```
+
 
 ### B. Validation Schemas (`dto/`)
 ```ts

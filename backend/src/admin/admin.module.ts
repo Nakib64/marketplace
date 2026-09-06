@@ -1,40 +1,21 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from '../auth/auth.module.js';
-import { AdminAnalyticsController } from './controllers/admin-analytics.controller.js';
-import { AdminDisputesController } from './controllers/admin-disputes.controller.js';
-import { AdminUsersController } from './controllers/admin-users.controller.js';
-import { AdminCategoriesStatsService } from './services/admin-categories-stats.service.js';
-import { AdminDisputesQueryService } from './services/admin-disputes-query.service.js';
-import { AdminDisputesVerdictsService } from './services/admin-disputes-verdicts.service.js';
-import { AdminFinancialsService } from './services/admin-financials.service.js';
-import { AdminLiquidityService } from './services/admin-liquidity.service.js';
-import { AdminUsersActionsService } from './services/admin-users-actions.service.js';
-import { AdminUsersQueryService } from './services/admin-users-query.service.js';
+import { AdminAnalyticsModule } from './analytics/admin-analytics.module.js';
+import { AdminAuditModule } from './audit/admin-audit.module.js';
+import { AdminDisputesModule } from './disputes/admin-disputes.module.js';
+import { AdminUsersModule } from './users/admin-users.module.js';
 
 @Module({
-  imports: [AuthModule],
-  controllers: [
-    AdminAnalyticsController,
-    AdminDisputesController,
-    AdminUsersController,
-  ],
-  providers: [
-    AdminFinancialsService,
-    AdminLiquidityService,
-    AdminCategoriesStatsService,
-    AdminDisputesQueryService,
-    AdminDisputesVerdictsService,
-    AdminUsersQueryService,
-    AdminUsersActionsService,
+  imports: [
+    AdminAnalyticsModule,
+    AdminDisputesModule,
+    AdminUsersModule,
+    AdminAuditModule,
   ],
   exports: [
-    AdminFinancialsService,
-    AdminLiquidityService,
-    AdminCategoriesStatsService,
-    AdminDisputesQueryService,
-    AdminDisputesVerdictsService,
-    AdminUsersQueryService,
-    AdminUsersActionsService,
+    AdminAnalyticsModule,
+    AdminDisputesModule,
+    AdminUsersModule,
+    AdminAuditModule,
   ],
 })
 export class AdminModule {}

@@ -79,8 +79,9 @@ export class ReviewsService {
           data: { status: ReviewStatus.PUBLISHED },
         });
 
-        // Recalculate freelancer successRate
+        // Recalculate freelancer and client profile stats
         await this.recalculateFreelancerStats(tx, contract.freelancerId);
+        await this.recalculateClientStats(tx, contract.clientId);
 
         return {
           ...newReview,
@@ -97,7 +98,7 @@ export class ReviewsService {
   }
 
   /**
-   * Recalculates freelancer successRate based on all received PUBLISHED reviews.
+   * Recalculates freelancer rating, totalReviews, and successRate based on all received PUBLISHED reviews.
    */
   async recalculateFreelancerStats(tx: any, freelancerId: string) {
     const publishedReviews = await tx.review.findMany({
@@ -107,18 +108,55 @@ export class ReviewsService {
       },
     });
 
-    if (publishedReviews.length === 0) {
+    const totalReviews = publishedReviews.length;
+    if (totalReviews === 0) {
+      await tx.freelancerProfile.update({
+        where: { userId: freelancerId },
+        data: { rating: 0.0, totalReviews: 0, successRate: 0.0 },
+      });
       return;
     }
 
     const avgRating =
       publishedReviews.reduce((sum: number, r: { rating: number }) => sum + r.rating, 0) /
-      publishedReviews.length;
+      totalReviews;
+    const rating = Number(avgRating.toFixed(1));
     const successRate = Number(((avgRating / 5) * 100).toFixed(1));
 
     await tx.freelancerProfile.update({
       where: { userId: freelancerId },
-      data: { successRate },
+      data: { rating, totalReviews, successRate },
+    });
+  }
+
+  /**
+   * Recalculates client rating and totalReviews based on all received PUBLISHED reviews.
+   */
+  async recalculateClientStats(tx: any, clientId: string) {
+    const publishedReviews = await tx.review.findMany({
+      where: {
+        revieweeId: clientId,
+        status: ReviewStatus.PUBLISHED,
+      },
+    });
+
+    const totalReviews = publishedReviews.length;
+    if (totalReviews === 0) {
+      await tx.clientProfile.update({
+        where: { userId: clientId },
+        data: { rating: 0.0, totalReviews: 0 },
+      });
+      return;
+    }
+
+    const avgRating =
+      publishedReviews.reduce((sum: number, r: { rating: number }) => sum + r.rating, 0) /
+      totalReviews;
+    const rating = Number(avgRating.toFixed(1));
+
+    await tx.clientProfile.update({
+      where: { userId: clientId },
+      data: { rating, totalReviews },
     });
   }
 

@@ -28,6 +28,9 @@ describe('ReviewsService', () => {
       freelancerProfile: {
         update: vi.fn(),
       },
+      clientProfile: {
+        update: vi.fn(),
+      },
       $transaction: vi.fn((cb) => cb(prismaMock)),
     };
 
@@ -177,7 +180,11 @@ describe('ReviewsService', () => {
       // avg rating = (5 + 4) / 2 = 4.5 -> successRate = (4.5 / 5) * 100 = 90.0
       expect(prismaMock.freelancerProfile.update).toHaveBeenCalledWith({
         where: { userId: 'free-1' },
-        data: { successRate: 90.0 },
+        data: { rating: 4.5, totalReviews: 2, successRate: 90.0 },
+      });
+      expect(prismaMock.clientProfile.update).toHaveBeenCalledWith({
+        where: { userId: 'client-1' },
+        data: { rating: 4.5, totalReviews: 2 },
       });
     });
   });

@@ -6,7 +6,7 @@ The purpose of Phase 12 is to implement a permanent, immutable **Activity Audit 
 ---
 
 ## 2. What To Do
-- [ ] Update `prisma/schema.prisma` with the `AuditLog` model:
+- [x] Update `prisma/schema.prisma` with the `AuditLog` model:
   - `id`: `String @id @default(uuid())`
   - `adminId`: `String` (ID of administrator who executed the action)
   - `action`: `String` (e.g. `FEE_UPDATED`, `PAYOUT_APPROVED`, `PAYOUT_REJECTED`, `ESCROW_REFUNDED`, `DISPUTE_RELEASE`, `DISPUTE_SPLIT`, `USER_BANNED`, `USER_UNBANNED`, `USER_IMPERSONATED`)
@@ -15,39 +15,41 @@ The purpose of Phase 12 is to implement a permanent, immutable **Activity Audit 
   - `details`: `String?` (JSON metadata or human-readable explanation)
   - `ipAddress`: `String?`
   - `createdAt`: `DateTime @default(now())`
-- [ ] Create `AuditLoggerService` to provide centralized audit recording across all admin modules.
-- [ ] Implement `AuditLogQueryDto`:
+- [x] Create `AuditLoggerService` to provide centralized audit recording across all admin modules.
+- [x] Implement `AuditLogQueryDto`:
   - `action?`: `@IsOptional()`, `@IsString()`.
   - `targetType?`: `@IsOptional()`, `@IsString()`.
   - `adminId?`: `@IsOptional()`, `@IsUUID(4)`.
   - `page?`: `@IsOptional()`, `@Type(() => Number)`, `@Min(1)`.
   - `limit?`: `@IsOptional()`, `@Type(() => Number)`, `@Min(1)`, `@Max(100)`.
-- [ ] Implement `GET /admin/audit-logs` (Restricted to `ADMIN` role):
+- [x] Implement `GET /admin/audit-logs` (Restricted to `ADMIN` role):
   - Paginated audit log search with multi-parameter filtering.
   - Return total counts and chronological event listing.
-- [ ] Integrate `AuditLoggerService` into:
+- [x] Integrate `AuditLoggerService` into:
   - Platform Fee updates (`AdminSettingsController`).
   - Withdrawal approvals and rejections (`AdminWithdrawalsController`).
   - Contract escrow refunds (`AdminWithdrawalsController`).
   - Dispute resolution verdicts (`AdminDisputesController`).
   - User status sanctions and impersonation (`AdminUsersController`).
-- [ ] Write unit & integration tests for audit creation, query filtering, and event indexing.
+- [x] Write unit & integration tests for audit creation, query filtering, and event indexing.
 
 ---
 
 ## 3. How To Do It (Implementation Details)
 
-### A. Modular File Layout inside `src/admin/`
+### A. Modular File Layout inside `src/admin/audit/`
 ```
-src/admin/
+src/admin/audit/
 ├── dto/
 │   └── audit-log-query.dto.ts      # Multi-parameter filter schema
 ├── controllers/
 │   └── admin-audit.controller.ts   # GET /admin/audit-logs route
 ├── services/
 │   └── audit-logger.service.ts     # Centralized logAction() helper & query service
+├── admin-audit.module.ts           # Dedicated Audit submodule
 └── audit-logger.service.spec.ts    # Vitest unit test suite
 ```
+
 
 ### B. Database Schema Definition (`prisma/schema.prisma`)
 ```prisma
@@ -169,10 +171,11 @@ export class AuditLoggerService {
 ---
 
 ## 4. Status & What Is Done
-- [ ] Schema Update (`AuditLog` model in `schema.prisma`): **Pending**
-- [ ] `AuditLogQueryDto`: **Pending**
-- [ ] `AuditLoggerService` (centralized `logAction()` & query methods): **Pending**
-- [ ] `AdminAuditController` (`GET /admin/audit-logs`): **Pending**
-- [ ] Wiring audit hooks across Admin fee updates, payouts, refunds, disputes & user bans: **Pending**
-- [ ] Vitest unit test suite covering audit persistence & multi-filter search: **Pending**
-- [ ] TypeScript compilation (`npm run build` 0 errors): **Pending**
+- [x] Schema Update (`AuditLog` model in `schema.prisma`): **Completed**
+- [x] `AuditLogQueryDto`: **Completed**
+- [x] `AuditLoggerService` (centralized `logAction()` & query methods): **Completed**
+- [x] `AdminAuditController` (`GET /admin/audit-logs`): **Completed**
+- [x] Wiring audit hooks across Admin fee updates, payouts, refunds, disputes & user bans: **Completed**
+- [x] Vitest unit test suite covering audit persistence & multi-filter search: **Completed**
+- [x] TypeScript compilation (`npm run build` 0 errors): **Completed**
+
