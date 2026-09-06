@@ -1,0 +1,197 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  CLIENT
+  FREELANCER
+  ADMIN
+}
+
+enum JobStatus {
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+  CANCELED
+}
+
+enum ProposalStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum ContractStatus {
+  FUNDED
+  PENDING_APPROVAL
+  COMPLETED
+  DISPUTED
+}
+
+enum ReviewStatus {
+  HIDDEN
+  PUBLISHED
+}
+
+enum WithdrawalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum WithdrawalMethod {
+  BKASH
+  NAGAD
+}
+
+model User {
+  id              String   @id @default(uuid())
+  email           String   @unique
+  passwordHash    String
+  role            Role
+  isEmailVerified Boolean  @default(false)
+  isBanned        Boolean  @default(false)
+  walletBalance   Decimal  @default(0.00) @db.Decimal(12, 2)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  clientProfile       ClientProfile?
+  freelancerProfile   FreelancerProfile?
+  postedJobs          Job[]              @relation("ClientJobs")
+  proposals           Proposal[]
+  clientContracts     Contract[]         @relation("ClientContracts")
+  freelancerContracts Contract[]         @relation("FreelancerContracts")
+  givenReviews        Review[]           @relation("GivenReviews")
+  receivedReviews     Review[]           @relation("ReceivedReviews")
+  withdrawals         Withdrawal[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model ClientProfile {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyName    String?
+  billingDetails String?
+  totalJobPosts  Int      @default(0)
+  totalSpent     Decimal  @default(0.00) @db.Decimal(12, 2)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model FreelancerProfile {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bio           String?
+  hourlyRate    Decimal? @db.Decimal(10, 2)
+  skills        String[]
+  totalProjects Int      @default(0)
+  earnings      Decimal  @default(0.00) @db.Decimal(12, 2)
+  successRate   Float    @default(0.0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Job {
+  id          String    @id @default(uuid())
+  clientId    String
+  client      User      @relation("ClientJobs", fields: [clientId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+  budget      Decimal   @db.Decimal(12, 2)
+  skills      String[]
+  status      JobStatus @default(OPEN)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  proposals Proposal[]
+  contracts Contract[]
+
+  @@index([status, createdAt])
+  @@index([clientId])
+}
+
+model Proposal {
+  id           String         @id @default(uuid())
+  jobId        String
+  job          Job            @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  freelancerId String
+  freelancer   User           @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+  bidAmount    Decimal        @db.Decimal(12, 2)
+  coverLetter  String
+  status       ProposalStatus @default(PENDING)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  contract Contract?
+
+  @@unique([jobId, freelancerId])
+  @@index([jobId, status])
+  @@index([freelancerId])
+}
+
+model Contract {
+  id           String         @id @default(uuid())
+  proposalId   String         @unique
+  proposal     Proposal       @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  jobId        String
+  job          Job            @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  clientId     String
+  client       User           @relation("ClientContracts", fields: [clientId], references: [id], onDelete: Cascade)
+  freelancerId String
+  freelancer   User           @relation("FreelancerContracts", fields: [freelancerId], references: [id], onDelete: Cascade)
+  escrowAmount Decimal        @db.Decimal(12, 2)
+  platformFee  Decimal        @db.Decimal(12, 2)
+  sslcommerzId String?        @unique
+  status       ContractStatus @default(FUNDED)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  reviews Review[]
+
+  @@index([clientId])
+  @@index([freelancerId])
+  @@index([status])
+}
+
+model Review {
+  id              String       @id @default(uuid())
+  contractId      String
+  contract        Contract     @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  reviewerId      String
+  reviewer        User         @relation("GivenReviews", fields: [reviewerId], references: [id])
+  revieweeId      String
+  reviewee        User         @relation("ReceivedReviews", fields: [revieweeId], references: [id])
+  rating          Int
+  feedback        String
+  counterFeedback String?
+  status          ReviewStatus @default(HIDDEN)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@unique([contractId, reviewerId])
+  @@index([contractId])
+  @@index([revieweeId, status])
+}
+
+model Withdrawal {
+  id            String           @id @default(uuid())
+  freelancerId  String
+  freelancer    User             @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+  amount        Decimal          @db.Decimal(12, 2)
+  method        WithdrawalMethod
+  accountNumber String
+  status        WithdrawalStatus @default(PENDING)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([freelancerId])
+  @@index([status, createdAt])
+}
