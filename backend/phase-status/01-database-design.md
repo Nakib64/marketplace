@@ -1,7 +1,7 @@
 # Phase 1: Database Design & Architecture
 
 ## 1. Purpose
-The purpose of Phase 1 is to construct a scalable, high-integrity relational database schema for the Freelance Marketplace application using **PostgreSQL** and **Prisma ORM 7**. A robust database model ensures strict data consistency, efficient indexing for search & query performance, and financial data integrity for client-freelancer transactions, escrow, double-blind reviews, portfolios, and local payout processing.
+The purpose of Phase 1 is to construct a scalable, high-integrity relational database schema for the Freelance Marketplace application using **PostgreSQL** and **Prisma ORM 7**. A robust database model ensures strict data consistency, efficient indexing for search & query performance, and financial data integrity for client-freelancer transactions, escrow, double-blind reviews, portfolios, dynamic categories/skills, and local payout processing.
 
 ---
 
@@ -14,13 +14,16 @@ The purpose of Phase 1 is to construct a scalable, high-integrity relational dat
   - `WorkHistory`: Work experience history for both Clients and Freelancers (`title`, `company`, `startDate`, `endDate`, `description`).
   - `PortfolioItem`: Freelancer portfolio project entries (`title`, `details`, `liveLink`).
   - `PortfolioImage`: Portfolio project media (up to 7 images per item with image URL and subtitle).
-  - `Job`: Posted requirements, skills, budget, and job status.
+  - `Category`: Admin-managed job categories (`name`, `slug`, `isActive`).
+  - `SubCategory`: Admin-managed sub-categories (`categoryId`, `name`, `slug`, `isActive`).
+  - `Skill`: Admin-managed skills dictionary (`name`, `slug`, `isActive`).
+  - `Job`: Posted requirements, category, sub-category, skills, budget, and job status.
   - `Proposal`: Freelancer bids on jobs with cover letters and bid amounts.
   - `Contract`: Escrow agreement linking client, freelancer, job, and proposal.
   - `Review`: Double-blind review and rating system post-contract completion.
   - `Withdrawal`: Local payment payout requests (bKash & Nagad).
-- [x] Set up strict database integrity constraints (Unique keys on dual profiles, job proposals, double reviews, and payment IDs).
-- [x] Add high-performance indexes on frequent query paths.
+- [x] Set up strict database integrity constraints (Unique keys on dual profiles, job proposals, double reviews, category slugs, and payment IDs).
+- [x] Add high-performance indexes on frequent query paths (`[category, subCategory]`, `[status, createdAt]`, `[slug]`).
 - [x] Execute DDL database push to synchronize schema with local PostgreSQL instance (`marketplace_db`).
 - [x] Generate type-safe Prisma Client (`v7.10.0`).
 
@@ -60,54 +63,48 @@ erDiagram
     FreelancerProfile ||--o{ PortfolioItem : "showcases portfolio"
     PortfolioItem ||--o{ PortfolioImage : "has media (max 7)"
 
+    Category ||--o{ SubCategory : "has sub-categories"
+    Category ||--o{ Job : "categorizes jobs"
+    SubCategory ||--o{ Job : "sub-categorizes jobs"
+
     Job ||--o{ Proposal : "receives bids"
     Job ||--o{ Contract : "associated contracts"
 
     Proposal ||--o| Contract : "converts to 1:1"
     Contract ||--o{ Review : "produces reviews"
 
-    User {
+    Category {
         UUID id PK
-        String email UK
-        Role role
-        Decimal walletBalance
-        DateTime createdAt
+        String name UK
+        String slug UK
+        Boolean isActive
     }
 
-    WorkHistory {
+    SubCategory {
         UUID id PK
-        UUID userId FK
+        UUID categoryId FK
+        String name
+        String slug
+        Boolean isActive
+    }
+
+    Skill {
+        UUID id PK
+        String name UK
+        String slug UK
+        Boolean isActive
+    }
+
+    Job {
+        UUID id PK
+        UUID clientId FK
+        UUID categoryId FK
+        UUID subCategoryId FK
         String title
-        String company
         String description
-        DateTime startDate
-        DateTime endDate
-        Boolean isCurrent
-    }
-
-    FreelancerProfile {
-        UUID id PK
-        UUID userId FK, UK
-        String bio
-        Decimal hourlyRate
+        Decimal budget
         String[] skills
-        Float successRate
-    }
-
-    PortfolioItem {
-        UUID id PK
-        UUID freelancerProfileId FK
-        String title
-        String details
-        String liveLink
-    }
-
-    PortfolioImage {
-        UUID id PK
-        UUID portfolioItemId FK
-        String imageUrl
-        String subtitle
-        Int order
+        JobStatus status
     }
 ```
 
@@ -115,7 +112,7 @@ erDiagram
 
 ## 4. Status & What Is Done
 - [x] **Database Engine & ORM**: PostgreSQL installed, Prisma 7 (`7.10.0`) configured.
-- [x] **Schema Expansion**: Added `WorkHistory`, `PortfolioItem`, and `PortfolioImage` models to `schema.prisma`.
+- [x] **Schema Expansion**: Added `WorkHistory`, `PortfolioItem`, `PortfolioImage`, `Category`, `SubCategory`, and `Skill` models.
 - [x] **Prisma Client**: Generated successfully to `node_modules/@prisma/client`.
 - [x] **Database Sync**: Executed `npx prisma db push` — `marketplace_db` fully in sync.
 - [x] **Build Verification**: `npx tsc --noEmit` verified with 0 errors.

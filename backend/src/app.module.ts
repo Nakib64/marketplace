@@ -8,6 +8,8 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard.js';
 import { RolesGuard } from './auth/guards/roles.guard.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 
+import { CategoriesModule } from './categories/categories.module.js';
+import { JobsModule } from './jobs/jobs.module.js';
 import { UsersModule } from './users/users.module.js';
 
 @Module({
@@ -18,6 +20,8 @@ import { UsersModule } from './users/users.module.js';
     PrismaModule,
     AuthModule,
     UsersModule,
+    JobsModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [
