@@ -3,6 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 import { Role } from '@prisma/client';
 import { PrismaService } from '../../../prisma/prisma.service.js';
 import { AuditLoggerService } from '../../audit/services/audit-logger.service.js';
+import { UpdateClientProfileDto } from '../../../users/dto/update-client-profile.dto.js';
+import { UpdateFreelancerProfileDto } from '../../../users/dto/update-freelancer-profile.dto.js';
 import { UpdateUserStatusDto } from '../dto/update-user-status.dto.js';
 
 @Injectable()
@@ -88,6 +90,81 @@ export class AdminUsersActionsService {
       accessToken,
       impersonatedUser: { id: targetUser.id, email: targetUser.email, role: targetUser.role },
       expiresIn: '1h',
+    };
+  }
+
+  async updateClientProfile(adminId: string, targetUserId: string, dto: UpdateClientProfileDto) {
+    const clientProfile = await this.prisma.clientProfile.findUnique({
+      where: { userId: targetUserId },
+    });
+
+    if (!clientProfile) {
+      throw new NotFoundException('Client profile not found for this user.');
+    }
+
+    const updated = await this.prisma.clientProfile.update({
+      where: { userId: targetUserId },
+      data: dto,
+    });
+
+    await this.auditLogger.logAction({
+      adminId,
+      action: 'CLIENT_PROFILE_UPDATED',
+      targetType: 'USER',
+      targetId: targetUserId,
+      details: 'Client profile updated by administrator',
+    });
+
+    return updated;
+  }
+
+  async updateFreelancerProfile(adminId: string, targetUserId: string, dto: UpdateFreelancerProfileDto) {
+    const freelancerProfile = await this.prisma.freelancerProfile.findUnique({
+      where: { userId: targetUserId },
+    });
+
+    if (!freelancerProfile) {
+      throw new NotFoundException('Freelancer profile not found for this user.');
+    }
+
+    const updated = await this.prisma.freelancerProfile.update({
+      where: { userId: targetUserId },
+      data: dto,
+    });
+
+    await this.auditLogger.logAction({
+      adminId,
+      action: 'FREELANCER_PROFILE_UPDATED',
+      targetType: 'USER',
+      targetId: targetUserId,
+      details: 'Freelancer profile updated by administrator',
+    });
+
+    return updated;
+  }
+
+  async deleteUser(adminId: string, targetUserId: string, reason?: string) {
+    if (adminId === targetUserId) {
+      throw new BadRequestException('Administrators cannot delete their own account.');
+    }
+
+    const user = await this.prisma.user.findUnique({ where: { id: targetUserId } });
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
+
+    await this.prisma.user.delete({ where: { id: targetUserId } });
+
+    await this.auditLogger.logAction({
+      adminId,
+      action: 'USER_DELETED',
+      targetType: 'USER',
+      targetId: targetUserId,
+      details: reason || `Account ${user.email} deleted by administrator`,
+    });
+
+    return {
+      message: `User account ${user.email} has been permanently deleted.`,
     };
   }
 }

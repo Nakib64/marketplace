@@ -153,4 +153,91 @@ describe('Admin Users Sub-Services', () => {
       );
     });
   });
+
+  describe('AdminUsersActionsService.updateClientProfile', () => {
+    it('should update client profile and log audit action', async () => {
+      prismaMock.clientProfile = {
+        findUnique: vi.fn().mockResolvedValue({ userId: 'u-5', companyName: 'Old Inc' }),
+        update: vi.fn().mockResolvedValue({ userId: 'u-5', companyName: 'New Inc' }),
+      };
+
+      const result = await actionsService.updateClientProfile('admin-1', 'u-5', {
+        companyName: 'New Inc',
+      });
+
+      expect(result.companyName).toBe('New Inc');
+      expect(prismaMock.clientProfile.update).toHaveBeenCalledWith({
+        where: { userId: 'u-5' },
+        data: { companyName: 'New Inc' },
+      });
+    });
+
+    it('should throw NotFoundException if client profile not found', async () => {
+      prismaMock.clientProfile = {
+        findUnique: vi.fn().mockResolvedValue(null),
+      };
+
+      await expect(
+        actionsService.updateClientProfile('admin-1', 'invalid', { companyName: 'Inc' }),
+      ).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('AdminUsersActionsService.updateFreelancerProfile', () => {
+    it('should update freelancer profile and log audit action', async () => {
+      prismaMock.freelancerProfile = {
+        findUnique: vi.fn().mockResolvedValue({ userId: 'u-6', title: 'Developer' }),
+        update: vi.fn().mockResolvedValue({ userId: 'u-6', title: 'Senior Developer' }),
+      };
+
+      const result = await actionsService.updateFreelancerProfile('admin-1', 'u-6', {
+        title: 'Senior Developer',
+      });
+
+      expect(result.title).toBe('Senior Developer');
+      expect(prismaMock.freelancerProfile.update).toHaveBeenCalledWith({
+        where: { userId: 'u-6' },
+        data: { title: 'Senior Developer' },
+      });
+    });
+
+    it('should throw NotFoundException if freelancer profile not found', async () => {
+      prismaMock.freelancerProfile = {
+        findUnique: vi.fn().mockResolvedValue(null),
+      };
+
+      await expect(
+        actionsService.updateFreelancerProfile('admin-1', 'invalid', { title: 'Dev' }),
+      ).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('AdminUsersActionsService.deleteUser', () => {
+    it('should prevent admin from deleting their own account', async () => {
+      await expect(
+        actionsService.deleteUser('admin-1', 'admin-1'),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('should permanently delete user and log audit action', async () => {
+      prismaMock.user.findUnique = vi.fn().mockResolvedValue({
+        id: 'u-7',
+        email: 'todelete@test.com',
+      });
+      prismaMock.user.delete = vi.fn().mockResolvedValue({ id: 'u-7' });
+
+      const result = await actionsService.deleteUser('admin-1', 'u-7', 'Spam account');
+
+      expect(result.message).toContain('todelete@test.com');
+      expect(prismaMock.user.delete).toHaveBeenCalledWith({ where: { id: 'u-7' } });
+    });
+
+    it('should throw NotFoundException if user to delete not found', async () => {
+      prismaMock.user.findUnique = vi.fn().mockResolvedValue(null);
+
+      await expect(
+        actionsService.deleteUser('admin-1', 'invalid'),
+      ).rejects.toThrow(NotFoundException);
+    });
+  });
 });

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { Roles } from '../../auth/decorators/roles.decorator.js';
 import { CreateSkillDto } from '../dto/create-skill.dto.js';
@@ -9,6 +9,11 @@ import { SkillsService } from '../services/skills.service.js';
 @Controller('admin/skills')
 export class AdminSkillsController {
   constructor(private readonly skillsService: SkillsService) {}
+
+  @Get()
+  async getSkills(@Query('q') search?: string) {
+    return this.skillsService.getSkills(true, search);
+  }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)

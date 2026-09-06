@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { CurrentUser } from '../../../auth/decorators/current-user.decorator.js';
 import { Roles } from '../../../auth/decorators/roles.decorator.js';
+import { UpdateClientProfileDto } from '../../../users/dto/update-client-profile.dto.js';
+import { UpdateFreelancerProfileDto } from '../../../users/dto/update-freelancer-profile.dto.js';
 import { UpdateUserStatusDto } from '../dto/update-user-status.dto.js';
 import { UserQueryDto } from '../dto/user-query.dto.js';
 import { AdminUsersActionsService } from '../services/admin-users-actions.service.js';
@@ -48,5 +50,32 @@ export class AdminUsersController {
     @Param('id') targetUserId: string,
   ) {
     return this.actionsService.generateImpersonationToken(adminId, targetUserId);
+  }
+
+  @Patch(':id/client-profile')
+  async updateClientProfile(
+    @CurrentUser('id') adminId: string,
+    @Param('id') targetUserId: string,
+    @Body() dto: UpdateClientProfileDto,
+  ) {
+    return this.actionsService.updateClientProfile(adminId, targetUserId, dto);
+  }
+
+  @Patch(':id/freelancer-profile')
+  async updateFreelancerProfile(
+    @CurrentUser('id') adminId: string,
+    @Param('id') targetUserId: string,
+    @Body() dto: UpdateFreelancerProfileDto,
+  ) {
+    return this.actionsService.updateFreelancerProfile(adminId, targetUserId, dto);
+  }
+
+  @Delete(':id')
+  async deleteUser(
+    @CurrentUser('id') adminId: string,
+    @Param('id') targetUserId: string,
+    @Query('reason') reason?: string,
+  ) {
+    return this.actionsService.deleteUser(adminId, targetUserId, reason);
   }
 }

@@ -1,15 +1,21 @@
-import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { Roles } from '../../auth/decorators/roles.decorator.js';
 import { CreateCategoryDto } from '../dto/create-category.dto.js';
 import { CreateSubCategoryDto } from '../dto/create-sub-category.dto.js';
 import { UpdateCategoryDto } from '../dto/update-category.dto.js';
+import { UpdateSubCategoryDto } from '../dto/update-sub-category.dto.js';
 import { CategoriesService } from '../services/categories.service.js';
 
 @Roles(Role.ADMIN)
 @Controller('admin/categories')
 export class AdminCategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
+
+  @Get()
+  async getCategories() {
+    return this.categoriesService.getCategories(true);
+  }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -34,6 +40,14 @@ export class AdminCategoriesController {
     @Body() dto: CreateSubCategoryDto,
   ) {
     return this.categoriesService.addSubCategory(categoryId, dto);
+  }
+
+  @Patch('sub-categories/:subCategoryId')
+  async updateSubCategory(
+    @Param('subCategoryId') subCategoryId: string,
+    @Body() dto: UpdateSubCategoryDto,
+  ) {
+    return this.categoriesService.updateSubCategory(subCategoryId, dto);
   }
 
   @Delete('sub-categories/:subCategoryId')

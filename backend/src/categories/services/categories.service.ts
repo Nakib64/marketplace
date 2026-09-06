@@ -3,6 +3,7 @@ import { PrismaService } from '../../prisma/prisma.service.js';
 import { CreateCategoryDto } from '../dto/create-category.dto.js';
 import { CreateSubCategoryDto } from '../dto/create-sub-category.dto.js';
 import { UpdateCategoryDto } from '../dto/update-category.dto.js';
+import { UpdateSubCategoryDto } from '../dto/update-sub-category.dto.js';
 
 @Injectable()
 export class CategoriesService {
@@ -94,6 +95,28 @@ export class CategoriesService {
         slug,
         description: dto.description,
         isActive: dto.isActive ?? true,
+      },
+    });
+  }
+
+  async updateSubCategory(subCategoryId: string, dto: UpdateSubCategoryDto) {
+    const subCategory = await this.prisma.subCategory.findUnique({
+      where: { id: subCategoryId },
+    });
+
+    if (!subCategory) {
+      throw new NotFoundException('Sub-category not found.');
+    }
+
+    const slug = dto.slug || (dto.name ? this.slugify(dto.name) : undefined);
+
+    return this.prisma.subCategory.update({
+      where: { id: subCategoryId },
+      data: {
+        ...(dto.name && { name: dto.name }),
+        ...(slug && { slug }),
+        ...(dto.description !== undefined && { description: dto.description }),
+        ...(dto.isActive !== undefined && { isActive: dto.isActive }),
       },
     });
   }
