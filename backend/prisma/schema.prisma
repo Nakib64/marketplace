@@ -215,22 +215,26 @@ model Job {
 }
 
 model Proposal {
-  id           String         @id @default(uuid())
-  jobId        String
-  job          Job            @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  freelancerId String
-  freelancer   User           @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
-  bidAmount    Decimal        @db.Decimal(12, 2)
-  coverLetter  String
-  status       ProposalStatus @default(PENDING)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  id               String         @id @default(uuid())
+  jobId            String
+  job              Job            @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  freelancerId     String
+  freelancer       User           @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+  bidAmount        Decimal        @db.Decimal(12, 2)
+  coverLetter      String
+  workHistoryIds   String[]       @default([])
+  portfolioItemIds String[]       @default([])
+  isViewed         Boolean        @default(false)
+  status           ProposalStatus @default(PENDING)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
 
   contract Contract?
 
   @@unique([jobId, freelancerId])
   @@index([jobId, status])
   @@index([freelancerId])
+  @@index([jobId, isViewed])
 }
 
 model Contract {

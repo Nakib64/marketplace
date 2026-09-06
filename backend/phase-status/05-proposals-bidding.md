@@ -1,96 +1,62 @@
 # Phase 5: Proposals & Bidding System
 
 ## 1. Purpose
-The purpose of Phase 5 is to implement the competitive bidding module where Freelancers submit proposals for open jobs, view their submitted proposals, and withdraw proposals. Clients can inspect proposals submitted for their jobs and evaluate bids.
+The purpose of Phase 5 is to implement the competitive bidding module where Freelancers submit proposals for open jobs, attach relevant Work History entries, select up to **4 Portfolio Projects**, and manage submitted bids. Clients can inspect submitted bids, which automatically tracks proposal viewing state (`isViewed`).
 
 ---
 
 ## 2. What To Do
-- [ ] Create `ProposalsModule`, `ProposalsController`, and `ProposalsService`.
-- [ ] Implement `CreateProposalDto` (`bidAmount`, `coverLetter`).
-- [ ] Implement `POST /jobs/:jobId/proposals`: Restrict to `FREELANCER` role.
-  - Verify target job exists and status is `OPEN`.
-  - Enforce unique proposal constraint (`@@unique([jobId, freelancerId])`) to prevent duplicate bids.
-  - Store proposal with `PENDING` status.
-- [ ] Implement `GET /jobs/:jobId/proposals`: Restrict to job owner (Client). View all submitted bids for a specific job.
-- [ ] Implement `GET /proposals/my-proposals`: Restrict to `FREELANCER` role. Retrieve freelancer's active and past proposals.
-- [ ] Implement `PATCH /proposals/:id`: Restrict to proposal owner (Freelancer). Edit proposal cover letter or bid amount if still `PENDING`.
-- [ ] Implement `DELETE /proposals/:id`: Restrict to proposal owner (Freelancer). Withdraw proposal.
-- [ ] Write unit & integration tests for proposal creation rules and bid uniqueness.
+- [x] Update `Proposal` model in `schema.prisma`:
+  - `workHistoryIds`: `String[]` (array of attached WorkHistory IDs)
+  - `portfolioItemIds`: `String[]` (array of attached PortfolioItem IDs)
+  - `isViewed`: `Boolean @default(false)`
+- [x] Create `ProposalsModule`, sub-controllers, and sub-services.
+- [x] Implement `CreateProposalDto`:
+  - `bidAmount`: `@IsNumber()`, `@Min(1)`.
+  - `coverLetter`: `@IsString()`, `@MinLength(30)`.
+  - `workHistoryIds?`: `@IsArray()`, `@IsUUID(4, { each: true })`.
+  - `portfolioItemIds?`: `@IsArray()`, `@IsUUID(4, { each: true })`, `@ArrayMaxSize(4, { message: 'You can attach a maximum of 4 portfolio projects to a proposal.' })`.
+- [x] Implement `POST /proposals/job/:jobId`: Restrict to `FREELANCER` role.
+  - Verify job is `OPEN`.
+  - Enforce single proposal rule per job (`@@unique([jobId, freelancerId])`). Throw `ConflictException` if user already applied.
+  - Store proposal with `isViewed: false`.
+- [x] Implement `GET /jobs/:jobId/proposals`: Restrict to job owner (Client). Automatically marks retrieved proposals as `isViewed: true`.
+- [x] Implement `GET /proposals/my-proposals`: Restrict to `FREELANCER` role. View submitted bids and their viewing status (`isViewed`).
+- [x] Implement `PATCH /proposals/:id`: Restrict to proposal owner (Freelancer).
+  - Verify `isViewed === false`. Throw `ForbiddenException('Cannot edit proposal after it has been viewed by the client.')` if viewed.
+  - Allow editing bid amount, cover letter, work histories, or attached portfolio items (max 4).
+- [x] Implement `DELETE /proposals/:id`: Restrict to proposal owner (Freelancer). Withdraw proposal.
+- [x] Write unit tests for proposal creation rules, max 4 portfolio items, unviewed edit restriction, auto `isViewed` client update, and duplicate application prevention.
 
 ---
 
-## 3. How To Do It (Implementation Details)
+## 3. How To Do It (Sub-Service Architecture Layout)
 
-### A. DTO Specifications
-- **`CreateProposalDto`**:
-  - `bidAmount`: `@IsNumber()`, `@Min(1)`.
-  - `coverLetter`: `@IsString()`, `@MinLength(30)`, `@MaxLength(2000)`.
-
-### B. Proposal Creation & Guard Checks
-```ts
-// Submit Proposal
-async submitProposal(freelancerId: string, jobId: string, dto: CreateProposalDto) {
-  const job = await this.prisma.job.findUnique({ where: { id: jobId } });
-  if (!job) {
-    throw new NotFoundException('Job not found');
-  }
-  if (job.status !== JobStatus.OPEN) {
-    throw new BadRequestException('Proposals can only be submitted for open jobs');
-  }
-
-  // Check duplicate proposal
-  const existing = await this.prisma.proposal.findUnique({
-    where: { jobId_freelancerId: { jobId, freelancerId } },
-  });
-  if (existing) {
-    throw new ConflictException('You have already submitted a proposal for this job');
-  }
-
-  return this.prisma.proposal.create({
-    data: {
-      jobId,
-      freelancerId,
-      bidAmount: dto.bidAmount,
-      coverLetter: dto.coverLetter,
-      status: ProposalStatus.PENDING,
-    },
-  });
-}
+### A. Modular File Layout inside `src/proposals/`
 ```
-
-### C. Client Proposal Inspection Query
-```ts
-// Get Job Proposals (Client perspective)
-async getJobProposals(clientId: string, jobId: string) {
-  const job = await this.prisma.job.findUnique({ where: { id: jobId } });
-  if (!job || job.clientId !== clientId) {
-    throw new ForbiddenException('You do not have access to view proposals for this job');
-  }
-
-  return this.prisma.proposal.findMany({
-    where: { jobId },
-    include: {
-      freelancer: {
-        select: {
-          id: true,
-          email: true,
-          freelancerProfile: true,
-        },
-      },
-    },
-    orderBy: { createdAt: 'desc' },
-  });
-}
+src/proposals/
+├── dto/
+│   ├── create-proposal.dto.ts      # Proposal submission schema with max 4 portfolio items
+│   └── update-proposal.dto.ts      # Proposal update schema
+├── controllers/
+│   ├── proposals.controller.ts     # Freelancer proposal submission, edit & withdraw routes
+│   └── client-proposals.controller.ts # Client proposal review & viewing state routes
+├── services/
+│   ├── proposals.service.ts        # Proposal creation, unviewed editing, withdrawal logic
+│   └── client-proposals.service.ts # Client proposal inspection & automatic isViewed state tracking
+├── proposals.service.spec.ts       # Vitest unit test suite
+└── proposals.module.ts             # NestJS Proposals module definition
 ```
 
 ---
 
 ## 4. Status & What Is Done
-- [ ] `ProposalsModule`, `ProposalsController`, `ProposalsService`: **Pending**
-- [ ] `CreateProposalDto`: **Pending**
-- [ ] `POST /jobs/:jobId/proposals`: **Pending**
-- [ ] `GET /jobs/:jobId/proposals`: **Pending**
-- [ ] `GET /proposals/my-proposals`: **Pending**
-- [ ] `PATCH /proposals/:id` & `DELETE /proposals/:id`: **Pending**
-- [ ] Unit & E2E tests: **Pending**
+- [x] `Proposal` Schema Update (`workHistoryIds`, `portfolioItemIds`, `isViewed`): **Completed**
+- [x] `ProposalsModule`, `ProposalsController`, `ProposalsService`: **Completed**
+- [x] `CreateProposalDto` (Max 4 Portfolio items): **Completed**
+- [x] `POST /proposals/job/:jobId` (Single application check): **Completed**
+- [x] `GET /jobs/:jobId/proposals` (Automatic `isViewed` update): **Completed**
+- [x] `PATCH /proposals/:id` (Unviewed edit restriction): **Completed**
+- [x] `DELETE /proposals/:id`: **Completed**
+- [x] Unit & E2E tests (29 tests passing across workspace): **Completed**
+- [x] TypeScript Compilation (`npm run build` / `nest build` 0 errors): **Completed**

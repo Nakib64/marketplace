@@ -10,6 +10,7 @@ import { PrismaModule } from './prisma/prisma.module.js';
 
 import { CategoriesModule } from './categories/categories.module.js';
 import { JobsModule } from './jobs/jobs.module.js';
+import { ProposalsModule } from './proposals/proposals.module.js';
 import { UsersModule } from './users/users.module.js';
 
 @Module({
@@ -22,6 +23,7 @@ import { UsersModule } from './users/users.module.js';
     UsersModule,
     JobsModule,
     CategoriesModule,
+    ProposalsModule,
   ],
   controllers: [AppController],
   providers: [
