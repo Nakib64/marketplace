@@ -30,6 +30,7 @@ enum ContractStatus {
   PENDING_APPROVAL
   COMPLETED
   DISPUTED
+  REFUNDED
 }
 
 enum ReviewStatus {
@@ -68,6 +69,7 @@ model User {
   givenReviews        Review[]           @relation("GivenReviews")
   receivedReviews     Review[]           @relation("ReceivedReviews")
   withdrawals         Withdrawal[]
+  refunds             Refund[]
   workHistories       WorkHistory[]
 
   @@index([email])
@@ -255,6 +257,7 @@ model Contract {
   updatedAt    DateTime       @updatedAt
 
   reviews Review[]
+  refund  Refund?
 
   @@index([clientId])
   @@index([freelancerId])
@@ -301,4 +304,19 @@ model PlatformSetting {
   platformFeePercentage Float    @default(10.0)
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
+}
+
+model Refund {
+  id         String   @id @default(uuid())
+  contractId String   @unique
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  clientId   String
+  client     User     @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  amount     Decimal  @db.Decimal(12, 2)
+  reason     String?
+  adminId    String?
+  createdAt  DateTime @default(now())
+
+  @@index([clientId])
+  @@index([contractId])
 }
