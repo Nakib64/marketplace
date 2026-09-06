@@ -72,6 +72,9 @@ model User {
   refunds             Refund[]
   workHistories       WorkHistory[]
   reportedJobs        JobReport[]        @relation("ReportedJobs")
+  clientConversations Conversation[]    @relation("ClientConversations")
+  freelancerConversations Conversation[] @relation("FreelancerConversations")
+  sentMessages        Message[]          @relation("SentMessages")
 
   @@index([email])
   @@index([role])
@@ -219,6 +222,7 @@ model Job {
   isFlagged Boolean    @default(false)
   flagReason String?
   jobReports JobReport[]
+  conversations Conversation[]
 
   @@index([status, createdAt])
   @@index([clientId])
@@ -242,6 +246,7 @@ model Proposal {
   updatedAt        DateTime       @updatedAt
 
   contract Contract?
+  conversation Conversation?
 
   @@unique([jobId, freelancerId])
   @@index([jobId, status])
@@ -363,4 +368,68 @@ model JobReport {
   @@index([jobId])
   @@index([reporterId])
   @@index([status])
+}
+
+enum MessageType {
+  TEXT
+  FILE
+  SYSTEM
+}
+
+model Conversation {
+  id              String    @id @default(uuid())
+  jobId           String
+  job             Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  proposalId      String?   @unique
+  proposal        Proposal? @relation(fields: [proposalId], references: [id], onDelete: SetNull)
+  clientId        String
+  client          User      @relation("ClientConversations", fields: [clientId], references: [id], onDelete: Cascade)
+  freelancerId    String
+  freelancer      User      @relation("FreelancerConversations", fields: [freelancerId], references: [id], onDelete: Cascade)
+  lastMessageText String?
+  lastMessageAt   DateTime  @default(now())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  messages Message[]
+
+  @@unique([jobId, freelancerId])
+  @@index([clientId, updatedAt])
+  @@index([freelancerId, updatedAt])
+  @@index([jobId])
+}
+
+model Message {
+  id             String             @id @default(uuid())
+  conversationId String
+  conversation   Conversation       @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User               @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  content        String?
+  messageType    MessageType        @default(TEXT)
+  isRead         Boolean            @default(false)
+  readAt         DateTime?
+  isFlagged      Boolean            @default(false)
+  flagReason     String?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  attachments MessageAttachment[]
+
+  @@index([conversationId, createdAt])
+  @@index([senderId])
+  @@index([isRead])
+}
+
+model MessageAttachment {
+  id        String   @id @default(uuid())
+  messageId String
+  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  fileName  String
+  fileUrl   String
+  fileType  String
+  fileSize  Int
+  createdAt DateTime @default(now())
+
+  @@index([messageId])
 }

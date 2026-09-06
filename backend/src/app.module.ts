@@ -16,6 +16,7 @@ import { ProposalsModule } from './proposals/proposals.module.js';
 import { ReviewsModule } from './reviews/reviews.module.js';
 import { UsersModule } from './users/users.module.js';
 import { WalletModule } from './wallet/wallet.module.js';
+import { ChatModule } from './chat/chat.module.js';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { WalletModule } from './wallet/wallet.module.js';
     ReviewsModule,
     WalletModule,
     AdminModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [
