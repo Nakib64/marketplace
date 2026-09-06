@@ -13,6 +13,7 @@ describe('Proposals Services (Freelancer & Client)', () => {
   let proposalsService: ProposalsService;
   let clientProposalsService: ClientProposalsService;
   let prismaMock: any;
+  let redisQueueMock: any;
 
   beforeEach(() => {
     prismaMock = {
@@ -29,12 +30,16 @@ describe('Proposals Services (Freelancer & Client)', () => {
       },
     };
 
-    proposalsService = new ProposalsService(prismaMock);
+    redisQueueMock = {
+      enqueue: vi.fn().mockResolvedValue({ id: 'q-job-1' }),
+    };
+
+    proposalsService = new ProposalsService(prismaMock, redisQueueMock);
     clientProposalsService = new ClientProposalsService(prismaMock);
   });
 
   describe('ProposalsService (Freelancer)', () => {
-    it('should submit a proposal successfully when job is OPEN', async () => {
+    it('should submit a proposal successfully when job is OPEN and enqueue to redis', async () => {
       prismaMock.job.findUnique.mockResolvedValue({ id: 'job-1', status: JobStatus.OPEN });
       prismaMock.proposal.findUnique.mockResolvedValue(null);
       prismaMock.proposal.create.mockResolvedValue({
@@ -67,6 +72,11 @@ describe('Proposals Services (Freelancer & Client)', () => {
           portfolioItemIds: ['pf-1', 'pf-2'],
         },
       });
+      expect(redisQueueMock.enqueue).toHaveBeenCalledWith(
+        expect.any(String),
+        'PROPOSAL_SUBMITTED',
+        expect.objectContaining({ proposalId: 'prop-1' }),
+      );
     });
 
     it('should throw ConflictException if freelancer applies twice to same job', async () => {

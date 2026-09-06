@@ -1,12 +1,16 @@
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { MessageType } from '@prisma/client';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { ChatMessagingService } from './services/chat-messaging.service.js';
+import { ChatProposalService } from './services/chat-proposal.service.js';
+import { ChatQueryService } from './services/chat-query.service.js';
 import { ChatService } from './services/chat.service.js';
 
 describe('Phase 14: Chat & Messaging Service', () => {
   let chatService: ChatService;
   let prismaMock: any;
   let antiCircumventionMock: any;
+  let redisQueueMock: any;
 
   beforeEach(() => {
     prismaMock = {
@@ -35,7 +39,14 @@ describe('Phase 14: Chat & Messaging Service', () => {
       scanContent: vi.fn().mockReturnValue({ isFlagged: false, reasons: [] }),
     };
 
-    chatService = new ChatService(prismaMock, antiCircumventionMock as any);
+    redisQueueMock = {
+      enqueue: vi.fn().mockResolvedValue({ id: 'msg-q-1' }),
+    };
+
+    const queryService = new ChatQueryService(prismaMock);
+    const proposalService = new ChatProposalService(prismaMock, antiCircumventionMock as any, redisQueueMock as any);
+    const messagingService = new ChatMessagingService(prismaMock, antiCircumventionMock as any, redisQueueMock as any, queryService);
+    chatService = new ChatService(queryService, proposalService, messagingService);
   });
 
   describe('replyToProposal', () => {

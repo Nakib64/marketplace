@@ -17,6 +17,8 @@ import { ReviewsModule } from './reviews/reviews.module.js';
 import { UsersModule } from './users/users.module.js';
 import { WalletModule } from './wallet/wallet.module.js';
 import { ChatModule } from './chat/chat.module.js';
+import { RedisModule } from './redis/redis.module.js';
+import { QueuesModule } from './queues/queues.module.js';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { ChatModule } from './chat/chat.module.js';
       isGlobal: true,
     }),
     PrismaModule,
+    RedisModule,
+    QueuesModule,
     AuthModule,
     UsersModule,
     JobsModule,

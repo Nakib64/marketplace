@@ -242,6 +242,8 @@ model Proposal {
   portfolioItemIds String[]       @default([])
   isViewed         Boolean        @default(false)
   status           ProposalStatus @default(PENDING)
+  isFlagged        Boolean        @default(false)
+  flagReason       String?
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
 
@@ -252,6 +254,7 @@ model Proposal {
   @@index([jobId, status])
   @@index([freelancerId])
   @@index([jobId, isViewed])
+  @@index([isFlagged])
 }
 
 model Contract {

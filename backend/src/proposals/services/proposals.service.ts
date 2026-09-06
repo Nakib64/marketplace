@@ -7,12 +7,17 @@ import {
 } from '@nestjs/common';
 import { JobStatus } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service.js';
+import { RedisQueueService } from '../../queues/services/redis-queue.service.js';
+import { ProposalJobPayload } from '../../queues/types/proposal-job.types.js';
 import { CreateProposalDto } from '../dto/create-proposal.dto.js';
 import { UpdateProposalDto } from '../dto/update-proposal.dto.js';
 
 @Injectable()
 export class ProposalsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly redisQueue: RedisQueueService,
+  ) {}
 
   async submitProposal(jobId: string, freelancerId: string, dto: CreateProposalDto) {
     const job = await this.prisma.job.findUnique({ where: { id: jobId } });
@@ -31,7 +36,7 @@ export class ProposalsService {
       throw new BadRequestException('Maximum 4 portfolio items can be attached to a proposal.');
     }
 
-    return this.prisma.proposal.create({
+    const created = await this.prisma.proposal.create({
       data: {
         jobId,
         freelancerId,
@@ -41,6 +46,21 @@ export class ProposalsService {
         portfolioItemIds: dto.portfolioItemIds || [],
       },
     });
+
+    await this.redisQueue.enqueue<ProposalJobPayload>(
+      RedisQueueService.PROPOSALS_QUEUE,
+      'PROPOSAL_SUBMITTED',
+      {
+        proposalId: created.id,
+        jobId,
+        freelancerId,
+        coverLetter: dto.coverLetter,
+        bidAmount: Number(dto.bidAmount),
+        timestamp: new Date().toISOString(),
+      },
+    );
+
+    return created;
   }
 
   async updateProposal(proposalId: string, freelancerId: string, dto: UpdateProposalDto) {
@@ -57,10 +77,25 @@ export class ProposalsService {
       throw new BadRequestException('Maximum 4 portfolio items can be attached to a proposal.');
     }
 
-    return this.prisma.proposal.update({
+    const updated = await this.prisma.proposal.update({
       where: { id: proposalId },
       data: { ...dto },
     });
+
+    await this.redisQueue.enqueue<ProposalJobPayload>(
+      RedisQueueService.PROPOSALS_QUEUE,
+      'PROPOSAL_UPDATED',
+      {
+        proposalId: updated.id,
+        jobId: updated.jobId,
+        freelancerId,
+        coverLetter: dto.coverLetter,
+        bidAmount: dto.bidAmount ? Number(dto.bidAmount) : undefined,
+        timestamp: new Date().toISOString(),
+      },
+    );
+
+    return updated;
   }
 
   async withdrawProposal(proposalId: string, freelancerId: string) {
