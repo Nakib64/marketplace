@@ -49,7 +49,7 @@ describe('AuthTokensService (Dual Token & Refresh Rotation)', () => {
 
     expect(result.accessToken).toBe('access-jwt-token');
     expect(result.refreshToken).toBe('refresh-jwt-token');
-    expect(result.expiresIn).toBe('15m');
+    expect(result.expiresIn).toBe('24h');
     expect(redisMock.set).toHaveBeenCalledWith(
       'auth:refresh:u-1',
       'refresh-jwt-token',

@@ -24,7 +24,7 @@ describe('AdminAuthService (Facade & Sub-Services)', () => {
 
     jwtServiceMock = {
       signAsync: vi.fn().mockImplementation((payload, opts) => {
-        if (opts?.expiresIn === '15m') return Promise.resolve('mocked_admin_access_token');
+        if (opts?.expiresIn === '24h') return Promise.resolve('mocked_admin_access_token');
         return Promise.resolve('mocked_admin_refresh_token');
       }),
       verifyAsync: vi.fn(),
@@ -65,7 +65,7 @@ describe('AdminAuthService (Facade & Sub-Services)', () => {
 
       expect(result.accessToken).toBe('mocked_admin_access_token');
       expect(result.refreshToken).toBe('mocked_admin_refresh_token');
-      expect(result.expiresIn).toBe('15m');
+      expect(result.expiresIn).toBe('24h');
       expect(result.admin.email).toBe('admin@marketplace.com');
       expect(result.admin.role).toBe(AdminRole.SUPER_ADMIN);
       expect(prismaMock.admin.update).toHaveBeenCalledWith({

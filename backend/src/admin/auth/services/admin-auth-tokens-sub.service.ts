@@ -32,8 +32,8 @@ export class AdminAuthTokensSubService {
     };
 
     const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(accessPayload, { expiresIn: '15m' }),
-      this.jwtService.signAsync(refreshPayload, { expiresIn: '24h' }),
+      this.jwtService.signAsync(accessPayload, { expiresIn: '24h' }),
+      this.jwtService.signAsync(refreshPayload, { expiresIn: '7d' }),
     ]);
 
     await this.redis.set(
@@ -45,7 +45,7 @@ export class AdminAuthTokensSubService {
     return {
       accessToken,
       refreshToken,
-      expiresIn: '15m',
+      expiresIn: '24h',
     };
   }
 

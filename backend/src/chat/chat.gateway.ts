@@ -35,13 +35,27 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const authHeader =
         client.handshake.auth?.token || client.handshake.headers?.authorization;
 
-      if (!authHeader) {
+      let token = authHeader ? authHeader.replace(/^Bearer\s+/i, '') : null;
+
+      if (!token && client.handshake.headers?.cookie) {
+        const rawCookies = client.handshake.headers.cookie;
+        const parsedCookies = rawCookies
+          .split(';')
+          .map((c) => c.trim().split('='))
+          .reduce((acc, [k, v]) => {
+            if (k && v) acc[k] = decodeURIComponent(v);
+            return acc;
+          }, {} as Record<string, string>);
+
+        token = parsedCookies['access_token'] || parsedCookies['admin_access_token'] || null;
+      }
+
+      if (!token) {
         this.logger.warn(`WS connection rejected: No auth token provided (${client.id})`);
         client.disconnect();
         return;
       }
 
-      const token = authHeader.replace(/^Bearer\s+/i, '');
       const payload = await this.jwtService.verifyAsync(token);
 
       const userId = payload.sub || payload.id;

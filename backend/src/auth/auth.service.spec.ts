@@ -33,7 +33,7 @@ describe('AuthService (Facade & Sub-Services)', () => {
       signAsync: vi
         .fn()
         .mockImplementation((payload, opts) => {
-          if (opts?.expiresIn === '15m') return Promise.resolve('mocked_access_jwt_token');
+          if (opts?.expiresIn === '24h') return Promise.resolve('mocked_access_jwt_token');
           return Promise.resolve('mocked_refresh_jwt_token');
         }),
       verifyAsync: vi.fn(),
@@ -137,7 +137,7 @@ describe('AuthService (Facade & Sub-Services)', () => {
 
       expect(result.accessToken).toBe('mocked_access_jwt_token');
       expect(result.refreshToken).toBe('mocked_refresh_jwt_token');
-      expect(result.expiresIn).toBe('15m');
+      expect(result.expiresIn).toBe('24h');
       expect(result.user.email).toBe('user@example.com');
       expect(redisMock.set).toHaveBeenCalledWith(
         'auth:refresh:user-uuid-1',

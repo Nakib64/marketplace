@@ -1,5 +1,6 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { AppModule } from './app.module.js';
 
@@ -8,6 +9,9 @@ async function bootstrap() {
 
   // Security HTTP Headers
   app.use(helmet());
+
+  // Parse Cookie headers
+  app.use(cookieParser());
 
   // Strict CORS policy
   app.enableCors({

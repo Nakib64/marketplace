@@ -1,4 +1,15 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UnauthorizedException,
+} from '@nestjs/common';
+import type { Request, Response } from 'express';
 import { AuthService } from './auth.service.js';
 import { CurrentUser } from './decorators/current-user.decorator.js';
 import { Public } from './decorators/public.decorator.js';
@@ -6,6 +17,14 @@ import { RateLimit } from './decorators/rate-limit.decorator.js';
 import { LoginDto } from './dto/login.dto.js';
 import { RefreshTokenDto } from './dto/refresh-token.dto.js';
 import { RegisterDto } from './dto/register.dto.js';
+import {
+  ACCESS_TOKEN_COOKIE,
+  ACCESS_TOKEN_MAX_AGE,
+  getClearCookieOptions,
+  getCookieOptions,
+  REFRESH_TOKEN_COOKIE,
+  REFRESH_TOKEN_MAX_AGE,
+} from './utils/cookie.util.js';
 
 @Controller('auth')
 export class AuthController {
@@ -23,21 +42,64 @@ export class AuthController {
   @RateLimit({ limit: 5, ttlSeconds: 60 })
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(@Body() dto: LoginDto) {
-    return this.authService.login(dto);
+  async login(
+    @Body() dto: LoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const result = await this.authService.login(dto);
+
+    res.cookie(
+      ACCESS_TOKEN_COOKIE,
+      result.accessToken,
+      getCookieOptions(ACCESS_TOKEN_MAX_AGE),
+    );
+    res.cookie(
+      REFRESH_TOKEN_COOKIE,
+      result.refreshToken,
+      getCookieOptions(REFRESH_TOKEN_MAX_AGE),
+    );
+
+    return result;
   }
 
   @Public()
   @RateLimit({ limit: 10, ttlSeconds: 60 })
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  async refresh(@Body() dto: RefreshTokenDto) {
-    return this.authService.refreshToken(dto.refreshToken);
+  async refresh(
+    @Req() req: Request,
+    @Body() dto: RefreshTokenDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const token = req.cookies?.[REFRESH_TOKEN_COOKIE] || dto?.refreshToken;
+    if (!token) {
+      throw new UnauthorizedException('Refresh token is required.');
+    }
+
+    const result = await this.authService.refreshToken(token);
+
+    res.cookie(
+      ACCESS_TOKEN_COOKIE,
+      result.accessToken,
+      getCookieOptions(ACCESS_TOKEN_MAX_AGE),
+    );
+    res.cookie(
+      REFRESH_TOKEN_COOKIE,
+      result.refreshToken,
+      getCookieOptions(REFRESH_TOKEN_MAX_AGE),
+    );
+
+    return result;
   }
 
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  async logout(@CurrentUser('id') userId: string) {
+  async logout(
+    @CurrentUser('id') userId: string,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    res.clearCookie(ACCESS_TOKEN_COOKIE, getClearCookieOptions());
+    res.clearCookie(REFRESH_TOKEN_COOKIE, getClearCookieOptions());
     return this.authService.logout(userId);
   }
 
