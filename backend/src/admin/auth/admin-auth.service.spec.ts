@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { UnauthorizedException } from '@nestjs/common';
 import { AdminRole } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
@@ -12,6 +13,7 @@ describe('AdminAuthService (Facade & Sub-Services)', () => {
   let tokensService: AdminAuthTokensSubService;
   let prismaMock: any;
   let jwtServiceMock: any;
+  let configServiceMock: any;
   let redisMock: any;
 
   beforeEach(() => {
@@ -30,6 +32,14 @@ describe('AdminAuthService (Facade & Sub-Services)', () => {
       verifyAsync: vi.fn(),
     };
 
+    configServiceMock = {
+      get: vi.fn().mockImplementation((key: string) => {
+        if (key === 'JWT_ACCESS_SECRET') return 'admin_access_secret';
+        if (key === 'JWT_REFRESH_SECRET') return 'admin_refresh_secret';
+        return 'secret';
+      }),
+    };
+
     redisMock = {
       set: vi.fn().mockResolvedValue('OK'),
       get: vi.fn(),
@@ -39,6 +49,7 @@ describe('AdminAuthService (Facade & Sub-Services)', () => {
     credentialsService = new AdminAuthCredentialsSubService(prismaMock);
     tokensService = new AdminAuthTokensSubService(
       jwtServiceMock,
+      configServiceMock,
       redisMock,
       prismaMock,
     );
@@ -72,10 +83,11 @@ describe('AdminAuthService (Facade & Sub-Services)', () => {
         where: { id: 'admin-uuid-1' },
         data: { lastLoginAt: expect.any(Date) },
       });
+      const expectedHash = createHash('sha256').update('mocked_admin_refresh_token').digest('hex');
       expect(redisMock.set).toHaveBeenCalledWith(
         'admin:refresh:admin-uuid-1',
-        'mocked_admin_refresh_token',
-        86400,
+        expectedHash,
+        604800,
       );
     });
 
@@ -132,7 +144,9 @@ describe('AdminAuthService (Facade & Sub-Services)', () => {
         tokenType: 'admin_refresh',
         userType: 'ADMIN',
       });
-      redisMock.get.mockResolvedValue('valid_admin_token');
+      const rawToken = 'valid_admin_token';
+      const hashedToken = createHash('sha256').update(rawToken).digest('hex');
+      redisMock.get.mockResolvedValue(hashedToken);
       prismaMock.admin.findUnique.mockResolvedValue({
         id: 'admin-uuid-1',
         email: 'admin@marketplace.com',

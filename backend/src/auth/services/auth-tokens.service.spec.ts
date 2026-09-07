@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { UnauthorizedException } from '@nestjs/common';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthTokensService } from './auth-tokens.service.js';
@@ -15,7 +16,11 @@ describe('AuthTokensService (Dual Token & Refresh Rotation)', () => {
       verifyAsync: vi.fn(),
     };
     configServiceMock = {
-      get: vi.fn().mockReturnValue('secret'),
+      get: vi.fn().mockImplementation((key: string) => {
+        if (key === 'JWT_ACCESS_SECRET') return 'access_secret';
+        if (key === 'JWT_REFRESH_SECRET') return 'refresh_secret';
+        return 'secret';
+      }),
     };
     redisMock = {
       set: vi.fn().mockResolvedValue('OK'),
@@ -50,16 +55,19 @@ describe('AuthTokensService (Dual Token & Refresh Rotation)', () => {
     expect(result.accessToken).toBe('access-jwt-token');
     expect(result.refreshToken).toBe('refresh-jwt-token');
     expect(result.expiresIn).toBe('24h');
+    const expectedHash = createHash('sha256').update('refresh-jwt-token').digest('hex');
     expect(redisMock.set).toHaveBeenCalledWith(
       'auth:refresh:u-1',
-      'refresh-jwt-token',
+      expectedHash,
       604800,
     );
   });
 
   it('should rotate tokens successfully when valid refresh token is supplied', async () => {
+    const rawToken = 'valid-refresh-token';
+    const hashedToken = createHash('sha256').update(rawToken).digest('hex');
     jwtServiceMock.verifyAsync.mockResolvedValue({ sub: 'u-1', tokenType: 'refresh' });
-    redisMock.get.mockResolvedValue('valid-refresh-token');
+    redisMock.get.mockResolvedValue(hashedToken);
     prismaMock.user.findUnique.mockResolvedValue({
       id: 'u-1',
       email: 'user@test.com',
@@ -76,9 +84,10 @@ describe('AuthTokensService (Dual Token & Refresh Rotation)', () => {
 
     expect(result.accessToken).toBe('new-access-token');
     expect(result.refreshToken).toBe('new-refresh-token');
+    const expectedRotatedHash = createHash('sha256').update('new-refresh-token').digest('hex');
     expect(redisMock.set).toHaveBeenCalledWith(
       'auth:refresh:u-1',
-      'new-refresh-token',
+      expectedRotatedHash,
       604800,
     );
   });

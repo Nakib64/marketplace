@@ -1,9 +1,13 @@
 import 'dotenv/config';
 import { AdminRole, PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
 import * as bcrypt from 'bcrypt';
 
-const prisma = new PrismaClient({
-});
+const connectionString =
+  process.env.DATABASE_URL ||
+  'postgresql://postgres:postgres@localhost:5432/marketplace_db?schema=public';
+const adapter = new PrismaPg({ connectionString });
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   const adminEmail = (process.env.INITIAL_ADMIN_EMAIL || 'admin@marketplace.com').toLowerCase();

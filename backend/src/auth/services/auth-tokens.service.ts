@@ -1,3 +1,4 @@
+import { createHash, randomUUID } from 'node:crypto';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -16,28 +17,49 @@ export class AuthTokensService {
   ) {}
 
   /**
-   * Generates a short-lived access token (15m) and secure refresh token (7d) stored in Redis.
+   * Generates dual tokens using separate secrets and cryptographic salt:
+   * - Access Token signed with JWT_ACCESS_SECRET (24h)
+   * - Refresh Token signed with JWT_REFRESH_SECRET (7d) containing unique jti salt
+   * - Stores SHA-256 hash in Redis for tamper-proof storage
    */
   async generateTokens(user: { id: string; email: string; role: string }) {
+    const accessSecret =
+      this.configService.get<string>('JWT_ACCESS_SECRET') ||
+      this.configService.get<string>('JWT_SECRET', 'fallback_jwt_secret_dev');
+    const refreshSecret =
+      this.configService.get<string>('JWT_REFRESH_SECRET') ||
+      this.configService.get<string>('JWT_SECRET', 'fallback_jwt_secret_dev');
+
     const accessPayload = {
       sub: user.id,
       email: user.email,
       role: user.role,
     };
 
+    // Cryptographic salt / token ID per issuance
+    const salt = randomUUID();
     const refreshPayload = {
       sub: user.id,
+      jti: salt,
       tokenType: 'refresh',
     };
 
     const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(accessPayload, { expiresIn: '24h' }),
-      this.jwtService.signAsync(refreshPayload, { expiresIn: '7d' }),
+      this.jwtService.signAsync(accessPayload, {
+        secret: accessSecret,
+        expiresIn: '24h',
+      }),
+      this.jwtService.signAsync(refreshPayload, {
+        secret: refreshSecret,
+        expiresIn: '7d',
+      }),
     ]);
 
+    // Store SHA-256 hashed token in Redis
+    const tokenHash = createHash('sha256').update(refreshToken).digest('hex');
     await this.redis.set(
       `auth:refresh:${user.id}`,
-      refreshToken,
+      tokenHash,
       this.refreshTtlSeconds,
     );
 
@@ -49,12 +71,19 @@ export class AuthTokensService {
   }
 
   /**
-   * Validates refresh token against Redis, verifies account status, and rotates tokens.
+   * Validates refresh token using JWT_REFRESH_SECRET against hashed Redis value,
+   * verifies account status, and rotates tokens with fresh salt.
    */
   async refreshTokens(refreshToken: string) {
+    const refreshSecret =
+      this.configService.get<string>('JWT_REFRESH_SECRET') ||
+      this.configService.get<string>('JWT_SECRET', 'fallback_jwt_secret_dev');
+
     let payload: any;
     try {
-      payload = await this.jwtService.verifyAsync(refreshToken);
+      payload = await this.jwtService.verifyAsync(refreshToken, {
+        secret: refreshSecret,
+      });
     } catch {
       throw new UnauthorizedException('Invalid or expired refresh token.');
     }
@@ -63,8 +92,13 @@ export class AuthTokensService {
       throw new UnauthorizedException('Invalid refresh token structure.');
     }
 
-    const storedToken = await this.redis.get(`auth:refresh:${payload.sub}`);
-    if (!storedToken || storedToken !== refreshToken) {
+    const storedHash = await this.redis.get(`auth:refresh:${payload.sub}`);
+    const incomingHash = createHash('sha256').update(refreshToken).digest('hex');
+
+    // Matches hash or plaintext for backwards compatibility
+    const isMatch = storedHash === incomingHash || storedHash === refreshToken;
+
+    if (!storedHash || !isMatch) {
       // Possible token reuse / breach: revoke token family
       await this.redis.del(`auth:refresh:${payload.sub}`);
       throw new UnauthorizedException(
@@ -88,7 +122,7 @@ export class AuthTokensService {
       throw new UnauthorizedException('User account is invalid or suspended.');
     }
 
-    // Automatic token rotation
+    // Automatic token rotation with new salt
     const tokens = await this.generateTokens(user);
 
     return {

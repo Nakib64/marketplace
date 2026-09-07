@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { ConflictException, UnauthorizedException } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
@@ -139,9 +140,10 @@ describe('AuthService (Facade & Sub-Services)', () => {
       expect(result.refreshToken).toBe('mocked_refresh_jwt_token');
       expect(result.expiresIn).toBe('24h');
       expect(result.user.email).toBe('user@example.com');
+      const expectedHash = createHash('sha256').update('mocked_refresh_jwt_token').digest('hex');
       expect(redisMock.set).toHaveBeenCalledWith(
         'auth:refresh:user-uuid-1',
-        'mocked_refresh_jwt_token',
+        expectedHash,
         604800,
       );
     });
