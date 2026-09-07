@@ -50,7 +50,10 @@ export class AdminAuthController {
       getCookieOptions(REFRESH_TOKEN_MAX_AGE),
     );
 
-    return result;
+    return {
+      message: 'Admin login successful',
+      admin: result.admin,
+    };
   }
 
   @Public()
@@ -80,7 +83,9 @@ export class AdminAuthController {
       getCookieOptions(REFRESH_TOKEN_MAX_AGE),
     );
 
-    return result;
+    return {
+      message: 'Admin token refreshed successfully',
+    };
   }
 
   @Post('logout')

@@ -1,13 +1,13 @@
 {
   "info": {
     "name": "Freelance Marketplace API",
-    "description": "Complete RESTful & Real-Time API collection for the Freelance Marketplace platform.\n\n### Authentication Tips:\n1. Run **POST /auth/login** to automatically set `{{userAccessToken}}` and `{{userRefreshToken}}` collection variables.\n2. Run **POST /admin/auth/login** to automatically set `{{adminAccessToken}}`.\n3. Tokens are also sent as secure `httpOnly` cookies (`access_token`, `refresh_token`, `admin_access_token`, `admin_refresh_token`) and supported via `Authorization: Bearer {{token}}` headers.",
+    "description": "Complete RESTful & Real-Time API collection for the Freelance Marketplace platform.\n\n### Authentication & Cookie Security:\n1. **Pure Cookie-Based Auth**: Authentication endpoints (`/auth/login`, `/auth/refresh`, `/admin/auth/login`, `/admin/auth/refresh`) strictly use `httpOnly` secure cookies (`access_token`, `refresh_token`, `admin_access_token`, `admin_refresh_token`).\n2. **Zero Body Token Leakage**: Response bodies return user/admin profile metadata only, protecting against XSS token exfiltration.\n3. **Postman Cookie Jar**: Postman automatically captures, manages, and transmits these cookies across requests. For headless testing, test scripts also populate `{{userAccessToken}}` and `{{adminAccessToken}}` collection variables as Bearer token fallbacks.\n\n### SSLCommerz Escrow Flow:\n- When a client accepts a proposal, if wallet balance is insufficient, the backend initiates an SSLCommerz gateway session and returns `requiresPayment: true`, `gatewayUrl`, and `tranId`.\n- Use **Folder 12 (Payments & SSLCommerz Escrow Gateway)** to simulate the payment or execute webhook callbacks.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:5000",
+      "value": "https://marketplace-5dt1.onrender.com",
       "type": "string"
     },
     {
@@ -52,6 +52,11 @@
     },
     {
       "key": "withdrawalId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "tranId",
       "value": "",
       "type": "string"
     }
@@ -100,13 +105,26 @@
               "script": {
                 "exec": [
                   "if (pm.response.code === 200) {",
+                  "    // 1. Extract from Postman Cookie Jar",
+                  "    var accessToken = pm.cookies.get(\"access_token\");",
+                  "    var refreshToken = pm.cookies.get(\"refresh_token\");",
+                  "    ",
+                  "    // 2. Fallback: Parse Set-Cookie response header",
+                  "    if (!accessToken) {",
+                  "        var setCookies = pm.response.headers.all().filter(function(h) { return h.key.toLowerCase() === \"set-cookie\"; });",
+                  "        setCookies.forEach(function(h) {",
+                  "            var mAcc = h.value.match(/access_token=([^;]+)/);",
+                  "            if (mAcc) accessToken = mAcc[1];",
+                  "            var mRef = h.value.match(/refresh_token=([^;]+)/);",
+                  "            if (mRef) refreshToken = mRef[1];",
+                  "        });",
+                  "    }",
+                  "    ",
+                  "    if (accessToken) pm.collectionVariables.set(\"userAccessToken\", accessToken);",
+                  "    if (refreshToken) pm.collectionVariables.set(\"userRefreshToken\", refreshToken);",
+                  "    ",
                   "    var json = pm.response.json();",
-                  "    if (json.accessToken) {",
-                  "        pm.collectionVariables.set('userAccessToken', json.accessToken);",
-                  "    }",
-                  "    if (json.refreshToken) {",
-                  "        pm.collectionVariables.set('userRefreshToken', json.refreshToken);",
-                  "    }",
+                  "    if (json.user && json.user.id) pm.collectionVariables.set(\"currentUserId\", json.user.id);",
                   "}"
                 ],
                 "type": "text/javascript"
@@ -140,7 +158,7 @@
                 "login"
               ]
             },
-            "description": "Authenticate user and issue dual tokens.\n- Automatically saves `userAccessToken` to collection variables.\n- Sets `access_token` and `refresh_token` httpOnly cookies."
+            "description": "Pure Cookie-Based Authentication: Authenticates user and sets httpOnly secure `access_token` and `refresh_token` cookies.\n- Zero tokens exposed in JSON response body.\n- Automatically updates Postman Cookie Jar and sets `{{userAccessToken}}` & `{{userRefreshToken}}` collection variables."
           }
         },
         {
@@ -151,9 +169,19 @@
               "script": {
                 "exec": [
                   "if (pm.response.code === 200) {",
-                  "    var json = pm.response.json();",
-                  "    if (json.accessToken) pm.collectionVariables.set('userAccessToken', json.accessToken);",
-                  "    if (json.refreshToken) pm.collectionVariables.set('userRefreshToken', json.refreshToken);",
+                  "    var accessToken = pm.cookies.get(\"access_token\");",
+                  "    var refreshToken = pm.cookies.get(\"refresh_token\");",
+                  "    if (!accessToken) {",
+                  "        var setCookies = pm.response.headers.all().filter(function(h) { return h.key.toLowerCase() === \"set-cookie\"; });",
+                  "        setCookies.forEach(function(h) {",
+                  "            var mAcc = h.value.match(/access_token=([^;]+)/);",
+                  "            if (mAcc) accessToken = mAcc[1];",
+                  "            var mRef = h.value.match(/refresh_token=([^;]+)/);",
+                  "            if (mRef) refreshToken = mRef[1];",
+                  "        });",
+                  "    }",
+                  "    if (accessToken) pm.collectionVariables.set(\"userAccessToken\", accessToken);",
+                  "    if (refreshToken) pm.collectionVariables.set(\"userRefreshToken\", refreshToken);",
                   "}"
                 ],
                 "type": "text/javascript"
@@ -187,7 +215,7 @@
                 "refresh"
               ]
             },
-            "description": "Rotates refresh token and issues fresh token pair.\n- `refreshToken` can be passed in body OR via `refresh_token` cookie."
+            "description": "Rotates refresh token and issues fresh token pair via secure httpOnly cookies.\n- `refreshToken` can be read directly from the `refresh_token` cookie, or optionally passed in body."
           }
         },
         {
@@ -249,9 +277,19 @@
               "script": {
                 "exec": [
                   "if (pm.response.code === 200) {",
-                  "    var json = pm.response.json();",
-                  "    if (json.accessToken) pm.collectionVariables.set('adminAccessToken', json.accessToken);",
-                  "    if (json.refreshToken) pm.collectionVariables.set('adminRefreshToken', json.refreshToken);",
+                  "    var accessToken = pm.cookies.get(\"admin_access_token\");",
+                  "    var refreshToken = pm.cookies.get(\"admin_refresh_token\");",
+                  "    if (!accessToken) {",
+                  "        var setCookies = pm.response.headers.all().filter(function(h) { return h.key.toLowerCase() === \"set-cookie\"; });",
+                  "        setCookies.forEach(function(h) {",
+                  "            var mAcc = h.value.match(/admin_access_token=([^;]+)/);",
+                  "            if (mAcc) accessToken = mAcc[1];",
+                  "            var mRef = h.value.match(/admin_refresh_token=([^;]+)/);",
+                  "            if (mRef) refreshToken = mRef[1];",
+                  "        });",
+                  "    }",
+                  "    if (accessToken) pm.collectionVariables.set(\"adminAccessToken\", accessToken);",
+                  "    if (refreshToken) pm.collectionVariables.set(\"adminRefreshToken\", refreshToken);",
                   "}"
                 ],
                 "type": "text/javascript"
@@ -286,7 +324,7 @@
                 "login"
               ]
             },
-            "description": "Authenticate internal staff and administrators.\n- Automatically saves `adminAccessToken` to variables.\n- Sets `admin_access_token` and `admin_refresh_token` cookies."
+            "description": "Pure Cookie-Based Admin Authentication: Authenticates internal staff and sets httpOnly secure `admin_access_token` and `admin_refresh_token` cookies.\n- Zero tokens exposed in JSON response body.\n- Automatically updates Postman Cookie Jar and sets `{{adminAccessToken}}` & `{{adminRefreshToken}}` collection variables."
           }
         },
         {
@@ -319,8 +357,33 @@
                 "refresh"
               ]
             },
-            "description": "Rotates admin staff tokens."
-          }
+            "description": "Rotates admin refresh token and issues fresh admin token pair via secure httpOnly cookies.\n- `refreshToken` can be read directly from the `admin_refresh_token` cookie, or optionally passed in body."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var accessToken = pm.cookies.get(\"admin_access_token\");",
+                  "    var refreshToken = pm.cookies.get(\"admin_refresh_token\");",
+                  "    if (!accessToken) {",
+                  "        var setCookies = pm.response.headers.all().filter(function(h) { return h.key.toLowerCase() === \"set-cookie\"; });",
+                  "        setCookies.forEach(function(h) {",
+                  "            var mAcc = h.value.match(/admin_access_token=([^;]+)/);",
+                  "            if (mAcc) accessToken = mAcc[1];",
+                  "            var mRef = h.value.match(/admin_refresh_token=([^;]+)/);",
+                  "            if (mRef) refreshToken = mRef[1];",
+                  "        });",
+                  "    }",
+                  "    if (accessToken) pm.collectionVariables.set(\"adminAccessToken\", accessToken);",
+                  "    if (refreshToken) pm.collectionVariables.set(\"adminRefreshToken\", refreshToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         },
         {
           "name": "Admin Profile (/admin/auth/me)",
@@ -1238,7 +1301,8 @@
                 "exec": [
                   "if (pm.response.code === 201 || pm.response.code === 200) {",
                   "    var json = pm.response.json();",
-                  "    if (json.contract && json.contract.id) pm.collectionVariables.set('contractId', json.contract.id);",
+                  "    if (json.contract && json.contract.id) pm.collectionVariables.set(\"contractId\", json.contract.id);",
+                  "    if (json.tranId) pm.collectionVariables.set(\"tranId\", json.tranId);",
                   "}"
                 ],
                 "type": "text/javascript"
@@ -1264,7 +1328,7 @@
                 "{{proposalId}}"
               ]
             },
-            "description": "Deducts funds from Client wallet and creates a contract in `FUNDED` status.\n- If balance is insufficient, returns SSLCommerz gateway URL."
+            "description": "Accepts proposal and funds contract escrow:\n1. If Client wallet balance is sufficient, immediately creates contract in `FUNDED` status.\n2. If wallet balance is insufficient, initiates SSLCommerz checkout session and returns `requiresPayment: true`, `gatewayUrl`, and `tranId`.\n- Automatically captures `contractId` or `tranId` into collection variables."
           }
         },
         {
@@ -1914,6 +1978,166 @@
                 "overview"
               ]
             }
+          }
+        }
+      ]
+    },
+    {
+      "name": "12. Payments & SSLCommerz Escrow Gateway",
+      "item": [
+        {
+          "name": "Open SSLCommerz Sandbox Simulator Page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/payments/sslcommerz/simulate/{{tranId}}?amount=25000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments",
+                "sslcommerz",
+                "simulate",
+                "{{tranId}}"
+              ],
+              "query": [
+                {
+                  "key": "amount",
+                  "value": "25000",
+                  "description": "Escrow deposit amount in BDT"
+                }
+              ]
+            },
+            "description": "Interactive HTML sandbox checkout simulator page.\n- Opens in browser to test realistic merchant checkout with one-click payment or cancellation.\n- Automatically submits valid transaction parameters to `/payments/sslcommerz/success`."
+          }
+        },
+        {
+          "name": "SSLCommerz Payment Success Webhook Callback",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var json = pm.response.json();",
+                  "    if (json.contract && json.contract.id) {",
+                  "        pm.collectionVariables.set(\"contractId\", json.contract.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "description": "Send application/json for JSON API response, or omit for HTML redirect"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tran_id\": \"{{tranId}}\",\n  \"val_id\": \"VAL_SIMULATED_12345\",\n  \"amount\": \"25000\",\n  \"card_type\": \"BKASH-MobileBanking\",\n  \"status\": \"VALID\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/sslcommerz/success",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments",
+                "sslcommerz",
+                "success"
+              ]
+            },
+            "description": "SSLCommerz IPN / Webhook / Return URL callback after successful escrow payment.\n- Validates cached transaction intent from Redis (`payment:intent:${tranId}`).\n- Atomically forms Contract in `FUNDED` status.\n- Updates Proposal to `ACCEPTED` and Job to `IN_PROGRESS`.\n- Creates double-entry ledger transactions (`DEPOSIT` and `ESCROW_HOLD`).\n- Automatically sets `{{contractId}}` collection variable."
+          }
+        },
+        {
+          "name": "SSLCommerz Payment Fail Callback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tran_id\": \"{{tranId}}\",\n  \"status\": \"FAILED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/sslcommerz/fail",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments",
+                "sslcommerz",
+                "fail"
+              ]
+            },
+            "description": "SSLCommerz callback triggered when payment fails or is rejected."
+          }
+        },
+        {
+          "name": "SSLCommerz Payment Cancel Callback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tran_id\": \"{{tranId}}\",\n  \"status\": \"CANCELLED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/sslcommerz/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments",
+                "sslcommerz",
+                "cancel"
+              ]
+            },
+            "description": "SSLCommerz callback triggered when user cancels checkout."
           }
         }
       ]

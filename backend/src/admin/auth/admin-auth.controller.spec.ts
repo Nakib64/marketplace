@@ -41,7 +41,8 @@ describe('AdminAuthController (Cookie-Based Authentication)', () => {
       res,
     );
 
-    expect(result.accessToken).toBe('admin.access.jwt');
+    expect(result.admin).toEqual(expect.objectContaining({ id: 'admin-1' }));
+    expect(result.message).toBe('Admin login successful');
     expect(res.cookie).toHaveBeenCalledWith(
       ADMIN_ACCESS_TOKEN_COOKIE,
       'admin.access.jwt',
@@ -94,7 +95,7 @@ describe('AdminAuthController (Cookie-Based Authentication)', () => {
       'rotated.admin.refresh.jwt',
       expect.objectContaining({ httpOnly: true }),
     );
-    expect(result.accessToken).toBe('rotated.admin.access.jwt');
+    expect(result.message).toBe('Admin token refreshed successfully');
   });
 
   it('should clear admin cookies on logout', async () => {

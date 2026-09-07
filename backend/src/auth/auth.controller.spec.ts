@@ -36,7 +36,8 @@ describe('AuthController (Cookie-Based Authentication)', () => {
       res,
     );
 
-    expect(result.accessToken).toBe('jwt.access.token');
+    expect(result.user).toEqual(expect.objectContaining({ id: 'u1' }));
+    expect(result.message).toBe('Login successful');
     expect(res.cookie).toHaveBeenCalledWith(
       ACCESS_TOKEN_COOKIE,
       'jwt.access.token',
@@ -83,7 +84,7 @@ describe('AuthController (Cookie-Based Authentication)', () => {
       'new.refresh.token',
       expect.objectContaining({ httpOnly: true }),
     );
-    expect(result.accessToken).toBe('new.access.token');
+    expect(result.message).toBe('Token refreshed successfully');
   });
 
   it('should clear cookies on logout', async () => {

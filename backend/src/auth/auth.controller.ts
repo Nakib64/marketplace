@@ -59,7 +59,10 @@ export class AuthController {
       getCookieOptions(REFRESH_TOKEN_MAX_AGE),
     );
 
-    return result;
+    return {
+      message: 'Login successful',
+      user: result.user,
+    };
   }
 
   @Public()
@@ -89,7 +92,9 @@ export class AuthController {
       getCookieOptions(REFRESH_TOKEN_MAX_AGE),
     );
 
-    return result;
+    return {
+      message: 'Token refreshed successfully',
+    };
   }
 
   @Post('logout')

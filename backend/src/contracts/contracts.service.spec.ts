@@ -6,6 +6,9 @@ import {
 } from '@nestjs/common';
 import { ContractStatus, JobStatus, ProposalStatus } from '@prisma/client';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { ContractFormationSubService } from './services/contract-formation-sub.service.js';
+import { ContractLifecycleSubService } from './services/contract-lifecycle-sub.service.js';
+import { ContractQuerySubService } from './services/contract-query-sub.service.js';
 import { ContractsService } from './services/contracts.service.js';
 
 describe('ContractsService', () => {
@@ -54,7 +57,25 @@ describe('ContractsService', () => {
       validatePayload: vi.fn().mockReturnValue(true),
     };
 
-    contractsService = new ContractsService(prismaMock, sslCommerzMock);
+    const redisStore: Record<string, string> = {};
+    const redisMock = {
+      get: vi.fn((key: string) => Promise.resolve(redisStore[key] || null)),
+      set: vi.fn((key: string, val: string) => {
+        redisStore[key] = val;
+        return Promise.resolve('OK');
+      }),
+      del: vi.fn((key: string) => {
+        delete redisStore[key];
+        return Promise.resolve(1);
+      }),
+    };
+
+    (globalThis as any).redisMockInstance = redisMock;
+
+    const formationService = new ContractFormationSubService(prismaMock, sslCommerzMock, redisMock as any);
+    const lifecycleService = new ContractLifecycleSubService(prismaMock);
+    const queryService = new ContractQuerySubService(prismaMock);
+    contractsService = new ContractsService(formationService, lifecycleService, queryService);
   });
 
   describe('getPlatformFeePercentage & updatePlatformFeePercentage', () => {
@@ -228,6 +249,54 @@ describe('ContractsService', () => {
 
       const res = await contractsService.disputeContract('free-1', 'contract-1');
       expect(res.status).toBe(ContractStatus.DISPUTED);
+    });
+  });
+
+  describe('handlePaymentSuccess', () => {
+    it('should reject invalid payment signatures', async () => {
+      sslCommerzMock.validatePayload.mockReturnValue(false);
+      const res = await contractsService.handlePaymentSuccess({ tran_id: 'bad-tran' });
+      expect(res.success).toBe(false);
+      expect(res.status).toBe('FAILED');
+    });
+
+    it('should create contract and update job and proposal when intent exists', async () => {
+      sslCommerzMock.validatePayload.mockReturnValue(true);
+      const tranId = 'TRAN_VALID_123';
+
+      // Pre-populate intent in mock redis
+      await (globalThis as any).redisMockInstance.set(
+        `payment:intent:${tranId}`,
+        JSON.stringify({
+          type: 'CONTRACT_ESCROW',
+          clientId: 'client-1',
+          proposalId: 'prop-1',
+          jobId: 'job-1',
+          freelancerId: 'free-1',
+          escrowAmount: 1500,
+          platformFee: 150,
+        }),
+      );
+
+      prismaMock.contract.create.mockResolvedValue({
+        id: 'new-contract-id',
+        proposalId: 'prop-1',
+        status: ContractStatus.FUNDED,
+        escrowAmount: 1500,
+      });
+
+      const res = await contractsService.handlePaymentSuccess({ tran_id: tranId, status: 'VALID' });
+      expect(res.success).toBe(true);
+      expect(res.status).toBe('SUCCESS');
+      expect(prismaMock.contract.create).toHaveBeenCalled();
+      expect(prismaMock.job.update).toHaveBeenCalledWith({
+        where: { id: 'job-1' },
+        data: { status: JobStatus.IN_PROGRESS },
+      });
+      expect(prismaMock.proposal.update).toHaveBeenCalledWith({
+        where: { id: 'prop-1' },
+        data: { status: ProposalStatus.ACCEPTED },
+      });
     });
   });
 });
