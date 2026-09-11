@@ -1,0 +1,71 @@
+import { DisputeCaseDetail, DisputeMetrics } from '../types/disputesTypes';
+
+export const INITIAL_DISPUTE_METRICS: DisputeMetrics = {
+  activeCount: 1,
+  resolvedCount: 14,
+  totalDisputedUsdc: 3500,
+  avgTurnaroundDays: 4.2,
+};
+
+export const DEFAULT_DISPUTE_CASE: DisputeCaseDetail = {
+  id: '1488',
+  docketId: 'DLC-4092-KLR',
+  caseNumber: '#1488',
+  subcourtName: 'Kleros V2 Subcourt #14',
+  roundText: 'Juror Voting Phase (Round 1 of 2)',
+  title: 'Dispute Case #1488: Milestone 2 Deliverable Non-Compliance Claim',
+  description:
+    'Hirer contends deliverable contains unmitigated high-severity reentrancy vulnerability in AMM settlement contract. Contractor asserts code matches specification RFC-492.',
+  contractTitle: 'Arbitrum Orbit AMM Rollup',
+  auditPhase: 'v2.4 Audit Phase',
+  hirerName: 'Kroma Labs DAO',
+  hirerAddress: '0x3C49...81B7',
+  contractorName: 'alexr.eth',
+  contractorAddress: '0x7E12...49A2',
+  claimedValue: 3500,
+  currency: 'USDC',
+  frozenVaultAddress: '0x811a...ef34',
+  status: 'VOTING',
+  lifecycleStep: 3,
+  jurorRewardEth: 0.085,
+  jurorRewardUsd: 270,
+  surchargeUsdc: 50,
+  pnkPerJuror: 250,
+  jurors: [
+    { jurorNumber: 89, status: 'COMMITTED', hash: '0x8bf3...d1e8', stakePnk: 250 },
+    { jurorNumber: 142, status: 'COMMITTED', hash: '0x3e17...49ac', stakePnk: 250 },
+    { jurorNumber: 304, status: 'AWAITING', stakePnk: 250, timeRemaining: '18h remaining' },
+  ],
+  evidences: [
+    {
+      id: 'ev-1',
+      title: 'Hirer Audit Report: Slither Re-entrancy Vulnerability PoC.sol',
+      evidenceNumber: 1,
+      ipfsCid: 'bafy...892a',
+      pinnedBy: 'Kroma Labs DAO (Hirer)',
+      pinnedRole: 'Hirer',
+      verifiedHash: 'Keccak-256 Validated',
+      type: 'audit',
+    },
+    {
+      id: 'ev-2',
+      title: 'Contractor Handover Memo & Foundry Gas Profile',
+      evidenceNumber: 2,
+      ipfsCid: 'bafy...11bc',
+      pinnedBy: 'alexr.eth (Contractor)',
+      pinnedRole: 'Contractor',
+      verifiedHash: 'Keccak-256 Validated',
+      type: 'memo',
+    },
+    {
+      id: 'ev-3',
+      title: 'Smart Contract Specification RFC-492 (Milestone Appendix A)',
+      evidenceNumber: 3,
+      ipfsCid: 'bafy...55fe',
+      pinnedBy: 'Initial Binding Agreement Spec',
+      pinnedRole: 'Protocol',
+      verifiedHash: 'Keccak-256 Hash Verified',
+      type: 'spec',
+    },
+  ],
+};

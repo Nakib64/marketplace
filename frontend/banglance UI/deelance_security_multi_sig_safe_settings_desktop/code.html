@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#111317;color:#e2e2e8;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-tint": "#4edea3", "primary-fixed-dim": "#4edea3", "on-secondary-fixed-variant": "#005137", "error-container": "#93000a", "secondary-container": "#25a475", "on-secondary-container": "#00311f", "on-primary-container": "#00422b", "on-primary": "#003824", "surface-container-high": "#282a2e", "tertiary": "#c4c6d1", "secondary": "#68dba9", "on-tertiary-fixed": "#181b23", "outline": "#86948a", "tertiary-fixed": "#e0e2ed", "on-tertiary-container": "#363941", "on-tertiary-fixed-variant": "#44474f", "outline-variant": "#3c4a42", "primary-fixed": "#6ffbbe", "surface-container-low": "#1a1c20", "on-surface": "#e2e2e8", "surface-bright": "#37393e", "secondary-fixed-dim": "#68dba9", "error": "#ffb4ab", "primary": "#4edea3", "inverse-primary": "#006c49", "tertiary-container": "#a0a2ac", "secondary-fixed": "#85f8c4", "on-surface-variant": "#bbcabf", "surface-container": "#1e2024", "on-secondary": "#003825", "on-error": "#690005", "on-tertiary": "#2d3038", "on-primary-fixed": "#002113", "primary-container": "#10b981", "surface": "#111317", "tertiary-fixed-dim": "#c4c6d1", "inverse-on-surface": "#2f3035", "on-background": "#e2e2e8", "surface-variant": "#333539", "on-secondary-fixed": "#002114", "surface-container-lowest": "#0c0e12", "background": "#111317", "on-primary-fixed-variant": "#005236", "surface-container-highest": "#333539", "surface-dim": "#111317", "inverse-surface": "#e2e2e8", "on-error-container": "#ffdad6" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-lg": "1.5rem", "margin": "2rem", "space-sm": "0.5rem", "gutter": "1.5rem", "space-xs": "0.25rem", "space-md": "1rem", "space-xl": "2rem" }, fontFamily: { "headline-lg-mobile": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "headline-xl": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "code-sm": ["JetBrains Mono"], "headline-md": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "headline-xl-mobile": ["Plus Jakarta Sans"] }, fontSize: { "headline-lg-mobile": ["20px", { lineHeight: "28px", fontWeight: "600" }], "body-md": ["14px", { lineHeight: "22px", fontWeight: "400" }], "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }], "headline-xl": ["36px", { lineHeight: "44px", fontWeight: "700" }], "headline-lg": ["24px", { lineHeight: "32px", fontWeight: "600" }], "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }], "label-md": ["14px", { lineHeight: "20px", fontWeight: "600" }], "code-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }], "headline-md": ["18px", { lineHeight: "26px", fontWeight: "600" }], "label-sm": ["12px", { lineHeight: "16px", fontWeight: "500" }], "headline-xl-mobile": ["28px", { lineHeight: "36px", fontWeight: "700" }] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_12px_rgba(0,0,0,0.45)]"><div class="h-16 px-space-md flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="Brand logo" class="h-8 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1UxTim0GpgKyJXNkbFMes-MCS9i-Yu-daFRqqs2dkwzUKZwvjryEpAYTCnl0uSDLnIWTS1QZlryFS1BcJQ1Ww0_cKuv2zmuTb4A1WLG3j_jwMZgqpTKYxQ9ZvJ3eO4lo4CyqYzR6cgPpX3u_g1Urcir8T6CdDRvjmv2qVv5I1YYl3K2wg85MfodgKtIHyH6troKtFd7XRnUH4lGVuVgSXkdI2FWxxMqcc9FHmUtC9N6n-wB76jBk8NNia4"/><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-on-surface truncate">Contracts</span><div class="flex items-center gap-1 mt-0.5"><span class="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span><span class="font-code-sm text-code-sm text-on-surface-variant truncate">Arbitrum One</span></div></div></div><div class="flex items-center gap-space-xs shrink-0"><button aria-label="Notifications" class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors relative"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-primary"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 w-full bg-surface pt-16 pb-24 relative"><div class="flex flex-col w-full">
+<!-- Subtle Background Grid Atmosphere -->
+<div class="w-full px-space-md lg:px-margin max-w-[1440px] mx-auto py-space-lg flex flex-col gap-space-xl">
+<!-- Breadcrumbs & Global Security Level Header -->
+<div class="flex flex-col gap-space-xs">
+<nav aria-label="Breadcrumbs" class="flex items-center gap-2 text-on-surface-variant font-code-sm text-code-sm">
+<a class="hover:text-on-surface transition-colors" href="#">Settings</a>
+<span class="text-outline-variant">/</span>
+<span class="text-on-surface font-medium">Security &amp; Multi-Sig Safe</span>
+<span class="text-outline-variant">/</span>
+<span class="text-primary font-code-sm text-code-sm flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-high">
+<span class="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
+          Policy v2.4.1 Active
+        </span>
+</nav>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md mt-1">
+<div class="flex flex-col max-w-3xl">
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+            Security Architecture &amp; Cryptographic Policies
+          </h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+            Configure Gnosis Safe multi-signature quorum thresholds, ERC-4337 session key allowances, hardware signer keyrings, and automated relayer guardrails.
+          </p>
+</div>
+<div class="flex items-center gap-space-sm shrink-0">
+<button class="px-4 py-2.5 rounded-xl bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md flex items-center gap-2 transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">history</span>
+            Audit Security Log
+          </button>
+<div class="h-6 w-px bg-surface-container-highest"></div>
+<div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-container-lowest font-code-sm text-code-sm text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span>Shield Mode: Strict</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Master Layout: 4-col Sidebar + 8-col Control Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN: Settings Navigation & Quick Telemetry -->
+<aside class="lg:col-span-4 flex flex-col gap-space-md">
+<!-- Navigation Menu -->
+<div class="bg-surface-container-low p-space-sm rounded-xl flex flex-col gap-1">
+<span class="px-3 py-2 font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Preferences &amp; Policies</span>
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">badge</span>
+<span class="font-label-md text-label-md">Profile &amp; Identity</span>
+</div>
+<span class="font-code-sm text-code-sm text-outline">Screen 23</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-surface-container text-on-surface shadow-sm" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-primary">encrypted</span>
+<span class="font-label-md text-label-md">Security &amp; Multi-Sig Safe</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</a>
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">notifications_active</span>
+<span class="font-label-md text-label-md">Notification Preferences</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">receipt_long</span>
+<span class="font-label-md text-label-md">Billing &amp; Invoicing</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">hub</span>
+<span class="font-label-md text-label-md">Connected Accounts &amp; Oracles</span>
+</div>
+<span class="font-code-sm text-code-sm text-outline">Chainlink v0.8</span>
+</a>
+</div>
+<!-- Security Shield Status Score Box -->
+<div class="bg-surface-container p-space-lg rounded-xl flex flex-col gap-space-md shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary">verified_user</span>
+<span class="font-label-md text-label-md text-on-surface">Cryptographic Posture</span>
+</div>
+<span class="font-code-sm text-code-sm px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-medium">100% Shielded</span>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-baseline justify-between">
+<span class="font-headline-lg text-headline-lg text-on-surface font-bold">3 / 3</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Active Protections</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="w-full h-full bg-primary rounded-full"></div>
+</div>
+</div>
+<div class="flex flex-col gap-2.5 pt-2">
+<div class="flex items-center gap-2.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
+<span class="font-body-sm text-body-sm text-on-surface">Hardware Keyring Connected (FIDO2)</span>
+</div>
+<div class="flex items-center gap-2.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
+<span class="font-body-sm text-body-sm text-on-surface">Gnosis Safe Multi-Sig 2-of-3 configured</span>
+</div>
+<div class="flex items-center gap-2.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
+<span class="font-body-sm text-body-sm text-on-surface">Timelock Controller: 24h cooldown active</span>
+</div>
+</div>
+<div class="pt-3">
+<div class="p-3 bg-surface-container-lowest rounded-lg flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">shield</span>
+<span>Zk-Audit Hash</span>
+</div>
+<span class="text-on-surface truncate">0x9a84...d019</span>
+</div>
+</div>
+</div>
+<!-- Relayer Heartbeat & Gas Subsidies Card -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface">Node Execution Network</span>
+<span class="flex items-center gap-1.5 font-code-sm text-code-sm text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> 12ms Latency
+            </span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">
+            Zero gas friction on milestone approvals via Biconomy v2 Bundler on Arbitrum One L2.
+          </div>
+</div>
+</aside>
+<!-- RIGHT COLUMN: Security Policies & Signature Quorum Workspace -->
+<section class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- SECTION 1: GNOSIS SAFE MULTI-SIG -->
+<div class="bg-surface-container rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-sm">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">policy</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">Gnosis Safe Multi-Signature Policy</h2>
+<span class="font-code-sm text-code-sm px-2 py-0.5 bg-surface-container-highest text-primary rounded-full">v1.4.1 L2</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                  Custody threshold controlling milestone approvals and smart contract escrow disbursements.
+                </p>
+</div>
+</div>
+<!-- Safe Address Pill -->
+<div class="flex items-center gap-2 bg-surface-container-lowest px-3 py-1.5 rounded-lg shrink-0">
+<span class="font-code-sm text-code-sm text-on-surface-variant">Safe:</span>
+<span class="font-code-sm text-code-sm text-on-surface font-medium">0x3bF2...320E</span>
+<button aria-label="Copy address" class="text-on-surface-variant hover:text-primary transition-colors flex items-center" onclick="navigator.clipboard.writeText('0x3bF22A1e2bFFd5E0E4c861d87f53fD044c01320E')" type="button">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+</button>
+</div>
+</div>
+<!-- Quorum State Banner -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+<div class="flex items-center gap-3">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">hourglass_empty</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-medium">Quorum Threshold: 2 of 3 Signatures</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Any 2 authorized signers must corroborate raw payload hashes to broadcast transactions.</span>
+</div>
+</div>
+<div class="flex items-center gap-2 self-start sm:self-auto shrink-0">
+<button class="px-3.5 py-2 rounded-xl bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md flex items-center gap-2 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">tune</span>
+                Modify Quorum
+              </button>
+</div>
+</div>
+<!-- Keyring Co-Signers List -->
+<div class="flex flex-col gap-2 pt-2">
+<div class="flex items-center justify-between px-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Registered Signers &amp; Hardware Keyrings</span>
+<span class="font-code-sm text-code-sm text-outline">Quorum Validated</span>
+</div>
+<!-- Signer 1 -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col md:flex-row md:items-center justify-between gap-space-md hover:bg-surface-container-high/60 transition-colors">
+<div class="flex items-center gap-space-md">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-[20px]">usb</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-on-surface">Ledger Nano X</span>
+<span class="px-2 py-0.5 rounded text-[11px] bg-primary/10 text-primary font-medium">Primary Signer</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary" title="Connected"></span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant mt-0.5">0x3C4915b81a798D32f05C51d7fF9E364A570C81B7</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm self-end md:self-auto">
+<span class="font-code-sm text-code-sm text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">done_all</span> Active Device
+                </span>
+<button aria-label="Signer actions" class="p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Signer 2 -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col md:flex-row md:items-center justify-between gap-space-md hover:bg-surface-container-high/60 transition-colors">
+<div class="flex items-center gap-space-md">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-[20px]">dns</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-on-surface">DeeLance DAO Guardian Node</span>
+<span class="px-2 py-0.5 rounded text-[11px] bg-surface-container-highest text-on-surface-variant font-medium">Automated Relayer</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant mt-0.5">0x91880492Ea4176DbE62c8F30Ac22f281e6F82A5C</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm self-end md:self-auto">
+<span class="font-code-sm text-code-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">verified</span> Standby Quorum
+                </span>
+<button aria-label="Signer actions" class="p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Signer 3 -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col md:flex-row md:items-center justify-between gap-space-md hover:bg-surface-container-high/60 transition-colors">
+<div class="flex items-center gap-space-md">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-[20px]">lock_clock</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-on-surface">Backup Cold Safe Air-Gapped</span>
+<span class="px-2 py-0.5 rounded text-[11px] bg-surface-container-highest text-on-surface-variant font-medium">Disaster Recovery</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant mt-0.5">0x12F981a545084f7b60580F6ee1a478b051DE41E0</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm self-end md:self-auto">
+<span class="font-code-sm text-code-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">offline_pin</span> Offline Key
+                </span>
+<button aria-label="Signer actions" class="p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Co-Signer Footer Controls -->
+<div class="flex flex-wrap items-center justify-between gap-space-md pt-space-xs">
+<button class="px-4 py-2.5 rounded-xl bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md flex items-center gap-2 transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">add_circle</span>
+              Add Authorized Co-Signer
+            </button>
+<div class="flex items-center gap-2 text-on-surface-variant font-code-sm text-code-sm">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span>Nonce Queue: 0 pending transactions</span>
+</div>
+</div>
+</div>
+<!-- SECTION 2: ERC-4337 SESSION KEY DELEGATION -->
+<div class="bg-surface-container rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-space-sm">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">key</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">ERC-4337 Session Key Delegation</h2>
+<span class="font-code-sm text-code-sm px-2 py-0.5 bg-surface-container-highest text-primary rounded-full">Account Abstraction</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                  Enables instantaneous bid staking, escrow acceptance, and time-tracking commits without recurrent wallet signatures.
+                </p>
+</div>
+</div>
+<!-- Revoke CTA -->
+<button class="px-3.5 py-2 rounded-xl bg-surface-container-high hover:bg-surface-bright text-error font-label-md text-label-md flex items-center gap-2 transition-colors shrink-0" type="button">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+              Revoke All Keys
+            </button>
+</div>
+<!-- Active Ephemeral Key Display -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col gap-space-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div class="flex items-center gap-2.5">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Ephemeral Delegated Key #SK-9041</span>
+<span class="font-code-sm text-code-sm text-primary bg-primary/10 px-2 py-0.5 rounded">Active</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Expires in: 13d 14h 22m</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+<!-- Metric 1 -->
+<div class="bg-surface-container-lowest p-3 rounded-lg flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Scope Restriction</span>
+<div class="flex items-center gap-1.5 font-code-sm text-code-sm text-on-surface font-medium truncate">
+<span class="material-symbols-outlined text-[16px] text-primary">contract</span>
+                  EscrowFactory.sol
+                </div>
+</div>
+<!-- Metric 2 -->
+<div class="bg-surface-container-lowest p-3 rounded-lg flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Spend Quota / Call</span>
+<div class="flex items-center gap-1.5 font-code-sm text-code-sm text-on-surface font-medium">
+<span class="material-symbols-outlined text-[16px] text-primary">payments</span>
+                  Max 500.00 USDC
+                </div>
+</div>
+<!-- Metric 3 -->
+<div class="bg-surface-container-lowest p-3 rounded-lg flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Relayer Execution</span>
+<div class="flex items-center gap-1.5 font-code-sm text-code-sm text-on-surface font-medium">
+<span class="material-symbols-outlined text-[16px] text-primary">bolt</span>
+                  Biconomy Paymaster
+                </div>
+</div>
+</div>
+<!-- Permission Scope Pills -->
+<div class="flex flex-wrap items-center gap-2 pt-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Allowed Methods:</span>
+<span class="font-code-sm text-code-sm px-2.5 py-1 rounded bg-surface-container-high text-on-surface">submitMilestoneDeliverable()</span>
+<span class="font-code-sm text-code-sm px-2.5 py-1 rounded bg-surface-container-high text-on-surface">acceptBidTerms()</span>
+<span class="font-code-sm text-code-sm px-2.5 py-1 rounded bg-surface-container-high text-on-surface">heartbeatProof()</span>
+</div>
+</div>
+</div>
+<!-- SECTION 3: BICONOMY PAYMASTER GAS QUOTAS & RATE LIMITS -->
+<div class="bg-surface-container rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">local_gas_station</span>
+</div>
+<div class="flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">Paymaster Gas Sponsorship Quotas</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                  Platform-subsidized meta-transactions executed via decentralized relayer pools.
+                </p>
+</div>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant bg-surface-container-lowest px-3 py-1 rounded-lg">Cycle Resets in 6d</span>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-sm">
+<div class="flex items-baseline justify-between">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">842</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">/ 1,000 Free Relay Transactions Remaining</span>
+</div>
+<span class="font-code-sm text-code-sm text-primary font-medium">84.2% Available</span>
+</div>
+<!-- Progress Meter -->
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all" style="width: 84.2%;"></div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md pt-2">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px] mt-0.5">speed</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Rate-Limit Guardrail</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Hard cap of 50 gasless calls per hour to prevent mempool front-running.</span>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px] mt-0.5">lock_reset</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Dispute Fail-Safe</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Paymaster automatically yields to direct L2 wallet sign on arbitration triggers.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 4: 2FA & WEBAUTHN HARDWARE FALLBACK -->
+<div class="bg-surface-container rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">fingerprint</span>
+</div>
+<div class="flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">WebAuthn Passkey &amp; zk-SNARK Fallback</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Physical security credentials and cryptographic recovery seeds for account recovery.
+              </p>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+<!-- YubiKey Card -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col justify-between gap-space-sm">
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-medium">Hardware FIDO2 YubiKey</span>
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Bound via WebAuthn API on Chrome/macOS keychain.</span>
+</div>
+<div class="flex items-center justify-between pt-2">
+<span class="font-code-sm text-code-sm text-outline">Registered: 28 Jan 2025</span>
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" type="button">Re-pair</button>
+</div>
+</div>
+<!-- Zk-SNARK Seed Card -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col justify-between gap-space-sm">
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-medium">Encrypted IPFS Recovery Seed</span>
+<span class="material-symbols-outlined text-primary text-[18px]">lock</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Sharded with Shamir Secret Sharing across 3 trusted social guardians.</span>
+</div>
+<div class="flex items-center justify-between pt-2">
+<span class="font-code-sm text-code-sm text-outline">Shard Health: 3/3 Online</span>
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" type="button">Verify Shards</button>
+</div>
+</div>
+</div>
+</div>
+<!-- RE-ANCHOR ACTION FOOTER -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-[22px]">gavel</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-medium">Sync On-Chain Cryptographic Registry</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">All modified policies will be bundled into an atomic batch call on Arbitrum One.</span>
+</div>
+</div>
+<button class="w-full sm:w-auto px-6 py-3 rounded-xl bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md flex items-center justify-center gap-2 transition-colors shadow-sm shrink-0" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">published_with_changes</span>
+            Re-anchor Security Policies On-Chain
+          </button>
+</div>
+</section>
+</div>
+</div>
+</div></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-4px_20px_rgba(0,0,0,0.5)]" data-active-classes="text-primary font-semibold"><div class="h-16 px-space-xs flex items-center justify-around"><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="overview" href="#"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="font-label-sm text-label-sm mt-0.5 tracking-tight">Overview</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] h-12 transition-colors text-primary font-semibold" data-path="contracts" href="#"><span class="material-symbols-outlined text-[22px]">handshake</span><span class="font-label-sm text-label-sm mt-0.5 tracking-tight">Contracts</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="vault-escrow" href="#"><span class="material-symbols-outlined text-[22px]">lock_open</span><span class="font-label-sm text-label-sm mt-0.5 tracking-tight">Vault</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="messages" href="#"><span class="material-symbols-outlined text-[22px]">chat_bubble</span><span class="font-label-sm text-label-sm mt-0.5 tracking-tight">Messages</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="wallet" href="#"><span class="material-symbols-outlined text-[22px]">account_balance_wallet</span><span class="font-label-sm text-label-sm mt-0.5 tracking-tight">Wallet</span></a></div></nav></body></html>

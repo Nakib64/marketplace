@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DeeLance - Web3 Freelance &amp; Escrow Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              green: '#10b981',
+              'green-hover': '#059669',
+              mint: '#86efac',
+            },
+            dark: {
+              bg: '#111317',
+              surface: '#17191e',
+              card: '#1d2026',
+              cardBorder: '#2d323b',
+              input: '#14161a',
+              muted: '#94a3b8',
+            },
+            surface: {
+              DEFAULT: '#111317',
+              container: '#1d2026',
+              border: '#2d323b',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    body {
+      background-color: #111317;
+      color: #ffffff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      overscroll-behavior: none;
+    }
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-[#111317] text-white antialiased selection:bg-[#10b981] selection:text-[#111317]">
+<!-- Mobile Top Navigation Header -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-[#111317]/95 backdrop-blur-md border-b border-[#2d323b]">
+<div class="h-16 max-w-md mx-auto px-4 flex items-center justify-between">
+<!-- DeeLance Brand Logo -->
+<a class="flex items-center gap-2" href="#">
+<div class="w-8 h-8 rounded-lg bg-[#10b981] flex items-center justify-center font-bold text-[#111317] text-lg shadow-sm">
+          D
+        </div>
+<span class="text-xl font-bold tracking-tight text-white">Dee<span class="text-[#10b981]">Lance</span></span>
+</a>
+<!-- Action Buttons -->
+<div class="flex items-center gap-2">
+<a class="px-3 py-1.5 rounded-lg border border-[#2d323b] text-xs font-semibold text-gray-200 hover:text-white hover:bg-[#1d2026] transition-colors" href="#">
+          Log In
+        </a>
+<a class="px-3.5 py-1.5 rounded-lg bg-[#10b981] hover:bg-[#059669] text-[#111317] font-bold text-xs shadow transition-all active:scale-95" href="#">
+          Sign Up
+        </a>
+<div class="w-7 h-7 rounded-full bg-[#1d2026] border border-[#2d323b] flex items-center justify-center text-[#10b981]">
+<span class="material-symbols-outlined text-[16px]">person</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Container -->
+<main class="w-full pt-16 pb-20 bg-[#111317] max-w-md mx-auto min-h-screen flex flex-col">
+<!-- Live Protocol Status Bar -->
+<div class="w-full bg-[#17191e] border-b border-[#2d323b] px-4 py-2 flex items-center justify-between text-xs">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#10b981] animate-pulse"></span>
+<span class="font-mono font-medium text-[#10b981] text-[11px] tracking-wide">PROTOCOL v3.2 ACTIVE</span>
+</div>
+<div class="flex items-center gap-1.5 font-medium text-[#94a3b8] text-[11px]">
+<span class="material-symbols-outlined text-[13px] text-[#10b981]">verified_user</span>
+<span>0% Chargeback Escrow</span>
+</div>
+</div>
+<!-- Hero Section -->
+<section class="px-4 pt-5 pb-6 flex flex-col gap-4">
+<!-- Tag Pill -->
+<div class="self-start inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1d2026] border border-[#2d323b]">
+<span class="w-2 h-2 rounded-full bg-[#10b981]"></span>
+<span class="font-mono text-[11px] font-semibold text-[#10b981] tracking-wide">WEB3 ESCROW LAYER</span>
+<span class="text-[#64748b] text-[11px]">·</span>
+<span class="text-[11px] text-[#94a3b8]">Instant Settlement</span>
+</div>
+<!-- Headline -->
+<div class="flex flex-col gap-2">
+<h1 class="text-2xl font-bold tracking-tight text-white leading-snug">
+          Where Web3 Talent Meets <span class="text-[#10b981]">Decentralized Trust</span> &amp; Instant Escrow
+        </h1>
+<p class="text-xs text-[#94a3b8] leading-relaxed">
+          Hire audited smart contract engineers, DeFi designers, and autonomous AI architects. Programmatic milestones locked via multi-sig protocol.
+        </p>
+</div>
+<!-- Segmented Mode Control -->
+<div class="flex p-1 rounded-lg bg-[#14161a] border border-[#2d323b] w-full">
+<button class="flex-1 py-2 rounded-md text-xs font-semibold bg-[#1d2026] text-white border border-[#2d323b] shadow-sm transition-all text-center" id="tab-find-talent">
+          Find Talent
+        </button>
+<button class="flex-1 py-2 rounded-md text-xs font-medium text-[#94a3b8] hover:text-white transition-all text-center" id="tab-find-work">
+          Find Work
+        </button>
+</div>
+<!-- Search Input Container -->
+<div class="p-3.5 rounded-xl bg-[#1d2026] border border-[#2d323b] shadow-sm flex flex-col gap-3">
+<div class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-[#111317] border border-[#2d323b]">
+<span class="material-symbols-outlined text-[#64748b] text-[18px]">search</span>
+<input class="w-full bg-transparent text-xs text-white placeholder-[#64748b] focus:outline-none" placeholder="Search for project, 'Solidity', 'Figma'..." type="text"/>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-[#17191e] border border-[#2d323b] hover:border-gray-500 text-xs font-medium text-[#94a3b8] hover:text-white flex-1 transition-colors">
+<span class="material-symbols-outlined text-[15px]">tune</span>
+<span>Category</span>
+</button>
+<button class="flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-[#10b981] hover:bg-[#059669] text-xs font-bold text-[#111317] flex-1 active:scale-95 transition-all shadow">
+<span class="material-symbols-outlined text-[16px]">bolt</span>
+<span>Search</span>
+</button>
+</div>
+</div>
+<!-- Trust Badges 2x2 Grid -->
+<div class="grid grid-cols-2 gap-2">
+<div class="flex items-center gap-2 p-2.5 rounded-lg bg-[#1d2026] border border-[#2d323b]">
+<span class="material-symbols-outlined text-[#10b981] text-[16px]">verified</span>
+<span class="text-[11px] font-medium text-[#94a3b8]">KYC Verified Pros</span>
+</div>
+<div class="flex items-center gap-2 p-2.5 rounded-lg bg-[#1d2026] border border-[#2d323b]">
+<span class="material-symbols-outlined text-[#10b981] text-[16px]">lock</span>
+<span class="text-[11px] font-medium text-[#94a3b8]">Multi-Sig Escrow</span>
+</div>
+<div class="flex items-center gap-2 p-2.5 rounded-lg bg-[#1d2026] border border-[#2d323b]">
+<span class="material-symbols-outlined text-[#10b981] text-[16px]">sync_alt</span>
+<span class="text-[11px] font-medium text-[#94a3b8]">Instant Settlement</span>
+</div>
+<div class="flex items-center gap-2 p-2.5 rounded-lg bg-[#1d2026] border border-[#2d323b]">
+<span class="material-symbols-outlined text-[#10b981] text-[16px]">percent</span>
+<span class="text-[11px] font-medium text-[#94a3b8]">Flat 2% Platform Fee</span>
+</div>
+</div>
+</section>
+<!-- Live Blocks Ticker Strip -->
+<section class="px-4 py-2 bg-[#17191e] border-y border-[#2d323b] flex items-center gap-2 overflow-x-auto whitespace-nowrap">
+<div class="flex items-center gap-1.5 font-mono text-[10px] text-[#10b981] font-semibold uppercase tracking-wider flex-shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse"></span>
+<span>LIVE BLOCKS:</span>
+</div>
+<div class="flex items-center gap-3 text-[#94a3b8] font-mono text-[11px] flex-shrink-0">
+<span>#0x8f2d funded $8,500 for DEX v3</span>
+<span class="text-[#2d323b]">•</span>
+<span>#0x4a19 released 1.4 ETH</span>
+<span class="text-[#2d323b]">•</span>
+<span>#0x9c32 dispute-free</span>
+</div>
+</section>
+<!-- Explore Categories -->
+<section class="px-4 py-6 flex flex-col gap-3.5">
+<div class="flex items-end justify-between">
+<div>
+<span class="text-[10px] font-mono font-semibold uppercase text-[#10b981] tracking-wider">ECOSYSTEM DOMAINS</span>
+<h2 class="text-lg font-bold text-white tracking-tight">Explore Categories</h2>
+</div>
+<a class="text-xs font-semibold text-[#10b981] flex items-center gap-0.5 hover:underline" href="#">
+<span>120+ Skills</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+<!-- Category 1 -->
+<div class="p-3.5 rounded-xl bg-[#1d2026] border border-[#2d323b] hover:border-[#3d4452] transition-colors flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="w-9 h-9 rounded-lg bg-[#14161a] border border-[#2d323b] flex items-center justify-center text-[#10b981]">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-[#14161a] border border-[#2d323b] font-mono text-[11px] font-medium text-[#10b981]">1,420 Openings</span>
+</div>
+<div>
+<h3 class="text-sm font-bold text-white">Blockchain &amp; Smart Contracts</h3>
+<p class="text-xs text-[#94a3b8] mt-0.5">Solidity, Rust, EVM Assembly, CosmWasm &amp; Audit Protocols.</p>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-[#252932]">
+<span class="font-mono text-xs text-[#10b981] font-semibold">$65 – $160 / hr</span>
+<div class="flex gap-1 text-[10px] font-mono text-[#64748b]">
+<span>#Solidity</span>
+<span>#DeFi</span>
+<span>#Rust</span>
+</div>
+</div>
+</div>
+<!-- Category 2 -->
+<div class="p-3.5 rounded-xl bg-[#1d2026] border border-[#2d323b] hover:border-[#3d4452] transition-colors flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="w-9 h-9 rounded-lg bg-[#14161a] border border-[#2d323b] flex items-center justify-center text-[#10b981]">
+<span class="material-symbols-outlined text-[20px]">palette</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-[#14161a] border border-[#2d323b] font-mono text-[11px] font-medium text-[#10b981]">890 Openings</span>
+</div>
+<div>
+<h3 class="text-sm font-bold text-white">UI/UX Design &amp; Metaverse</h3>
+<p class="text-xs text-[#94a3b8] mt-0.5">Fintech dApp systems, 3D world assets &amp; mobile interfaces.</p>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-[#252932]">
+<span class="font-mono text-xs text-[#10b981] font-semibold">$50 – $125 / hr</span>
+<div class="flex gap-1 text-[10px] font-mono text-[#64748b]">
+<span>#Figma</span>
+<span>#DesignSystem</span>
+</div>
+</div>
+</div>
+<!-- Category 3 -->
+<div class="p-3.5 rounded-xl bg-[#1d2026] border border-[#2d323b] hover:border-[#3d4452] transition-colors flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="w-9 h-9 rounded-lg bg-[#14161a] border border-[#2d323b] flex items-center justify-center text-[#10b981]">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-[#14161a] border border-[#2d323b] font-mono text-[11px] font-medium text-[#10b981]">2,110 Openings</span>
+</div>
+<div>
+<h3 class="text-sm font-bold text-white">Fullstack &amp; Mobile Web3</h3>
+<p class="text-xs text-[#94a3b8] mt-0.5">Next.js 15, Wagmi, viem, mobile wallet SDK integration.</p>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-[#252932]">
+<span class="font-mono text-xs text-[#10b981] font-semibold">$45 – $110 / hr</span>
+<div class="flex gap-1 text-[10px] font-mono text-[#64748b]">
+<span>#NextJS</span>
+<span>#TypeScript</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Active Smart Escrow Projects -->
+<section class="px-4 py-6 flex flex-col gap-4 border-t border-[#2d323b]">
+<div>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-[#10b981]"></span>
+<span class="font-mono text-[10px] text-[#10b981] uppercase tracking-wider font-semibold">LIVE BIDDING</span>
+</div>
+<h2 class="text-lg font-bold text-white tracking-tight mt-0.5">Active Smart Escrows</h2>
+<p class="text-xs text-[#94a3b8]">Milestone funds locked in escrow vaults before bidding starts.</p>
+</div>
+<!-- Horizontal Filter Chips -->
+<div class="flex gap-2 overflow-x-auto pb-1">
+<button class="px-3 py-1 rounded-lg bg-[#10b981] text-[#111317] font-semibold text-xs whitespace-nowrap">All Projects</button>
+<button class="px-3 py-1 rounded-lg bg-[#1d2026] border border-[#2d323b] text-[#94a3b8] hover:text-white text-xs whitespace-nowrap">Smart Contracts</button>
+<button class="px-3 py-1 rounded-lg bg-[#1d2026] border border-[#2d323b] text-[#94a3b8] hover:text-white text-xs whitespace-nowrap">Design &amp; UI</button>
+<button class="px-3 py-1 rounded-lg bg-[#1d2026] border border-[#2d323b] text-[#94a3b8] hover:text-white text-xs whitespace-nowrap">Fullstack</button>
+</div>
+<!-- Job Card 1 -->
+<div class="p-4 rounded-xl bg-[#1d2026] border border-[#2d323b] flex flex-col gap-3 shadow-sm">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded bg-[#111317] border border-[#2d323b] text-[#10b981] font-mono text-[10px] font-semibold">100% ESCROW FUNDED</span>
+<span class="text-[11px] text-[#64748b]">2h ago</span>
+</div>
+<h3 class="text-sm font-bold text-white hover:text-[#10b981] transition-colors">Lead Solidity Engineer – DEX Protocol V3</h3>
+</div>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-[#111317] border border-[#2d323b]">
+<div class="flex flex-col">
+<span class="text-[10px] font-mono text-[#64748b]">Fixed Milestone Escrow</span>
+<span class="text-sm font-mono font-bold text-[#10b981]">$8,500 USDC</span>
+</div>
+<div class="flex items-center gap-1 px-2 py-1 rounded bg-[#1d2026] border border-[#2d323b] text-[11px] text-gray-200">
+<span class="material-symbols-outlined text-[13px] text-[#10b981]">verified</span>
+<span>KYC Verified</span>
+</div>
+</div>
+<p class="text-xs text-[#94a3b8] line-clamp-2">
+          Looking for a core architect to fork and adapt Uniswap V3 concentrated liquidity math for an Arbitrum Orbit rollup chain. Audited contract base provided.
+        </p>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-0.5 rounded bg-[#111317] border border-[#2d323b] text-[10px] font-mono text-gray-300">Solidity 0.8.24</span>
+<span class="px-2 py-0.5 rounded bg-[#111317] border border-[#2d323b] text-[10px] font-mono text-gray-300">Uniswap v3</span>
+<span class="px-2 py-0.5 rounded bg-[#111317] border border-[#2d323b] text-[10px] font-mono text-gray-300">Foundry</span>
+</div>
+<div class="pt-2 border-t border-[#252932] flex items-center justify-between">
+<span class="text-xs text-[#94a3b8]">7 proposals submitted</span>
+<button class="px-4 py-1.5 rounded-lg bg-[#10b981] hover:bg-[#059669] text-[#111317] text-xs font-bold active:scale-95 transition-all shadow">
+            Apply Now
+          </button>
+</div>
+</div>
+<!-- Job Card 2 -->
+<div class="p-4 rounded-xl bg-[#1d2026] border border-[#2d323b] flex flex-col gap-3 shadow-sm">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded bg-[#111317] border border-[#2d323b] text-[#10b981] font-mono text-[10px] font-semibold">MULTI-SIG ESCROW</span>
+<span class="text-[11px] text-[#64748b]">5h ago</span>
+</div>
+<h3 class="text-sm font-bold text-white hover:text-[#10b981] transition-colors">Senior Web3 Product Designer (Figma)</h3>
+</div>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-[#111317] border border-[#2d323b]">
+<div class="flex flex-col">
+<span class="text-[10px] font-mono text-[#64748b]">Fixed Milestone Escrow</span>
+<span class="text-sm font-mono font-bold text-[#10b981]">$4,200 USDC</span>
+</div>
+<div class="flex items-center gap-1 px-2 py-1 rounded bg-[#1d2026] border border-[#2d323b] text-[11px] text-gray-200">
+<span class="material-symbols-outlined text-[13px] text-[#10b981]">business</span>
+<span>Enterprise</span>
+</div>
+</div>
+<p class="text-xs text-[#94a3b8] line-clamp-2">
+          Redesign mobile cross-chain bridge interface with deep dark-mode aesthetic, tactile wallet signing drawers, and sub-second feedback cues.
+        </p>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-0.5 rounded bg-[#111317] border border-[#2d323b] text-[10px] font-mono text-gray-300">Figma</span>
+<span class="px-2 py-0.5 rounded bg-[#111317] border border-[#2d323b] text-[10px] font-mono text-gray-300">Dark UX</span>
+<span class="px-2 py-0.5 rounded bg-[#111317] border border-[#2d323b] text-[10px] font-mono text-gray-300">Mobile-first</span>
+</div>
+<div class="pt-2 border-t border-[#252932] flex items-center justify-between">
+<span class="text-xs text-[#94a3b8]">14 proposals</span>
+<button class="px-4 py-1.5 rounded-lg bg-[#10b981] hover:bg-[#059669] text-[#111317] text-xs font-bold active:scale-95 transition-all shadow">
+            Apply Now
+          </button>
+</div>
+</div>
+</section>
+<!-- How Smart Escrow Works -->
+<section class="px-4 py-6 flex flex-col gap-4 border-t border-[#2d323b]">
+<div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[#10b981] text-[16px]">verified_user</span>
+<span class="font-mono text-[10px] text-[#10b981] uppercase tracking-wider font-semibold">CRYPTOGRAPHIC SAFEGUARD</span>
+</div>
+<h2 class="text-lg font-bold text-white tracking-tight mt-0.5">How Smart Escrow Works</h2>
+<p class="text-xs text-[#94a3b8]">Zero chargebacks. Zero payment chasing. Fully audited protocol logic.</p>
+</div>
+<!-- Step Cards (1 to 4) in #1d2026 -->
+<div class="flex flex-col gap-2.5">
+<!-- Step 1 -->
+<div class="p-3 rounded-xl bg-[#1d2026] border border-[#2d323b] flex items-start gap-3">
+<div class="w-7 h-7 rounded-lg bg-[#111317] border border-[#2d323b] text-[#10b981] font-mono text-xs font-bold flex items-center justify-center shrink-0">
+            01
+          </div>
+<div>
+<h3 class="text-xs font-bold text-white">Post &amp; Agree Milestone Terms</h3>
+<p class="text-[11px] text-[#94a3b8] mt-0.5">Deliverables, acceptance criteria, and payout deadlines structured in on-chain agreement.</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="p-3 rounded-xl bg-[#1d2026] border border-[#2d323b] flex items-start gap-3">
+<div class="w-7 h-7 rounded-lg bg-[#111317] border border-[#2d323b] text-[#10b981] font-mono text-xs font-bold flex items-center justify-center shrink-0">
+            02
+          </div>
+<div>
+<h3 class="text-xs font-bold text-white">Fund Safe Escrow Contract</h3>
+<p class="text-[11px] text-[#94a3b8] mt-0.5">100% of project funds deposited into multi-sig vault. Talent begins work with certainty.</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="p-3 rounded-xl bg-[#1d2026] border border-[#2d323b] flex items-start gap-3">
+<div class="w-7 h-7 rounded-lg bg-[#111317] border border-[#2d323b] text-[#10b981] font-mono text-xs font-bold flex items-center justify-center shrink-0">
+            03
+          </div>
+<div>
+<h3 class="text-xs font-bold text-white">Milestone Verification</h3>
+<p class="text-[11px] text-[#94a3b8] mt-0.5">Deliverables submitted and validated against agreed criteria with proof-of-work timestamps.</p>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="p-3 rounded-xl bg-[#1d2026] border border-[#10b981]/40 flex items-start gap-3">
+<div class="w-7 h-7 rounded-lg bg-[#10b981] text-[#111317] font-mono text-xs font-bold flex items-center justify-center shrink-0">
+            04
+          </div>
+<div>
+<h3 class="text-xs font-bold text-[#10b981]">Instant Payout Release</h3>
+<p class="text-[11px] text-[#94a3b8] mt-0.5">Funds release automatically to the freelancer wallet. Sub-minute settlement, zero delays.</p>
+</div>
+</div>
+</div>
+<!-- Security Guarantee Card -->
+<div class="p-3.5 rounded-xl bg-[#17191e] border border-[#2d323b] flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-mono text-[#10b981] uppercase font-semibold">SECURITY CERTIFICATION</span>
+<span class="material-symbols-outlined text-[#10b981] text-[16px]">verified</span>
+</div>
+<p class="text-xs text-gray-300 leading-relaxed">
+          Smart Escrow contracts audited by CertiK &amp; OpenZeppelin. Multi-sig consensus requires 3 of 5 validator approvals on dispute resolution.
+        </p>
+<div class="flex items-center gap-2 pt-1 border-t border-[#252932] font-mono text-[10px] text-[#64748b]">
+<span>Contract: 0xDe3...918A</span>
+<span>·</span>
+<span class="text-[#10b981] hover:underline cursor-pointer">View Explorer</span>
+</div>
+</div>
+</section>
+<!-- Platform Stats (2x2 Grid) -->
+<section class="px-4 py-6 flex flex-col gap-3.5 border-t border-[#2d323b]">
+<div>
+<span class="text-[10px] font-mono font-semibold uppercase text-[#10b981] tracking-wider">PROTOCOL METRICS</span>
+<h2 class="text-lg font-bold text-white tracking-tight mt-0.5">Battle-Tested Infrastructure</h2>
+</div>
+<div class="grid grid-cols-2 gap-2.5">
+<div class="p-3.5 rounded-xl bg-[#1d2026] border border-[#2d323b] flex flex-col">
+<span class="text-xl font-mono font-bold text-[#10b981]">$48M+</span>
+<span class="text-xs font-semibold text-white mt-1">Escrow Settled</span>
+<span class="text-[10px] text-[#64748b]">Since genesis</span>
+</div>
+<div class="p-3.5 rounded-xl bg-[#1d2026] border border-[#2d323b] flex flex-col">
+<span class="text-xl font-mono font-bold text-[#10b981]">99.4%</span>
+<span class="text-xs font-semibold text-white mt-1">Dispute-Free</span>
+<span class="text-[10px] text-[#64748b]">Milestone releases</span>
+</div>
+<div class="p-3.5 rounded-xl bg-[#1d2026] border border-[#2d323b] flex flex-col">
+<span class="text-xl font-mono font-bold text-white">14,200+</span>
+<span class="text-xs font-semibold text-white mt-1">Verified Pros</span>
+<span class="text-[10px] text-[#64748b]">KYC &amp; code tested</span>
+</div>
+<div class="p-3.5 rounded-xl bg-[#1d2026] border border-[#2d323b] flex flex-col">
+<span class="text-xl font-mono font-bold text-[#10b981]">&lt; 3 min</span>
+<span class="text-xs font-semibold text-white mt-1">Avg Settlement</span>
+<span class="text-[10px] text-[#64748b]">Upon approval</span>
+</div>
+</div>
+</section>
+<!-- Testimonials / Builders Feedback -->
+<section class="px-4 py-6 flex flex-col gap-3.5 border-t border-[#2d323b]">
+<div>
+<span class="text-[10px] font-mono font-semibold uppercase text-[#10b981] tracking-wider">SOCIAL PROOF</span>
+<h2 class="text-lg font-bold text-white tracking-tight mt-0.5">What Builders Say</h2>
+</div>
+<!-- Testimonial 1 -->
+<div class="p-3.5 rounded-xl bg-[#1d2026] border border-[#2d323b] flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex text-[#10b981]">
+<span class="material-symbols-outlined text-[15px]">star</span>
+<span class="material-symbols-outlined text-[15px]">star</span>
+<span class="material-symbols-outlined text-[15px]">star</span>
+<span class="material-symbols-outlined text-[15px]">star</span>
+<span class="material-symbols-outlined text-[15px]">star</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-[#111317] border border-[#2d323b] text-[10px] font-mono text-[#10b981]">Enterprise Client</span>
+</div>
+<p class="text-xs text-gray-300 italic leading-relaxed">
+          "We hired three senior Rust developers within 48 hours to complete our testnet validator deployment. Milestone escrow completely removes the counterparty risk."
+        </p>
+<div class="flex items-center gap-2.5 pt-1.5 border-t border-[#252932]">
+<img alt="Marcus Sterling" class="w-8 h-8 rounded-full object-cover border border-[#2d323b]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTnYsIpt1X74SX0q0K-ln5YJHz-SLSaNCJIRQIkrUVTQLzjzrc6ndKcwStW1kkTTCB5dgP7NxLJtNgMiskNfxfY7UVV2OddJde0SnQ5hiygXcFNfNZVPYXUZeYNd-OGY5YDLmFZF81gZm-kONeYO9SxsvPbFpxaGYP3iELrXyke9wPdMWDkECDJ1i4jbs7I4x5WzQKwbXi6OKbIom4j_aDo2rTypt9omFArUr53y8uAanceqKOFOxq"/>
+<div class="flex flex-col">
+<span class="text-xs font-bold text-white">Marcus Sterling</span>
+<span class="text-[10px] text-[#64748b]">CTO, Kroma DEX • $140k+ Escrowed</span>
+</div>
+</div>
+</div>
+<!-- Testimonial 2 -->
+<div class="p-3.5 rounded-xl bg-[#1d2026] border border-[#2d323b] flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex text-[#10b981]">
+<span class="material-symbols-outlined text-[15px]">star</span>
+<span class="material-symbols-outlined text-[15px]">star</span>
+<span class="material-symbols-outlined text-[15px]">star</span>
+<span class="material-symbols-outlined text-[15px]">star</span>
+<span class="material-symbols-outlined text-[15px]">star</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-[#111317] border border-[#2d323b] text-[10px] font-mono text-[#10b981]">Top Rated Pro</span>
+</div>
+<p class="text-xs text-gray-300 italic leading-relaxed">
+          "As an auditor, getting paid instantly the moment the report is confirmed on-chain is incredible. No waiting 14 business days or dealing with bank wires."
+        </p>
+<div class="flex items-center gap-2.5 pt-1.5 border-t border-[#252932]">
+<img alt="Elena Vance" class="w-8 h-8 rounded-full object-cover border border-[#2d323b]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6WTfFVo8pezqJax6YAbCHXOiujilzTuI74A9NJ_KDN1atxBHc6TOp3DUJ__q007Qz89SBwGcvstocthyp9h19kn0mvpH6icavyTdqukObSDiuxUr2Ht4HMlaLXaW5gwY9XlxaLCJIRWQ0kQu63GsMGI3Pvf-HS4O4cT0woXcUj-at5w2jqucqxFrghnfdyb229eTkOFtq5Hzsg6lQcMen7Fcs-3pKXNCpNT0pb9oh4M-v5NVwdM7C"/>
+<div class="flex flex-col">
+<span class="text-xs font-bold text-white">Elena Vance, PhD</span>
+<span class="text-[10px] text-[#64748b]">Security Auditor • $82k Earned</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom CTA Banner -->
+<section class="px-4 py-6 border-t border-[#2d323b]">
+<div class="p-5 rounded-xl bg-[#1d2026] border border-[#2d323b] flex flex-col items-center text-center gap-3">
+<div class="w-10 h-10 rounded-full bg-[#111317] border border-[#2d323b] flex items-center justify-center text-[#10b981]">
+<span class="material-symbols-outlined text-[22px]">rocket_launch</span>
+</div>
+<h2 class="text-base font-bold text-white">Ready to Experience True Freelance Freedom?</h2>
+<p class="text-xs text-[#94a3b8]">
+          Create your profile in 60 seconds with Web3 wallet or email. Start bidding with zero platform fees for your first 30 days.
+        </p>
+<div class="flex flex-col gap-2 w-full pt-1">
+<button class="w-full py-2.5 rounded-lg bg-[#10b981] hover:bg-[#059669] text-[#111317] font-bold text-xs shadow transition-all active:scale-98">
+            Join as a Freelancer
+          </button>
+<button class="w-full py-2.5 rounded-lg bg-[#14161a] border border-[#2d323b] hover:border-gray-500 text-gray-200 font-semibold text-xs transition-colors">
+            Post a Job for Free
+          </button>
+</div>
+<div class="flex items-center gap-2 text-[10px] font-mono text-[#64748b] pt-1">
+<span>No subscription</span>
+<span>•</span>
+<span>Instant wallet connect</span>
+</div>
+</div>
+</section>
+<!-- Mobile Footer -->
+<footer class="px-4 pt-6 pb-4 bg-[#111317] border-t border-[#2d323b] flex flex-col gap-4 text-xs">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-[#10b981] flex items-center justify-center font-bold text-[#111317] text-sm">
+          D
+        </div>
+<span class="text-base font-bold text-white">Dee<span class="text-[#10b981]">Lance</span></span>
+</div>
+<p class="text-[#94a3b8] text-[11px] leading-relaxed">
+        The decentralized Web3 freelancing ecosystem powered by smart escrow, flat 2% fees, and verifiable on-chain credentials.
+      </p>
+<div class="grid grid-cols-2 gap-3 pt-2 text-[11px]">
+<div class="flex flex-col gap-1.5">
+<span class="font-bold text-white text-xs">Categories</span>
+<a class="text-[#94a3b8] hover:text-[#10b981]" href="#">Smart Contracts</a>
+<a class="text-[#94a3b8] hover:text-[#10b981]" href="#">UI/UX Design</a>
+<a class="text-[#94a3b8] hover:text-[#10b981]" href="#">Web3 Fullstack</a>
+</div>
+<div class="flex flex-col gap-1.5">
+<span class="font-bold text-white text-xs">Protocol</span>
+<a class="text-[#94a3b8] hover:text-[#10b981]" href="#">Escrow Vaults</a>
+<a class="text-[#94a3b8] hover:text-[#10b981]" href="#">Fee Schedule</a>
+<a class="text-[#94a3b8] hover:text-[#10b981]" href="#">CertiK Audit</a>
+</div>
+</div>
+<div class="pt-3 border-t border-[#252932] flex items-center justify-between text-[10px] font-mono text-[#64748b]">
+<span>© 2025 DeeLance Protocol</span>
+<span class="text-[#10b981]">Multi-Sig Protected</span>
+</div>
+</footer>
+</main>
+<!-- Sticky Mobile Bottom App Dock Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-[#111317]/95 backdrop-blur-md border-t border-[#2d323b] max-w-md mx-auto">
+<div class="flex items-center justify-around py-2 px-3">
+<a class="flex flex-col items-center gap-0.5 text-[#10b981]" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-medium font-mono">Home</span>
+</a>
+<a class="flex flex-col items-center gap-0.5 text-[#94a3b8] hover:text-white" href="#">
+<span class="material-symbols-outlined text-[20px]">work</span>
+<span class="text-[10px] font-medium font-mono">Jobs</span>
+</a>
+<a class="flex flex-col items-center gap-0.5 text-[#94a3b8] hover:text-white relative" href="#">
+<span class="material-symbols-outlined text-[20px]">forum</span>
+<span class="w-1.5 h-1.5 rounded-full bg-[#10b981] absolute top-0 right-3"></span>
+<span class="text-[10px] font-medium font-mono">Messages</span>
+</a>
+<a class="flex flex-col items-center gap-0.5 text-[#94a3b8] hover:text-white" href="#">
+<span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+<span class="text-[10px] font-medium font-mono">Wallet</span>
+</a>
+</div>
+</nav>
+<!-- Simple Tab Interactivity Script -->
+<script>
+    (function () {
+      const tabTalent = document.getElementById('tab-find-talent');
+      const tabWork = document.getElementById('tab-find-work');
+
+      if (tabTalent && tabWork) {
+        tabTalent.addEventListener('click', function () {
+          tabTalent.className = "flex-1 py-2 rounded-md text-xs font-semibold bg-[#1d2026] text-white border border-[#2d323b] shadow-sm transition-all text-center";
+          tabWork.className = "flex-1 py-2 rounded-md text-xs font-medium text-[#94a3b8] hover:text-white transition-all text-center";
+        });
+
+        tabWork.addEventListener('click', function () {
+          tabWork.className = "flex-1 py-2 rounded-md text-xs font-semibold bg-[#1d2026] text-white border border-[#2d323b] shadow-sm transition-all text-center";
+          tabTalent.className = "flex-1 py-2 rounded-md text-xs font-medium text-[#94a3b8] hover:text-white transition-all text-center";
+        });
+      }
+    })();
+  </script>
+</body></html>

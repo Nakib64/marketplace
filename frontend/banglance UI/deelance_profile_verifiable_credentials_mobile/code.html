@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#111317;color:#e2e2e8;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-tint": "#4edea3", "primary-fixed-dim": "#4edea3", "on-secondary-fixed-variant": "#005137", "error-container": "#93000a", "secondary-container": "#25a475", "on-secondary-container": "#00311f", "on-primary-container": "#00422b", "on-primary": "#003824", "surface-container-high": "#282a2e", "tertiary": "#c4c6d1", "secondary": "#68dba9", "on-tertiary-fixed": "#181b23", "outline": "#86948a", "tertiary-fixed": "#e0e2ed", "on-tertiary-container": "#363941", "on-tertiary-fixed-variant": "#44474f", "outline-variant": "#3c4a42", "primary-fixed": "#6ffbbe", "surface-container-low": "#1a1c20", "on-surface": "#e2e2e8", "surface-bright": "#37393e", "secondary-fixed-dim": "#68dba9", "error": "#ffb4ab", "primary": "#4edea3", "inverse-primary": "#006c49", "tertiary-container": "#a0a2ac", "secondary-fixed": "#85f8c4", "on-surface-variant": "#bbcabf", "surface-container": "#1e2024", "on-secondary": "#003825", "on-error": "#690005", "on-tertiary": "#2d3038", "on-primary-fixed": "#002113", "primary-container": "#10b981", "surface": "#111317", "tertiary-fixed-dim": "#c4c6d1", "inverse-on-surface": "#2f3035", "on-background": "#e2e2e8", "surface-variant": "#333539", "on-secondary-fixed": "#002114", "surface-container-lowest": "#0c0e12", "background": "#111317", "on-primary-fixed-variant": "#005236", "surface-container-highest": "#333539", "surface-dim": "#111317", "inverse-surface": "#e2e2e8", "on-error-container": "#ffdad6" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-lg": "1.5rem", "margin": "2rem", "space-sm": "0.5rem", "gutter": "1.5rem", "space-xs": "0.25rem", "space-md": "1rem", "space-xl": "2rem" }, fontFamily: { "headline-lg-mobile": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "headline-xl": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "code-sm": ["JetBrains Mono"], "headline-md": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "headline-xl-mobile": ["Plus Jakarta Sans"] }, fontSize: { "headline-lg-mobile": ["20px", { lineHeight: "28px", fontWeight: "600" }], "body-md": ["14px", { lineHeight: "22px", fontWeight: "400" }], "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }], "headline-xl": ["36px", { lineHeight: "44px", fontWeight: "700" }], "headline-lg": ["24px", { lineHeight: "32px", fontWeight: "600" }], "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }], "label-md": ["14px", { lineHeight: "20px", fontWeight: "600" }], "code-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }], "headline-md": ["18px", { lineHeight: "26px", fontWeight: "600" }], "label-sm": ["12px", { lineHeight: "16px", fontWeight: "500" }], "headline-xl-mobile": ["28px", { lineHeight: "36px", fontWeight: "700" }] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_12px_rgba(0,0,0,0.45)]"><div class="h-16 px-space-md flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="Brand logo" class="h-8 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1UxTim0GpgKyJXNkbFMes-MCS9i-Yu-daFRqqs2dkwzUKZwvjryEpAYTCnl0uSDLnIWTS1QZlryFS1BcJQ1Ww0_cKuv2zmuTb4A1WLG3j_jwMZgqpTKYxQ9ZvJ3eO4lo4CyqYzR6cgPpX3u_g1Urcir8T6CdDRvjmv2qVv5I1YYl3K2wg85MfodgKtIHyH6troKtFd7XRnUH4lGVuVgSXkdI2FWxxMqcc9FHmUtC9N6n-wB76jBk8NNia4"/><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-on-surface truncate">Contracts</span><div class="flex items-center gap-1 mt-0.5"><span class="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span><span class="font-code-sm text-code-sm text-on-surface-variant truncate">Arbitrum One</span></div></div></div><div class="flex items-center gap-space-xs shrink-0"><button aria-label="Notifications" class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors relative"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-primary"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 w-full bg-surface pt-16 pb-24 relative"><div class="flex flex-col w-full pb-6 px-space-md space-y-space-md">
+<!-- Mobile Sub-App Bar -->
+<div class="flex items-center justify-between py-space-xs">
+<div class="flex items-center gap-space-sm">
+<button aria-label="Go Back" class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</button>
+<span class="font-headline-md text-headline-md text-on-surface">Profile &amp; Identity</span>
+</div>
+<button aria-label="Public View Preview" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+<span class="font-label-sm text-label-sm">Public</span>
+</button>
+</div>
+<!-- Sub-Navigation Pill Carousel -->
+<div class="flex items-center gap-space-xs overflow-x-auto no-scrollbar py-0.5 -mx-space-md px-space-md">
+<button class="shrink-0 px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md shadow-sm">Profile</button>
+<button class="shrink-0 px-4 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors">Security</button>
+<button class="shrink-0 px-4 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors">Notifications</button>
+<button class="shrink-0 px-4 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors">Accounts</button>
+</div>
+<!-- Profile Identity Header Card -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-md flex flex-col space-y-space-md">
+<div class="flex items-start gap-space-md">
+<div class="relative shrink-0">
+<img class="w-16 h-16 rounded-xl object-cover bg-surface-container-high" data-alt="Cyberpunk high-fidelity digital 3D profile render of a crypto developer wearing low-profile augmented spectacles, dark matte charcoal and deep obsidian background with subtle emerald rim light, high tech executive vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5sI0JxpEaqoX5_fsDPOoPXzYlxpXYFlqhhZscpf-Yu5DB0-VlHYVNN9MKZ9CJatyKw2CZ4YqtEwTNx462-2Ltg2U1-26jVO3P1u45OPpVUMFy7ml6mjsyePCS5Ik_USV71RMqcxbaL9Et77HL2EguxbsiqSeoZJk3Ord37_PcIBufdVlmPuJuGi2mwy-1hY3q_R6NhvBKUCVRwF3w47bY1uvV9BDIjbvpRBKFFovmmin1MVBrHsAw"/>
+<div class="absolute -bottom-1 -right-1 bg-surface-container-lowest text-primary rounded-full p-0.5 flex items-center justify-center shadow">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-md text-headline-md text-on-surface truncate">alexr.eth</span>
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+</div>
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-on-surface transition-colors mt-0.5 w-fit group" id="copyWalletBtn">
+<span class="font-code-sm text-code-sm truncate">0x3C49...81B7</span>
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant group-hover:text-primary transition-colors">content_copy</span>
+</button>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate mt-1">Senior Stylus &amp; Smart Contract Engineer</span>
+</div>
+</div>
+<!-- Identity Strength -->
+<div class="bg-surface-container-low rounded-lg p-space-sm flex flex-col space-y-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">shield_person</span>
+<span class="font-label-sm text-label-sm text-on-surface">Identity Strength</span>
+</div>
+<span class="font-code-sm text-code-sm text-primary font-medium">92% Verified</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-1.5 rounded-full w-[92%]"></div>
+</div>
+</div>
+</div>
+<!-- Section 1: Basic Information -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-md flex flex-col space-y-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">person_outline</span>
+        Basic Information
+      </span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Arbitrum / Stylus</span>
+</div>
+<div class="space-y-3">
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Display Name</label>
+<div class="bg-surface-container-low rounded-lg px-3 py-2 flex items-center shadow-inner">
+<input class="bg-transparent w-full text-on-surface font-body-md text-body-md focus:outline-none" type="text" value="Alex Rivera"/>
+</div>
+</div>
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Professional Bio</label>
+<div class="bg-surface-container-low rounded-lg p-3 shadow-inner">
+<textarea class="bg-transparent w-full text-on-surface font-body-md text-body-md focus:outline-none resize-none" rows="3">WASM &amp; Rust smart contract architecture specialist on Arbitrum Stylus. Protocol security auditor &amp; autonomous agent framework builder.</textarea>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Primary ENS</label>
+<div class="bg-surface-container-low rounded-lg px-3 py-2 flex items-center shadow-inner">
+<input class="bg-transparent w-full text-on-surface font-code-sm text-code-sm focus:outline-none truncate" type="text" value="alexr.eth"/>
+</div>
+</div>
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Hourly Rate</label>
+<div class="bg-surface-container-low rounded-lg px-3 py-2 flex items-center justify-between shadow-inner">
+<input class="bg-transparent w-16 text-on-surface font-body-md text-body-md focus:outline-none" type="text" value="$140"/>
+<span class="font-code-sm text-code-sm text-on-surface-variant">/ hr</span>
+</div>
+</div>
+</div>
+<!-- Contract Availability Toggle -->
+<div class="bg-surface-container-low rounded-lg p-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary shrink-0"></span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">Available for Contracts</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Accepting Stylus &amp; WASM audits</span>
+</div>
+</div>
+<button aria-label="Toggle availability" class="w-11 h-6 rounded-full bg-surface-container-highest flex items-center p-0.5 transition-colors" id="availToggle">
+<span class="w-5 h-5 rounded-full bg-primary transform translate-x-5 transition-transform"></span>
+</button>
+</div>
+</div>
+</div>
+<!-- Section 2: On-Chain Credentials & SBTs -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-md flex flex-col space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">token</span>
+<span class="font-label-md text-label-md text-on-surface">Soulbound Credentials</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+        3 Active
+      </span>
+</div>
+<!-- SBT Compact Stack -->
+<div class="flex flex-col space-y-2">
+<!-- Item 1: CertiK -->
+<div class="bg-surface-container-low rounded-lg p-3 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-on-surface truncate">CertiK Auditor SBT</span>
+<span class="material-symbols-outlined text-primary text-[14px]">check_circle</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant truncate">SBT-ID #8824 • Verified Tier 1</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 pl-2">
+<span class="font-code-sm text-code-sm text-primary font-medium">96.4</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Score</span>
+</div>
+</div>
+<!-- Item 2: Gitcoin Passport -->
+<div class="bg-surface-container-low rounded-lg p-3 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-[20px]" style="font-variation-settings: 'FILL' 1;">passkey</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-on-surface truncate">Gitcoin Passport</span>
+<span class="material-symbols-outlined text-primary text-[14px]">check_circle</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant truncate">Sybil Resistant • Arbitrum</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 pl-2">
+<span class="font-code-sm text-code-sm text-primary font-medium">42.8</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Weight</span>
+</div>
+</div>
+<!-- Item 3: zkPass KYC -->
+<div class="bg-surface-container-low rounded-lg p-3 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">fingerprint</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-on-surface truncate">zkPass KYC Verified</span>
+<span class="material-symbols-outlined text-primary text-[14px]">check_circle</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant truncate">Zero-Knowledge Legal ID</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-primary font-code-sm text-code-sm">Valid</span>
+</div>
+</div>
+<!-- Minimal Restrained Container Button -->
+<button class="w-full py-2.5 px-4 rounded-xl bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md transition-colors flex items-center justify-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px] text-primary">add_link</span>
+<span>+ Mint / Link Credential</span>
+</button>
+</div>
+<!-- Section 3: Connected Web2 Accounts -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-md flex flex-col space-y-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">hub</span>
+        Connected Accounts
+      </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Synced to Reputation</span>
+</div>
+<div class="space-y-2">
+<!-- GitHub -->
+<div class="bg-surface-container-low rounded-lg p-3 flex items-center justify-between">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface text-[18px]">code</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface">GitHub</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant truncate">alexrivera-eth</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-code-sm text-code-sm">Linked</span>
+</div>
+</div>
+<!-- Telegram -->
+<div class="bg-surface-container-low rounded-lg p-3 flex items-center justify-between">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface text-[18px]">send</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface">Telegram</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant truncate">@arivera_stylus</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-code-sm text-code-sm">Linked</span>
+</div>
+</div>
+<!-- Discord -->
+<div class="bg-surface-container-low rounded-lg p-3 flex items-center justify-between">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface text-[18px]">forum</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface">Discord</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant truncate">arivera#0042</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-code-sm text-code-sm">Linked</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Mobile Action Panel -->
+<div class="sticky bottom-2 w-full pt-2">
+<div class="bg-surface-container/95 backdrop-blur-md p-2 rounded-xl shadow-xl flex items-center gap-2">
+<button class="flex-1 py-3 px-4 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md transition-all flex items-center justify-center gap-2 shadow-md" id="saveBtn">
+<span class="material-symbols-outlined text-[18px] text-primary">save</span>
+<span>Save Profile Changes</span>
+</button>
+<button aria-label="Reset Changes" class="w-12 h-12 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface flex items-center justify-center transition-colors shrink-0">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">restart_alt</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+  // Copy feedback micro-interaction
+  const copyBtn = document.getElementById('copyWalletBtn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      const icon = copyBtn.querySelector('.material-symbols-outlined');
+      if (icon) {
+        icon.textContent = 'done';
+        setTimeout(() => {
+          icon.textContent = 'content_copy';
+        }, 1500);
+      }
+    });
+  }
+
+  // Toggle micro-interaction
+  const toggle = document.getElementById('availToggle');
+  if (toggle) {
+    let active = true;
+    toggle.addEventListener('click', () => {
+      active = !active;
+      const knob = toggle.querySelector('span');
+      if (knob) {
+        if (active) {
+          knob.classList.remove('translate-x-0', 'bg-tertiary');
+          knob.classList.add('translate-x-5', 'bg-primary');
+        } else {
+          knob.classList.remove('translate-x-5', 'bg-primary');
+          knob.classList.add('translate-x-0', 'bg-tertiary');
+        }
+      }
+    });
+  }
+
+  // Save changes micro-interaction
+  const saveBtn = document.getElementById('saveBtn');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+      const textSpan = saveBtn.querySelector('span:last-child');
+      const iconSpan = saveBtn.querySelector('.material-symbols-outlined');
+      if (textSpan && iconSpan) {
+        const originalText = textSpan.textContent;
+        textSpan.textContent = 'Saved to Arbitrum!';
+        iconSpan.textContent = 'done_all';
+        setTimeout(() => {
+          textSpan.textContent = originalText;
+          iconSpan.textContent = 'save';
+        }, 1800);
+      }
+    });
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-4px_20px_rgba(0,0,0,0.5)]" data-active-classes="text-primary font-semibold"><div class="h-16 px-space-xs flex items-center justify-around"><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="overview" href="#"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="font-label-sm text-label-sm mt-0.5 tracking-tight">Overview</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] h-12 transition-colors text-primary font-semibold" data-path="contracts" href="#"><span class="material-symbols-outlined text-[22px]">handshake</span><span class="font-label-sm text-label-sm mt-0.5 tracking-tight">Contracts</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="vault-escrow" href="#"><span class="material-symbols-outlined text-[22px]">lock_open</span><span class="font-label-sm text-label-sm mt-0.5 tracking-tight">Vault</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="messages" href="#"><span class="material-symbols-outlined text-[22px]">chat_bubble</span><span class="font-label-sm text-label-sm mt-0.5 tracking-tight">Messages</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-on-surface-variant hover:text-on-surface transition-colors" data-path="wallet" href="#"><span class="material-symbols-outlined text-[22px]">account_balance_wallet</span><span class="font-label-sm text-label-sm mt-0.5 tracking-tight">Wallet</span></a></div></nav></body></html>

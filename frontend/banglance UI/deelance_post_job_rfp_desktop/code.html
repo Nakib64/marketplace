@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "inverse-primary": "#006c49",
+          "on-background": "#e2e2e8",
+          "tertiary-container": "#a0a2ac",
+          "on-error-container": "#ffdad6",
+          "surface-container-highest": "#333539",
+          "on-tertiary-container": "#363941",
+          "on-primary": "#003824",
+          "surface": "#111317",
+          "on-tertiary": "#2d3038",
+          "on-secondary": "#003825",
+          "error": "#ffb4ab",
+          "on-error": "#690005",
+          "primary": "#4edea3",
+          "outline-variant": "#3c4a42",
+          "background": "#111317",
+          "on-secondary-container": "#00311f",
+          "on-primary-fixed": "#002113",
+          "on-tertiary-fixed": "#181b23",
+          "surface-container": "#1e2024",
+          "secondary": "#68dba9",
+          "on-secondary-fixed-variant": "#005137",
+          "inverse-on-surface": "#2f3035",
+          "surface-dim": "#111317",
+          "on-surface-variant": "#bbcabf",
+          "surface-bright": "#37393e",
+          "secondary-fixed": "#85f8c4",
+          "on-primary-fixed-variant": "#005236",
+          "secondary-container": "#25a475",
+          "tertiary-fixed": "#e0e2ed",
+          "surface-tint": "#4edea3",
+          "tertiary": "#c4c6d1",
+          "primary-fixed": "#6ffbbe",
+          "primary-fixed-dim": "#4edea3",
+          "surface-container-low": "#1a1c20",
+          "secondary-fixed-dim": "#68dba9",
+          "outline": "#86948a",
+          "surface-container-lowest": "#0c0e12",
+          "error-container": "#93000a",
+          "on-tertiary-fixed-variant": "#44474f",
+          "primary-container": "#10b981",
+          "on-primary-container": "#00422b",
+          "surface-variant": "#333539",
+          "on-surface": "#e2e2e8",
+          "inverse-surface": "#e2e2e8",
+          "surface-container-high": "#282a2e",
+          "on-secondary-fixed": "#002114",
+          "tertiary-fixed-dim": "#c4c6d1"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.25rem",
+          "lg": "0.5rem",
+          "xl": "0.75rem",
+          "full": "9999px"
+        },
+        "spacing": {
+          "gutter": "1.5rem",
+          "margin": "2rem",
+          "space-md": "1rem",
+          "space-lg": "1.5rem",
+          "space-sm": "0.5rem",
+          "space-xl": "2rem",
+          "space-xs": "0.25rem"
+        },
+        "fontFamily": {
+          "label-sm": [
+            "Plus Jakarta Sans"
+          ],
+          "body-md": [
+            "Plus Jakarta Sans"
+          ],
+          "body-sm": [
+            "Plus Jakarta Sans"
+          ],
+          "label-md": [
+            "Plus Jakarta Sans"
+          ],
+          "headline-lg-mobile": [
+            "Plus Jakarta Sans"
+          ],
+          "body-lg": [
+            "Plus Jakarta Sans"
+          ],
+          "code-sm": [
+            "JetBrains Mono"
+          ],
+          "headline-lg": [
+            "Plus Jakarta Sans"
+          ],
+          "headline-md": [
+            "Plus Jakarta Sans"
+          ],
+          "headline-xl-mobile": [
+            "Plus Jakarta Sans"
+          ],
+          "headline-xl": [
+            "Plus Jakarta Sans"
+          ]
+        },
+        "fontSize": {
+          "label-sm": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "fontWeight": "500"
+            }
+          ],
+          "body-md": [
+            "14px",
+            {
+              "lineHeight": "22px",
+              "fontWeight": "400"
+            }
+          ],
+          "body-sm": [
+            "12px",
+            {
+              "lineHeight": "18px",
+              "fontWeight": "400"
+            }
+          ],
+          "label-md": [
+            "14px",
+            {
+              "lineHeight": "20px",
+              "fontWeight": "600"
+            }
+          ],
+          "headline-lg-mobile": [
+            "20px",
+            {
+              "lineHeight": "28px",
+              "fontWeight": "600"
+            }
+          ],
+          "body-lg": [
+            "16px",
+            {
+              "lineHeight": "24px",
+              "fontWeight": "400"
+            }
+          ],
+          "code-sm": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "fontWeight": "400"
+            }
+          ],
+          "headline-lg": [
+            "24px",
+            {
+              "lineHeight": "32px",
+              "fontWeight": "600"
+            }
+          ],
+          "headline-md": [
+            "18px",
+            {
+              "lineHeight": "26px",
+              "fontWeight": "600"
+            }
+          ],
+          "headline-xl-mobile": [
+            "28px",
+            {
+              "lineHeight": "36px",
+              "fontWeight": "700"
+            }
+          ],
+          "headline-xl": [
+            "36px",
+            {
+              "lineHeight": "44px",
+              "fontWeight": "700"
+            }
+          ]
+        }
+      },
+    },
+  }</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="h-16 w-full px-margin flex items-center justify-between gap-space-lg"><div class="flex items-center gap-space-xl"><div class="flex items-center gap-space-sm"><img alt="Brand logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UxTim0GpgKyJXNkbFMes-MCS9i-Yu-daFRqqs2dkwzUKZwvjryEpAYTCnl0uSDLnIWTS1QZlryFS1BcJQ1Ww0_cKuv2zmuTb4A1WLG3j_jwMZgqpTKYxQ9ZvJ3eO4lo4CyqYzR6cgPpX3u_g1Urcir8T6CdDRvjmv2qVv5I1YYl3K2wg85MfodgKtIHyH6troKtFd7XRnUH4lGVuVgSXkdI2FWxxMqcc9FHmUtC9N6n-wB76jBk8NNia4"/><span class="font-headline-md text-headline-md text-on-surface tracking-tight">DeeLance</span></div><nav class="hidden xl:flex items-center gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-label-md text-label-md rounded-lg"><a class="px-space-md py-space-xs rounded-lg text-on-surface-variant font-label-md text-label-md transition-colors hover:bg-surface-container-high hover:text-on-surface" data-path="overview" href="#">Overview</a><a aria-current="page" class="px-space-md py-space-xs transition-colors bg-primary-container text-on-primary-container font-label-md text-label-md rounded-lg" data-path="post-a-job" href="#">Post a Job</a><a class="px-space-md py-space-xs rounded-lg text-on-surface-variant font-label-md text-label-md transition-colors hover:bg-surface-container-high hover:text-on-surface" data-path="my-hires-and-contracts" href="#">My Hires &amp; Contracts</a><a class="px-space-md py-space-xs rounded-lg text-on-surface-variant font-label-md text-label-md transition-colors hover:bg-surface-container-high hover:text-on-surface" data-path="escrow-vaults" href="#">Escrow Vaults</a><a class="px-space-md py-space-xs rounded-lg text-on-surface-variant font-label-md text-label-md transition-colors hover:bg-surface-container-high hover:text-on-surface" data-path="talent-directory" href="#">Talent Directory</a><a class="px-space-md py-space-xs rounded-lg text-on-surface-variant font-label-md text-label-md transition-colors hover:bg-surface-container-high hover:text-on-surface" data-path="messages" href="#">Messages</a></nav></div><div class="flex items-center gap-space-sm"><div class="hidden sm:flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container-low"><span class="h-2 w-2 rounded-full bg-primary animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface">Arbitrum One</span></div><div class="flex items-center gap-space-sm px-space-md py-space-xs rounded-xl bg-surface-container"><span class="font-label-sm text-label-sm text-on-surface-variant hidden md:inline">Kroma Labs DAO</span><span class="font-code-sm text-code-sm text-primary">0x3C49...81B7</span><span class="material-symbols-outlined text-outline text-[16px] cursor-pointer hover:text-on-surface transition-colors">content_copy</span></div><button class="p-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors relative" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center cursor-pointer"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<div class="w-full max-w-[1440px] mx-auto px-margin py-space-xl flex flex-col gap-space-xl">
+<!-- Top Nav / Breadcrumbs & Stepper Header -->
+<div class="flex flex-col gap-space-lg">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm">
+<a class="hover:text-on-surface transition-colors" href="#">Client Workspace</a>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+<a class="hover:text-on-surface transition-colors" href="#">Job RFPs</a>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+<span class="text-on-surface font-label-md">Create New Job Posting</span>
+</div>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Post a Web3 Project RFP</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+            Define project requirements, set autonomous milestone escrow, and tap into pre-vetted on-chain builders.
+          </p>
+</div>
+<div class="flex items-center gap-space-sm self-start md:self-auto">
+<span class="px-space-md py-space-xs rounded-full bg-surface-container-low font-code-sm text-code-sm text-outline flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Draft Autosaved
+          </span>
+<button class="px-space-md py-space-xs rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors text-on-surface-variant hover:text-on-surface font-label-md text-label-md flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[16px]">visibility</span> Preview IPFS
+          </button>
+</div>
+</div>
+<!-- Multi-step horizontal progress stepper -->
+<div class="w-full bg-surface-container rounded-xl p-space-md">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Step 1: Scope & Description -->
+<div class="flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-low/60">
+<div class="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface truncate">1. Scope &amp; Description</span>
+<span class="font-body-sm text-body-sm text-primary flex items-center gap-1">
+                Completed
+              </span>
+</div>
+</div>
+<!-- Step 2: Skills & Credentials (Active) -->
+<div class="flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-high shadow-sm">
+<div class="w-7 h-7 rounded-full bg-surface-container-lowest flex items-center justify-center shrink-0">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface truncate font-semibold">2. Skills &amp; Credentials</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">In Progress</span>
+</div>
+</div>
+<!-- Step 3: Budget & Smart Escrow -->
+<div class="flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-low/40 opacity-70">
+<div class="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center text-outline shrink-0 font-code-sm text-code-sm">
+              3
+            </div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">3. Budget &amp; Escrow</span>
+<span class="font-body-sm text-body-sm text-outline truncate">Next Step</span>
+</div>
+</div>
+<!-- Step 4: Review & Deploy Vault -->
+<div class="flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-low/40 opacity-70">
+<div class="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center text-outline shrink-0 font-code-sm text-code-sm">
+              4
+            </div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">4. Review &amp; Deploy</span>
+<span class="font-body-sm text-body-sm text-outline truncate">Multi-Sig Sign</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main 2-Column Split -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+<!-- LEFT COLUMN: 65% Form Wizard (8 cols on desktop) -->
+<div class="lg:col-span-8 flex flex-col gap-space-xl">
+<!-- Section 1: Project Basics -->
+<div class="bg-surface-container rounded-xl p-space-xl flex flex-col gap-space-lg shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<h2 class="font-headline-md text-headline-md text-on-surface">1. Project Basics</h2>
+</div>
+<span class="font-code-sm text-code-sm text-outline">Section 01 / 03</span>
+</div>
+<!-- Job Title Input -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface flex justify-between">
+<span>Job Title / Architecture Spec <span class="text-primary">*</span></span>
+<span class="font-body-sm text-body-sm text-outline">58/100 chars</span>
+</label>
+<div class="relative flex items-center">
+<input class="w-full px-space-md py-space-sm rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:outline-none focus:bg-surface-container-low transition-colors" type="text" value="Arbitrum Stylus Rust Smart Contract Engineer - AMM DEX V2"/>
+</div>
+</div>
+<!-- Category Selector Pills -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface">Primary Domain Category</label>
+<div class="flex flex-wrap gap-space-xs">
+<button class="px-space-md py-space-xs rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm flex items-center gap-1.5 shadow-sm" type="button">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> DeFi Protocol
+              </button>
+<button class="px-space-md py-space-xs rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-sm text-label-sm" type="button">
+                Infrastructure / L2
+              </button>
+<button class="px-space-md py-space-xs rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-sm text-label-sm" type="button">
+                Smart Contract Audit
+              </button>
+<button class="px-space-md py-space-xs rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-sm text-label-sm" type="button">
+                Zero-Knowledge / Cryptography
+              </button>
+<button class="px-space-md py-space-xs rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-sm text-label-sm" type="button">
+                Fullstack DApp
+              </button>
+</div>
+</div>
+<!-- Project Scope & Deliverables (Markdown Supported) -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface">Project Scope &amp; Deliverables</label>
+<span class="font-label-sm text-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">markdown</span> Markdown Enabled
+              </span>
+</div>
+<!-- Editor Wrapper -->
+<div class="rounded-lg bg-surface-container-lowest overflow-hidden flex flex-col">
+<!-- Markdown Toolbar -->
+<div class="px-space-md py-space-xs bg-surface-container-low flex items-center gap-space-xs flex-wrap">
+<button class="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Bold" type="button">
+<span class="material-symbols-outlined text-[16px]">format_bold</span>
+</button>
+<button class="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Italic" type="button">
+<span class="material-symbols-outlined text-[16px]">format_italic</span>
+</button>
+<button class="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Code" type="button">
+<span class="material-symbols-outlined text-[16px]">code</span>
+</button>
+<div class="h-4 w-px bg-surface-container-highest mx-1"></div>
+<button class="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Bulleted List" type="button">
+<span class="material-symbols-outlined text-[16px]">format_list_bulleted</span>
+</button>
+<button class="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Numbered List" type="button">
+<span class="material-symbols-outlined text-[16px]">format_list_numbered</span>
+</button>
+<button class="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Insert Link" type="button">
+<span class="material-symbols-outlined text-[16px]">link</span>
+</button>
+<button class="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Insert Snippet" type="button">
+<span class="material-symbols-outlined text-[16px]">integration_instructions</span>
+</button>
+</div>
+<textarea class="w-full p-space-md bg-transparent text-on-surface font-code-sm text-code-sm focus:outline-none resize-y leading-relaxed" rows="8">We are looking for a senior Rust/Wasm smart contract specialist to construct an optimized Arbitrum Stylus liquidity pool contract. 
+
+Key Deliverables include:
+- Stylus Rust AMM core implementation with custom tick indexing and sqrtPrice math
+- Foundry / Arbitrum SDK invariant fuzz test suites (target &gt;98% branch coverage)
+- Gas benchmarking comparisons vs standard EVM bytecode implementations
+- IPFS specification documentation and automated GitHub CI workflow for contract builds</textarea>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Provide explicit deliverables for autonomous smart contract escrow verification.</span>
+</div>
+</div>
+<!-- Section 2: Skills & Credentials -->
+<div class="bg-surface-container rounded-xl p-space-xl flex flex-col gap-space-lg shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<h2 class="font-headline-md text-headline-md text-on-surface">2. Skills &amp; Verification Requirements</h2>
+</div>
+<span class="font-code-sm text-code-sm text-outline">Section 02 / 03</span>
+</div>
+<!-- Skill Tags Input -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface">Required Technology Stack</label>
+<div class="p-space-xs rounded-lg bg-surface-container-lowest flex flex-wrap items-center gap-space-xs">
+<span class="px-space-sm py-1 rounded-md bg-surface-container-high text-on-surface font-code-sm text-code-sm flex items-center gap-1">
+                Rust
+                <button class="hover:text-error transition-colors" type="button"><span class="material-symbols-outlined text-[14px]">close</span></button>
+</span>
+<span class="px-space-sm py-1 rounded-md bg-surface-container-high text-on-surface font-code-sm text-code-sm flex items-center gap-1">
+                Arbitrum Stylus
+                <button class="hover:text-error transition-colors" type="button"><span class="material-symbols-outlined text-[14px]">close</span></button>
+</span>
+<span class="px-space-sm py-1 rounded-md bg-surface-container-high text-on-surface font-code-sm text-code-sm flex items-center gap-1">
+                Foundry
+                <button class="hover:text-error transition-colors" type="button"><span class="material-symbols-outlined text-[14px]">close</span></button>
+</span>
+<span class="px-space-sm py-1 rounded-md bg-surface-container-high text-on-surface font-code-sm text-code-sm flex items-center gap-1">
+                Solidity
+                <button class="hover:text-error transition-colors" type="button"><span class="material-symbols-outlined text-[14px]">close</span></button>
+</span>
+<span class="px-space-sm py-1 rounded-md bg-surface-container-high text-on-surface font-code-sm text-code-sm flex items-center gap-1">
+                DeFi Math
+                <button class="hover:text-error transition-colors" type="button"><span class="material-symbols-outlined text-[14px]">close</span></button>
+</span>
+<span class="px-space-sm py-1 rounded-md bg-surface-container-high text-on-surface font-code-sm text-code-sm flex items-center gap-1">
+                Slither
+                <button class="hover:text-error transition-colors" type="button"><span class="material-symbols-outlined text-[14px]">close</span></button>
+</span>
+<button class="px-space-sm py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">add</span> Add Tag
+              </button>
+</div>
+</div>
+<!-- Experience Level Cards -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface">Target Engineer Seniority</label>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Junior Card -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer flex flex-col gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface">Junior / Entry</span>
+<span class="font-code-sm text-code-sm text-primary">$2,000 – $5,000</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Task assistance, script audits, small bugfixes &amp; unit test coverage.
+                </p>
+</div>
+<!-- Mid Card -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer flex flex-col gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface">Mid-Level</span>
+<span class="font-code-sm text-code-sm text-primary">$5,000 – $12,000</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Full module development, EVM integrations, standard protocol logic.
+                </p>
+</div>
+<!-- Senior / Auditor Selected Card -->
+<div class="p-space-md rounded-xl bg-surface-container-highest cursor-pointer flex flex-col gap-space-xs shadow-md relative overflow-hidden">
+<div class="absolute top-0 right-0 w-8 h-8 bg-surface-container-low flex items-center justify-center rounded-bl-lg">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<div class="flex items-center gap-1">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Senior Specialist</span>
+</div>
+<span class="font-code-sm text-code-sm text-primary font-medium">$12,000 – $35,000+</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Stylus / Wasm architecture, novel cryptography &amp; formal verification.
+                </p>
+</div>
+</div>
+</div>
+<!-- Required On-Chain Credentials / Attestations (Checklist) -->
+<div class="flex flex-col gap-space-sm">
+<label class="font-label-md text-label-md text-on-surface">Autonomous Gatekeeping (On-Chain Attestations)</label>
+<div class="flex flex-col gap-space-xs">
+<!-- Item 1 (Checked) -->
+<label class="flex items-start gap-space-md p-space-md rounded-lg bg-surface-container-lowest cursor-pointer hover:bg-surface-container-low transition-colors">
+<input checked="" class="mt-1 accent-[#10b981] rounded h-4 w-4 bg-surface-container-highest cursor-pointer" type="checkbox"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface">CertiK / OpenZeppelin SBT or Verified Security Auditor</span>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-high font-code-sm text-[11px] text-primary">Score 90+</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Only applicants possessing a cryptographic verification token in their wallet may submit proposals.</span>
+</div>
+</label>
+<!-- Item 2 (Checked) -->
+<label class="flex items-start gap-space-md p-space-md rounded-lg bg-surface-container-lowest cursor-pointer hover:bg-surface-container-low transition-colors">
+<input checked="" class="mt-1 accent-[#10b981] rounded h-4 w-4 bg-surface-container-highest cursor-pointer" type="checkbox"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface">Gitcoin Passport Sybil-Resistant Verification</span>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-high font-code-sm text-[11px] text-primary">≥ 35 Score</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Filters out automated bot applications and ensures human Web3 dev reputation.</span>
+</div>
+</label>
+<!-- Item 3 (Unchecked) -->
+<label class="flex items-start gap-space-md p-space-md rounded-lg bg-surface-container-lowest cursor-pointer hover:bg-surface-container-low transition-colors">
+<input class="mt-1 accent-[#10b981] rounded h-4 w-4 bg-surface-container-highest cursor-pointer" type="checkbox"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface">zkPass Zero-Knowledge Proof of Residency / KYC</span>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-high font-code-sm text-[11px] text-outline">Optional</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Non-custodial compliance verification without exposing applicant personal identities.</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Section 3: Budget Type & Escrow Setup Preview -->
+<div class="bg-surface-container rounded-xl p-space-xl flex flex-col gap-space-lg shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<h2 class="font-headline-md text-headline-md text-on-surface">3. Budget Type &amp; Escrow Setup</h2>
+</div>
+<span class="font-code-sm text-code-sm text-outline">Section 03 / 03</span>
+</div>
+<!-- Type Toggle -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="p-space-md rounded-xl bg-surface-container-highest cursor-pointer flex flex-col gap-space-xs relative">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Milestone-Based Escrow</span>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<span class="font-label-sm text-label-sm text-primary">Recommended for Protocols</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Release funds in staged multi-sig releases as code builds, invariant tests, and audit fixes are verified.
+              </p>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface">Single Milestone / Fixed Price</span>
+<span class="w-2 h-2 rounded-full bg-surface-container-highest"></span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">One-off deliverables</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Funds are locked once in escrow and released upon complete final sign-off and PR merge.
+              </p>
+</div>
+</div>
+<!-- Network & Target Budget Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Settlement Network -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface">Settlement Network Vault</label>
+<div class="relative">
+<select class="w-full px-space-md py-space-sm rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md appearance-none focus:outline-none cursor-pointer">
+<option selected="">Arbitrum One (Lowest Gas • ~0.0004 ETH)</option>
+<option>Ethereum Mainnet</option>
+<option>Optimism Mainnet</option>
+<option>Base L2</option>
+</select>
+<span class="material-symbols-outlined text-outline absolute right-3 top-3 pointer-events-none text-[18px]">expand_more</span>
+</div>
+</div>
+<!-- Target Budget -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface">Total Target Allocation</label>
+<div class="flex items-center bg-surface-container-lowest rounded-lg px-space-md py-space-sm">
+<span class="font-code-sm text-code-sm text-on-surface-variant mr-2">$</span>
+<input class="w-full bg-transparent font-headline-md text-headline-md text-on-surface focus:outline-none" type="text" value="15,000"/>
+<span class="font-code-sm text-code-sm text-primary px-space-xs py-0.5 rounded bg-surface-container-high ml-2 shrink-0">USDC</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Wizard Navigation Footer Actions (Dark Obsidian Buttons) -->
+<div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-space-md pt-space-xs pb-space-lg">
+<button class="w-full sm:w-auto px-space-lg py-space-sm rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors text-on-surface font-label-md text-label-md flex items-center justify-center gap-space-xs" type="button">
+<span class="material-symbols-outlined text-[18px]">save</span> Save Draft to IPFS
+          </button>
+<div class="flex items-center gap-space-sm w-full sm:w-auto">
+<button class="w-full sm:w-auto px-space-xl py-space-md rounded-xl bg-surface-bright hover:bg-surface-container-highest transition-all duration-200 text-on-surface font-label-md text-label-md flex items-center justify-center gap-space-xs shadow-md" type="button">
+<span>Continue to Budget &amp; Escrow</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: 35% Escrow Estimation & Live Preview Sidebar (4 cols on desktop) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg sticky top-20">
+<!-- Card 1: Live RFP Card Preview -->
+<div class="bg-surface-container rounded-xl p-space-lg flex flex-col gap-space-md shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> Marketplace Feed Preview
+            </span>
+<span class="font-code-sm text-code-sm text-outline">Live Sync</span>
+</div>
+<!-- Simulated Marketplace Card Inside -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest flex flex-col gap-space-sm">
+<div class="flex items-center justify-between gap-space-xs flex-wrap">
+<span class="px-space-xs py-0.5 rounded bg-surface-container-high font-code-sm text-[11px] text-on-surface-variant">
+                DeFi Protocol • Arbitrum
+              </span>
+<span class="font-code-sm text-[11px] text-outline">Just now</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface leading-snug">
+              Arbitrum Stylus Rust Smart Contract Engineer - AMM DEX V2
+            </h3>
+<!-- Hirer Info -->
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm">
+<div class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center text-primary text-[11px]">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+</div>
+<span class="text-on-surface font-medium">Kroma Labs DAO</span>
+<span class="text-outline">•</span>
+<span class="text-outline">Tier-1 Verified Hirer</span>
+</div>
+<!-- Budget Tag -->
+<div class="py-space-xs flex items-baseline gap-space-xs">
+<span class="font-headline-lg text-headline-lg text-primary font-bold">$15,000</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">USDC (Milestone Escrow)</span>
+</div>
+<!-- Skill Tags Preview -->
+<div class="flex flex-wrap gap-1 pt-1">
+<span class="px-2 py-0.5 rounded bg-surface-container-high font-code-sm text-[11px] text-on-surface-variant">Rust</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high font-code-sm text-[11px] text-on-surface-variant">Stylus</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high font-code-sm text-[11px] text-on-surface-variant">Foundry</span>
+</div>
+<!-- Gate Badge -->
+<div class="pt-space-xs flex items-center gap-1 text-on-surface-variant font-code-sm text-[11px]">
+<span class="material-symbols-outlined text-[14px] text-primary">verified_user</span>
+<span>CertiK SBT Attestation Required</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Non-Custodial Escrow Summary & Fees -->
+<div class="bg-surface-container rounded-xl p-space-lg flex flex-col gap-space-md shadow-sm">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md text-on-surface">Escrow Vault Specs</h3>
+<span class="material-symbols-outlined text-outline text-[18px]">lock</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between py-1.5 text-body-sm font-body-sm text-on-surface-variant">
+<span>Total Contract Budget:</span>
+<span class="font-code-sm text-code-sm text-on-surface font-semibold">$15,000.00 USDC</span>
+</div>
+<div class="flex items-center justify-between py-1.5 text-body-sm font-body-sm text-on-surface-variant">
+<span class="flex items-center gap-1">
+                DeeLance Hirer Fee:
+                <span class="material-symbols-outlined text-[13px] text-outline cursor-help" title="DeeLance zero extraction guarantee for hirers">info</span>
+</span>
+<span class="font-code-sm text-code-sm text-primary font-medium">0.00% ($0.00)</span>
+</div>
+<div class="flex items-center justify-between py-1.5 text-body-sm font-body-sm text-on-surface-variant">
+<span>Est. Vault Creation Gas:</span>
+<span class="font-code-sm text-code-sm text-on-surface">~0.0004 ETH ($1.20)</span>
+</div>
+<div class="flex items-center justify-between py-1.5 text-body-sm font-body-sm text-on-surface-variant">
+<span>Arbitration Scheme:</span>
+<span class="font-code-sm text-code-sm text-on-surface">Kleros ERC-792</span>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-lowest flex items-center gap-space-xs font-code-sm text-code-sm text-on-surface-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
+<span>Settlement: Safe Multi-Sig (2 of 3)</span>
+</div>
+</div>
+<!-- Card 3: Smart Escrow Safety & Hirer Protection -->
+<div class="bg-surface-container rounded-xl p-space-lg flex flex-col gap-space-md shadow-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">shield</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Hirer Guarantees</h3>
+</div>
+<div class="flex flex-col gap-space-sm text-body-sm font-body-sm text-on-surface-variant">
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5">check_circle</span>
+<p>Funds remain securely locked in your non-custodial 2/3 multi-sig Safe until you cryptographically approve code submissions.</p>
+</div>
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5">check_circle</span>
+<p>Automated 48-hour dispute grace period with decentralized Kleros juror review in the event of contractual non-delivery.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Protocol Proof Banner / On-Chain Trust Signals -->
+<div class="w-full bg-surface-container rounded-xl p-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md shadow-sm mt-space-sm">
+<div class="flex items-center gap-space-lg flex-wrap">
+<div class="flex items-center gap-space-xs font-code-sm text-code-sm text-on-surface">
+<span class="material-symbols-outlined text-[18px] text-primary">verified</span>
+<span>Formal Verification Audits by CertiK &amp; Zellic</span>
+</div>
+<div class="flex items-center gap-space-xs font-code-sm text-code-sm text-on-surface-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>$42.8M+ Total Escrowed</span>
+</div>
+<div class="flex items-center gap-space-xs font-code-sm text-code-sm text-on-surface-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>0 Custodial Breaches</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs text-outline font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+<span class="font-code-sm text-code-sm">Safe Factory: 0xa2c4...e901</span>
+</div>
+</div>
+</div>
+</div></main><footer class="w-full bg-surface-container-lowest py-space-xl shadow-[0_-1px_8px_rgba(0,0,0,0.2)]"><div class="w-full px-margin flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex items-center gap-space-md"><span class="font-label-md text-label-md text-on-surface-variant">© 2025 DeeLance Decentralized Protocol.</span><span class="font-label-sm text-label-sm text-outline">Smart Contracts Audited</span></div><div class="flex items-center gap-space-lg"><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Arbitrum Bridge</a><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Multi-Sig Vault Security</a><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms &amp; Dispute Governance</a></div></div></footer></body></html>

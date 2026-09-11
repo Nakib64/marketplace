@@ -7,14 +7,21 @@ The golden standard for this codebase is **human-readable, modular, and maintain
 
 ### The Golden Rules
 1. **Max ~120 Lines Per File**: No component, hook, or utility should become a monolithic blob. If a file grows past ~120 lines, break it down into focused sub-components, custom hooks, or utility helpers.
-2. **The "Orchestrator" Page Pattern**: Page files (`app/**/page.tsx`) must serve as an executive summary / table of contents. Anyone opening a page should understand what it renders in 15 seconds. Page files must **never** contain raw HTTP calls, complex reducers, or hundreds of lines of nested JSX.
-3. **Strict Layer Separation**:
+2. **The "Orchestrator" Page Pattern (Pure Server Components)**:
+   - **All `page.tsx` files MUST be pure Server Components (NO `'use client'`)**.
+   - Every `page.tsx` must export typed SEO `metadata: Metadata = { title, description }`.
+   - It serves as an executive summary / table of contents. Anyone opening a page should understand what it renders in 15 seconds.
+   - Page files must **never** contain raw HTTP calls, complex reducers, `useState`, or hundreds of lines of nested JSX.
+3. **Interactive State Belongs in Client Component Leaves**:
+   - Any interactivity (`useState`, `onClick`, `useForm`, `useMutation`, browser APIs) must be encapsulated in a dedicated Client Component leaf (`'use client'`) inside `features/<domain>/components/` (e.g., `<RegisterView />`, `<LoginForm />`, `<JobFilterSidebar />`).
+   - The Server Component page then cleanly renders this client component leaf.
+4. **Strict Layer Separation**:
    - **Pure Utilities (`utils/*.ts`)**: Business logic, math, fee formulas, currency formatters. Zero React dependencies, 100% unit-testable.
    - **Headless Hooks (`hooks/*.ts`)**: React state, queries, mutations, form controllers, and toast triggers.
    - **Presentational Components (`components/*.tsx`)**: Visual layout, styling, and event emission. No direct API calls.
    - **API Layer (`api/*.ts`)**: Pure HTTP request functions using the centralized Axios client.
    - **Validation Schemas (`schemas/*.ts`)**: Zod schemas that mirror backend NestJS DTOs.
-4. **Never Rewrite Logic**: If a component or calculation is used in more than one place, extract it into `components/ui/` or `lib/utils/`.
+5. **Never Rewrite Logic**: If a component or calculation is used in more than one place, extract it into `components/ui/` or `lib/utils/`.
 
 ---
 
@@ -99,13 +106,16 @@ The frontend handles this seamlessly via Axios response interceptors:
 ## 5. Coding Standards & Conventions
 
 ### Component Construction
+- **Server Components (Default)**: All page routes (`page.tsx`) must be Server Components. They handle SEO `metadata`, layout orchestration, and server-side data fetching.
+- **Client Components (`'use client'`)**: Kept strictly at the interactive leaves (buttons, form inputs, `useState`, `onClick`, `useForm`).
 - Every component must accept a TypeScript interface for its props.
-- Keep components focused on a single responsibility.
+- Keep components focused on a single responsibility (<120 LOC).
 - Use the `cn()` utility (`clsx` + `tailwind-merge`) for conditional Tailwind class merging.
 
 ### Form Handling
 - All forms must use `react-hook-form` paired with `@hookform/resolvers/zod`.
 - Schemas must live in the feature's `schemas/` directory.
+- For React 19 compatibility, use `useWatch({ control, name: 'fieldName' })` rather than `watch('fieldName')` to avoid compiler memoization warnings.
 
 ### Error Handling & User Feedback
 - Use `sonner` for toast notifications.

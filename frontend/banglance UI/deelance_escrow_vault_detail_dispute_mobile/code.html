@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><title>DeeLance</title><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;1,400&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "background": "#111317", "inverse-on-surface": "#2f3035", "surface-container": "#1e2024", "surface": "#111317", "on-secondary-fixed": "#002114", "on-tertiary": "#2d3038", "secondary-fixed-dim": "#68dba9", "on-primary": "#003824", "secondary": "#68dba9", "on-tertiary-fixed-variant": "#44474f", "outline-variant": "#3c4a42", "surface-container-highest": "#333539", "surface-variant": "#333539", "on-error": "#690005", "surface-dim": "#111317", "on-tertiary-container": "#363941", "primary-fixed": "#6ffbbe", "inverse-primary": "#006c49", "on-surface": "#e2e2e8", "on-background": "#e2e2e8", "secondary-container": "#25a475", "tertiary-fixed": "#e0e2ed", "surface-container-lowest": "#0c0e12", "primary-container": "#10b981", "on-surface-variant": "#bbcabf", "primary": "#4edea3", "tertiary": "#c4c6d1", "error-container": "#93000a", "inverse-surface": "#e2e2e8", "on-secondary-container": "#00311f", "on-error-container": "#ffdad6", "surface-tint": "#4edea3", "primary-fixed-dim": "#4edea3", "surface-container-low": "#1a1c20", "on-tertiary-fixed": "#181b23", "surface-container-high": "#282a2e", "tertiary-container": "#a0a2ac", "tertiary-fixed-dim": "#c4c6d1", "outline": "#86948a", "surface-bright": "#37393e", "on-primary-fixed": "#002113", "on-primary-container": "#00422b", "on-secondary-fixed-variant": "#005137", "on-secondary": "#003825", "error": "#ffb4ab", "secondary-fixed": "#85f8c4", "on-primary-fixed-variant": "#005236" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin": "2rem", "space-xs": "0.25rem", "space-xl": "2rem", "gutter": "1.5rem", "space-md": "1rem", "space-lg": "1.5rem", "space-sm": "0.5rem" }, "fontFamily": { "headline-xl-mobile": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "code-sm": ["JetBrains Mono"], "headline-xl": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"] }, "fontSize": { "headline-xl-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }], "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "code-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "headline-xl": ["36px", { "lineHeight": "44px", "fontWeight": "700" }], "headline-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }], "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }] } } } };</script><style>@layer base { html, body { width: 100vw; margin: 0; padding: 0; } body { overscroll-behavior-y: none; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen selection:bg-primary selection:text-on-primary"><header class="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.18)] pt-safe"><div class="h-16 px-space-md flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><button aria-label="Go back" class="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors -ml-1" onclick="history.back()" type="button"><span class="material-symbols-outlined text-[20px]">arrow_back</span></button><img alt="Brand logo" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1UxTim0GpgKyJXNkbFMes-MCS9i-Yu-daFRqqs2dkwzUKZwvjryEpAYTCnl0uSDLnIWTS1QZlryFS1BcJQ1Ww0_cKuv2zmuTb4A1WLG3j_jwMZgqpTKYxQ9ZvJ3eO4lo4CyqYzR6cgPpX3u_g1Urcir8T6CdDRvjmv2qVv5I1YYl3K2wg85MfodgKtIHyH6troKtFd7XRnUH4lGVuVgSXkdI2FWxxMqcc9FHmUtC9N6n-wB76jBk8NNia4"/><div class="flex flex-col min-w-0"><h1 class="font-headline-md text-headline-md text-on-surface truncate">Release Escrow</h1><span class="font-label-sm text-label-sm text-on-surface-variant truncate">DeeLance Escrow Core</span></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><div class="flex items-center gap-1.5 px-2 py-1 rounded-full bg-surface-container-high"><span class="w-2 h-2 rounded-full bg-primary-container"></span><span class="font-code-sm text-code-sm text-on-surface font-medium">Arbitrum</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0 ring-1 ring-outline/20"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full pb-32">
+<!-- Status Tracker Banner -->
+<div class="px-space-md pt-space-md">
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-md">
+<!-- Title & Live Indicator -->
+<div class="flex items-center justify-between gap-space-sm mb-space-sm">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-code-sm text-code-sm text-primary uppercase tracking-wider font-semibold">Milestone 2 In Review</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-code-sm text-code-sm">Vault #0x811a...ef34</span>
+</div>
+<!-- Project Name & Contractor -->
+<div class="flex items-start justify-between gap-space-sm mb-space-md">
+<div class="min-w-0">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface truncate">Arbitrum AMM Rollup</h2>
+<div class="flex items-center gap-1.5 mt-0.5 text-on-surface-variant font-body-sm text-body-sm">
+<span>Contractor:</span>
+<span class="text-on-surface font-medium">Alex Rivera</span>
+<span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center flex-shrink-0 text-on-surface font-label-md text-label-md">
+          AR
+        </div>
+</div>
+<!-- Value Ledger -->
+<div class="grid grid-cols-2 gap-space-xs bg-surface-container-lowest p-space-sm rounded-lg mb-space-md">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Total In Vault</span>
+<span class="font-headline-md text-headline-md text-on-surface">$10,500 <span class="font-label-sm text-label-sm text-on-surface-variant">USDC</span></span>
+</div>
+<div class="flex flex-col text-right">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Pending Release</span>
+<span class="font-headline-md text-headline-md text-primary">$3,500 <span class="font-label-sm text-label-sm text-primary/80">USDC</span></span>
+</div>
+</div>
+<!-- Progress Meter -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Phase Progress</span>
+<span class="text-on-surface font-medium">2 of 3 Milestones</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden flex">
+<div class="h-full bg-primary-container w-2/3 rounded-full"></div>
+</div>
+<div class="flex justify-between font-code-sm text-code-sm text-on-surface-variant pt-0.5">
+<span>M1: Spec (Paid)</span>
+<span class="text-primary font-medium">M2: Contracts (Active)</span>
+<span>M3: Audit</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Multi-Sig Cosigners Matrix -->
+<div class="px-space-md pt-space-md">
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-md">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">verified_user</span>
+<h3 class="font-label-md text-label-md text-on-surface">Escrow Multi-Sig Gate</h3>
+</div>
+<span class="font-code-sm text-code-sm px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface">
+          1 / 3 Approved
+        </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
+        Requires 2 of 3 valid cryptographically signed vouchers to authorize automated fund routing.
+      </p>
+<div class="flex flex-col gap-2">
+<!-- Signer 1: DAO Co-signer (Signed) -->
+<div class="flex items-center justify-between p-space-sm bg-surface-container rounded-lg">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-7 h-7 rounded-full bg-surface-container-high flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[15px] text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1">
+<span class="font-label-sm text-label-sm text-on-surface truncate">DeeLance DAO Node #7</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant truncate">0x9c34...bb02</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-primary font-code-sm text-code-sm flex-shrink-0">
+            Signed
+          </span>
+</div>
+<!-- Signer 2: Current User (Pending) -->
+<div class="flex items-center justify-between p-space-sm bg-surface-container-high rounded-lg shadow-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[15px] text-on-surface-variant">hourglass_top</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold truncate">Your Wallet (Hirer)</span>
+<span class="px-1.5 py-0.2 rounded bg-primary/10 text-primary font-label-sm text-[10px]">YOU</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant truncate">0x48e1...cc77</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-code-sm text-code-sm flex-shrink-0">
+            Pending Action
+          </span>
+</div>
+<!-- Signer 3: Standby -->
+<div class="flex items-center justify-between p-space-sm bg-surface-container rounded-lg opacity-75">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-7 h-7 rounded-full bg-surface-container-high flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[15px] text-on-surface-variant">shield_lock</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface truncate">Kleros Court Arbiter</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant truncate">Standby for escalation</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-code-sm text-code-sm flex-shrink-0">
+            Idle
+          </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Milestone Deliverable Snapshot -->
+<div class="px-space-md pt-space-md">
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-md">
+<!-- Section Title & Grace Period -->
+<div class="flex items-start justify-between gap-space-sm mb-space-sm">
+<div class="flex flex-col min-w-0">
+<h3 class="font-label-md text-label-md text-on-surface">Milestone 2 Deliverables</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Submitted via Arbitrum Sepolia Commit #42</span>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-highest px-2 py-1 rounded-full flex-shrink-0">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">schedule</span>
+<span class="font-code-sm text-code-sm text-on-surface font-medium" id="countdownTimer">35h 41m 58s</span>
+</div>
+</div>
+<!-- Auto Release Notice -->
+<div class="p-space-sm bg-surface-container-lowest rounded-lg mb-space-md flex items-center justify-between gap-2">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant flex-shrink-0">info</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Auto-disburses to Alex Rivera on expiry</span>
+</div>
+<span class="font-code-sm text-code-sm text-primary flex-shrink-0">Grace Active</span>
+</div>
+<!-- Verified Metric Badges -->
+<div class="grid grid-cols-2 gap-space-xs mb-space-md">
+<div class="bg-surface-container p-space-sm rounded-lg">
+<div class="flex items-center gap-1 text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[14px]">commit</span>
+<span class="font-label-sm text-label-sm">GitHub Sync</span>
+</div>
+<div class="font-label-md text-label-md text-on-surface truncate">PR #42: AMM Core</div>
+<div class="flex items-center gap-1 mt-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="font-code-sm text-code-sm text-primary">412 passing tests</span>
+</div>
+</div>
+<div class="bg-surface-container p-space-sm rounded-lg">
+<div class="flex items-center gap-1 text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[14px]">query_stats</span>
+<span class="font-label-sm text-label-sm">Test Coverage</span>
+</div>
+<div class="font-headline-md text-headline-md text-on-surface">96.4%</div>
+<div class="flex items-center gap-1 mt-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Target met (&gt;95%)</span>
+</div>
+</div>
+</div>
+<!-- IPFS Artifact Tray -->
+<div class="bg-surface-container-lowest p-space-sm rounded-lg flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant flex-shrink-0">fingerprint</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant">IPFS Artifact Proof CID</span>
+<span class="font-code-sm text-code-sm text-on-surface truncate font-mono">bafybeicg...7xyt45u3e</span>
+</div>
+</div>
+<button class="px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-sm text-label-sm hover:bg-surface-container-high transition-colors flex-shrink-0" onclick="navigator.clipboard.writeText('bafybeicg4w32a6pl77m4x98k21r0z7xyt45u3e'); this.innerText='Copied!';" type="button">
+          Copy
+        </button>
+</div>
+</div>
+</div>
+<!-- Kleros Dispute Escalation Card -->
+<div class="px-space-md pt-space-md">
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-md">
+<div class="flex items-start gap-space-sm mb-space-sm">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0 text-on-surface">
+<span class="material-symbols-outlined text-[18px]">gavel</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<h4 class="font-label-md text-label-md text-on-surface">Kleros ERC-792 Dispute Guard</h4>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+            Unsatisfied with the milestone quality? Freezing the vault stops the grace release timer and transfers custody to decentralized jurors.
+          </p>
+</div>
+</div>
+<!-- Expandable / Accordion details -->
+<div class="p-space-sm bg-surface-container-lowest rounded-lg mb-space-md flex flex-col gap-1">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>Escalation Stake Required</span>
+<span class="text-on-surface font-code-sm text-code-sm font-medium">0.085 ETH (~$270)</span>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>Court Jurisdiction</span>
+<span class="text-on-surface font-label-sm text-label-sm">Smart Contract Court #14</span>
+</div>
+</div>
+<button class="w-full h-11 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-md text-label-md flex items-center justify-center gap-2 transition-colors" onclick="alert('Kleros Dispute Process: Initializing evidence deposition and stake lock for Vault #0x811a...ef34');" type="button">
+<span class="material-symbols-outlined text-[18px] text-error">warning</span>
+<span>Initiate Kleros Dispute</span>
+</button>
+</div>
+</div>
+<!-- Sticky Bottom Authorization Drawer -->
+<div class="fixed bottom-0 left-0 right-0 z-40 bg-surface-container/95 backdrop-blur-xl shadow-2xl p-space-md pb-safe">
+<div class="max-w-md mx-auto flex flex-col gap-space-sm">
+<!-- Full-Width Dark Slate Action Button -->
+<button class="w-full h-13 py-3.5 px-4 rounded-xl bg-surface-container-highest hover:bg-surface-bright text-on-surface font-label-md text-label-md flex items-center justify-between shadow-md transition-all active:scale-[0.99]" onclick="this.innerHTML='&lt;span class=\'material-symbols-outlined animate-spin text-[20px]\'&gt;refresh&lt;/span&gt; Signing Transaction...'; setTimeout(() =&gt; { this.innerHTML='&lt;span class=\'material-symbols-outlined text-[20px] text-primary\'&gt;check&lt;/span&gt; Voucher Signed &amp; Disbursed!'; this.classList.add('pointer-events-none'); }, 1400);" type="button">
+<div class="flex items-center gap-2.5">
+<span class="w-2 h-2 rounded-full bg-primary flex-shrink-0"></span>
+<span class="font-headline-md text-headline-md text-on-surface">Sign &amp; Disburse</span>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-low px-2.5 py-1 rounded-lg">
+<span class="font-code-sm text-code-sm text-on-surface font-semibold">$3,500 USDC</span>
+<span class="material-symbols-outlined text-[16px] text-primary">arrow_forward</span>
+</div>
+</button>
+<!-- Sub Actions -->
+<div class="flex items-center justify-between px-space-xs pt-0.5">
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface flex items-center gap-1 transition-colors" onclick="prompt('State your revision notes for Alex Rivera:');" type="button">
+<span class="material-symbols-outlined text-[15px]">rate_review</span>
+<span>Request Revisions</span>
+</button>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Est. Gas: &lt;0.0001 ETH</span>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Simple countdown decrementer for delight
+  (function() {
+    let totalSeconds = (35 * 3600) + (41 * 60) + 58;
+    const timerElem = document.getElementById('countdownTimer');
+    if (!timerElem) return;
+
+    setInterval(() => {
+      if (totalSeconds <= 0) return;
+      totalSeconds--;
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      timerElem.textContent = `${hours}h ${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
+    }, 1000);
+  })();
+</script></main></body></html>

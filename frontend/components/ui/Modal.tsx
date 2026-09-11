@@ -57,18 +57,18 @@ export function Modal({
       {/* Modal Dialog */}
       <div
         className={cn(
-          'relative w-full rounded-2xl bg-white p-6 shadow-2xl transition-all border border-slate-100 z-10',
+          'relative w-full rounded-2xl bg-surface-container-low p-6 shadow-2xl transition-all border border-outline-variant/30 text-on-surface z-10',
           maxWidthMap[maxWidth]
         )}
       >
         <div className="flex items-start justify-between pb-3">
           <div>
-            {title && <h2 className="text-lg font-semibold text-slate-900">{title}</h2>}
-            {description && <p className="text-xs text-slate-500 mt-1">{description}</p>}
+            {title && <h2 className="text-lg font-semibold text-on-surface">{title}</h2>}
+            {description && <p className="text-xs text-on-surface-variant mt-1">{description}</p>}
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+            className="rounded-lg p-1 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -76,7 +76,7 @@ export function Modal({
 
         <div className="py-2">{children}</div>
 
-        {footer && <div className="mt-4 flex items-center justify-end gap-3 pt-3 border-t border-slate-100">{footer}</div>}
+        {footer && <div className="mt-4 flex items-center justify-end gap-3 pt-3 border-t border-outline-variant/20">{footer}</div>}
       </div>
     </div>
   );
