@@ -38,4 +38,13 @@ export class AuthService {
     await this.tokensService.revokeTokens(userId);
     return { message: 'Logged out successfully.' };
   }
+
+  async verifyEmail(identifier: { userId?: string; email?: string }, code?: string) {
+    return this.credentialsService.verifyEmail(identifier, code);
+  }
+
+  async resendVerification(identifier: { userId?: string; email?: string }) {
+    return this.credentialsService.resendVerification(identifier);
+  }
 }
+

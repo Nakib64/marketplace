@@ -17,6 +17,7 @@ import { RateLimit } from './decorators/rate-limit.decorator.js';
 import { LoginDto } from './dto/login.dto.js';
 import { RefreshTokenDto } from './dto/refresh-token.dto.js';
 import { RegisterDto } from './dto/register.dto.js';
+import { VerifyEmailDto } from './dto/verify-email.dto.js';
 import {
   ACCESS_TOKEN_COOKIE,
   ACCESS_TOKEN_MAX_AGE,
@@ -112,4 +113,31 @@ export class AuthController {
   async getProfile(@CurrentUser() user: any) {
     return user;
   }
+
+  @Public()
+  @Post('verify-email')
+  @HttpCode(HttpStatus.OK)
+  async verifyEmail(
+    @CurrentUser('id') authUserId: string | undefined,
+    @Body() dto: VerifyEmailDto,
+  ) {
+    return this.authService.verifyEmail(
+      { userId: authUserId, email: dto?.email },
+      dto?.code,
+    );
+  }
+
+  @Public()
+  @Post('resend-verification')
+  @HttpCode(HttpStatus.OK)
+  async resendVerification(
+    @CurrentUser('id') authUserId: string | undefined,
+    @Body() dto: VerifyEmailDto,
+  ) {
+    return this.authService.resendVerification({
+      userId: authUserId,
+      email: dto?.email,
+    });
+  }
 }
+

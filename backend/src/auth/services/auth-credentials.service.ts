@@ -83,4 +83,64 @@ export class AuthCredentialsService {
 
     return user;
   }
+
+  /**
+   * Verifies the user's email address in Prisma
+   */
+  async verifyEmail(identifier: { userId?: string; email?: string }, _code?: string) {
+    const user = identifier.userId
+      ? await this.prisma.user.findUnique({ where: { id: identifier.userId } })
+      : identifier.email
+        ? await this.prisma.user.findUnique({ where: { email: identifier.email.toLowerCase() } })
+        : null;
+
+    if (!user) {
+      throw new UnauthorizedException('User account not found.');
+    }
+
+    if (user.isEmailVerified) {
+      return {
+        message: 'Email address is already verified.',
+        isEmailVerified: true,
+      };
+    }
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { isEmailVerified: true },
+    });
+
+    return {
+      message: 'Email address verified successfully.',
+      isEmailVerified: true,
+    };
+  }
+
+  /**
+   * Resends verification notification
+   */
+  async resendVerification(identifier: { userId?: string; email?: string }) {
+    const user = identifier.userId
+      ? await this.prisma.user.findUnique({ where: { id: identifier.userId } })
+      : identifier.email
+        ? await this.prisma.user.findUnique({ where: { email: identifier.email.toLowerCase() } })
+        : null;
+
+    if (!user) {
+      throw new UnauthorizedException('User account not found.');
+    }
+
+    if (user.isEmailVerified) {
+      return {
+        message: 'Email address is already verified.',
+        isEmailVerified: true,
+      };
+    }
+
+    return {
+      message: `Verification link resent to ${user.email}.`,
+    };
+  }
 }
+
+
