@@ -7,7 +7,7 @@ interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
-  setAuth: (user: User, accessToken: string, refreshToken?: string) => void;
+  setAuth: (user: User, accessToken?: string, refreshToken?: string) => void;
   setAccessToken: (accessToken: string) => void;
   updateUser: (partial: Partial<User>) => void;
   logout: () => void;
@@ -24,7 +24,7 @@ export const useAuthStore = create<AuthState>()(
       setAuth: (user, accessToken, refreshToken) =>
         set({
           user,
-          accessToken,
+          accessToken: accessToken || null,
           refreshToken: refreshToken || null,
           isAuthenticated: true,
         }),
@@ -52,8 +52,6 @@ export const useAuthStore = create<AuthState>()(
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         user: state.user,
-        accessToken: state.accessToken,
-        refreshToken: state.refreshToken,
         isAuthenticated: state.isAuthenticated,
       }),
     }

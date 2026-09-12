@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { jobsApi } from '../api/jobsApi';
 import { JobSearchParams } from '../types/jobsTypes';
+import { FALLBACK_JOBS } from '../data/mockJobs';
 
 export function useJobsSearch() {
   const router = useRouter();
@@ -50,11 +51,16 @@ export function useJobsSearch() {
     router.push(pathname);
   };
 
+  const hasRemoteData = !!data?.data?.length;
+  const jobs = hasRemoteData ? data.data : isLoading ? [] : FALLBACK_JOBS;
+  const total = hasRemoteData ? data.total : FALLBACK_JOBS.length;
+  const totalPages = hasRemoteData ? data.totalPages : 1;
+
   return {
-    jobs: data?.data || [],
-    total: data?.total || 0,
+    jobs,
+    total,
     page: data?.page || 1,
-    totalPages: data?.totalPages || 1,
+    totalPages,
     isLoading,
     isError,
     currentParams,
@@ -63,3 +69,4 @@ export function useJobsSearch() {
     refetch,
   };
 }
+

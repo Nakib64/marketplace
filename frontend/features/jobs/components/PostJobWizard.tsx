@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { ArrowLeft, ArrowRight, CheckCircle2, Loader2 } from 'lucide-react';
+import { isAxiosError } from 'axios';
 import { Button } from '@/components/ui/Button';
 import { createJobSchema, CreateJobFormData } from '../schemas/createJobSchema';
 import { jobsApi } from '../api/jobsApi';
@@ -50,12 +51,19 @@ export function PostJobWizard() {
       const job = await jobsApi.createJob(data);
       toast.success('Project RFP created successfully!');
       router.push(`/jobs/${job.id}`);
-    } catch {
-      toast.error('Failed to create job posting. Please ensure you are logged in as a client.');
+    } catch (err: unknown) {
+      let displayMsg =
+        'Failed to create job posting. Please ensure you are logged in as a client with a verified email.';
+      if (isAxiosError<{ message?: string | string[] }>(err) && err.response?.data?.message) {
+        const msg = err.response.data.message;
+        displayMsg = Array.isArray(msg) ? msg[0] : msg;
+      }
+      toast.error(displayMsg);
     } finally {
       setIsSubmitting(false);
     }
   };
+
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-8 w-full">

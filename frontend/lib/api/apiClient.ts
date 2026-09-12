@@ -69,21 +69,9 @@ apiClient.interceptors.response.use(
       originalRequest._retry = true;
       isRefreshing = true;
 
-      const refreshToken = useAuthStore.getState().refreshToken;
-
       try {
-        const { data } = await axios.post(`${BASE_URL}/auth/refresh`, {
-          refreshToken,
-        });
-
-        const newAccessToken = data.accessToken || data.data?.accessToken;
-        useAuthStore.getState().setAccessToken(newAccessToken);
-
-        processQueue(null, newAccessToken);
-
-        if (originalRequest.headers) {
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        }
+        await axios.post(`${BASE_URL}/auth/refresh`, {}, { withCredentials: true });
+        processQueue(null, 'refreshed');
         return apiClient(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError as AxiosError, null);

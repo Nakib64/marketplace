@@ -1,5 +1,11 @@
 import { apiClient } from '@/lib/api/apiClient';
-import { AuthSuccessResponse, LoginPayload, RegisterPayload } from '../types/authTypes';
+import {
+  AuthSuccessResponse,
+  LoginPayload,
+  RegisterPayload,
+  VerifyEmailPayload,
+  VerifyEmailResponse,
+} from '../types/authTypes';
 import { User } from '@/types/user';
 
 export const authApi = {
@@ -34,4 +40,21 @@ export const authApi = {
     const { data } = await apiClient.get<User>('/auth/me');
     return data;
   },
+
+  /**
+   * Verifies email address
+   */
+  async verifyEmail(payload?: VerifyEmailPayload): Promise<VerifyEmailResponse> {
+    const { data } = await apiClient.post<VerifyEmailResponse>('/auth/verify-email', payload || {});
+    return data;
+  },
+
+  /**
+   * Resends email verification
+   */
+  async resendVerification(payload?: VerifyEmailPayload): Promise<{ message: string }> {
+    const { data } = await apiClient.post<{ message: string }>('/auth/resend-verification', payload || {});
+    return data;
+  },
 };
+

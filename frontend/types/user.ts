@@ -26,14 +26,14 @@ export interface FreelancerProfile {
 export interface User {
   id: string;
   email: string;
-  name: string;
+  name?: string;
   role: UserRole;
   isEmailVerified: boolean;
   avatarUrl?: string;
   clientProfile?: ClientProfile | null;
   freelancerProfile?: FreelancerProfile | null;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface AuthTokens {

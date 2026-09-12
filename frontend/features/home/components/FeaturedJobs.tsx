@@ -2,51 +2,62 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
 import { CheckCircle2, Lock } from 'lucide-react';
+import { jobsApi } from '@/features/jobs/api/jobsApi';
 
 export function FeaturedJobs() {
   const [filter, setFilter] = useState('all');
 
-  const jobs = [
-    {
-      id: '1',
-      title: 'Senior NestJS & Distributed Backend Architect',
-      description: 'Implement high-throughput Redis sliding-window rate limiters, BullMQ background moderation workers, and SSLCommerz escrow webhook listeners with Prisma ORM.',
-      budget: '$8,500',
-      budgetType: 'Fixed Price (Milestones)',
-      tags: ['NestJS 12', 'PostgreSQL', 'Redis Queues', 'Docker'],
-      proposals: '12 proposals received',
-      posted: 'Posted 2 hours ago',
-      verified: true,
-      category: 'development',
-    },
-    {
-      id: '2',
-      title: 'Lead UI/UX Product Designer (Fintech & Escrow)',
-      description: 'Revamp mobile and desktop dashboard workflows for dual-actor freelance marketplace. Create double-blind review system flows and bKash/Nagad withdrawal modals.',
-      budget: '$4,200',
-      budgetType: 'Fixed Price (Milestones)',
-      tags: ['Figma Systems', 'Dark Mode UX', 'Prototyping', 'Fintech'],
-      proposals: '8 proposals received',
-      posted: 'Posted 4 hours ago',
-      verified: true,
-      category: 'design',
-    },
-    {
-      id: '3',
-      title: 'Next.js 16 App Router & Socket.io Real-Time Engineer',
-      description: 'Build responsive 2-column live messaging hub with typing indicators, optimistic UI updates, and headless TanStack Query v5 state management.',
-      budget: '$65/hr',
-      budgetType: '30+ hrs/wk (Long-term)',
-      tags: ['Next.js 16', 'React 19', 'Socket.io', 'Tailwind v4'],
-      proposals: '5 proposals received',
-      posted: 'Posted 6 hours ago',
-      verified: true,
-      category: 'development',
-    },
-  ];
+  const { data } = useQuery({
+    queryKey: ['featured-jobs'],
+    queryFn: () => jobsApi.searchJobs({ limit: 4 }),
+  });
 
-  const filteredJobs = filter === 'all' ? jobs : jobs.filter((j) => j.category === filter);
+  const liveJobs = (data?.data && data.data.length > 0)
+    ? data.data.map((j) => ({
+        id: j.id,
+        title: j.title,
+        description: j.description,
+        budget: `$${Number(j.budget).toLocaleString()}`,
+        budgetType: 'Fixed Price (Milestones)',
+        tags: j.skills || ['Fullstack', 'Web3'],
+        proposals: `${j._count?.proposals || 0} proposals received`,
+        posted: 'Recently posted',
+        verified: true,
+        category: 'development',
+      }))
+    : [
+        {
+          id: 'job-1',
+          title: 'Senior NestJS & Distributed Backend Architect',
+          description:
+            'Implement high-throughput Redis sliding-window rate limiters, BullMQ background moderation workers, and SSLCommerz escrow webhook listeners with Prisma ORM.',
+          budget: '$8,500',
+          budgetType: 'Fixed Price (Milestones)',
+          tags: ['NestJS 12', 'PostgreSQL', 'Redis Queues', 'Docker'],
+          proposals: '12 proposals received',
+          posted: 'Posted 2 hours ago',
+          verified: true,
+          category: 'development',
+        },
+        {
+          id: 'job-2',
+          title: 'Lead UI/UX Product Designer (Fintech & Escrow)',
+          description:
+            'Revamp mobile and desktop dashboard workflows for dual-actor freelance marketplace. Create double-blind review system flows and bKash/Nagad withdrawal modals.',
+          budget: '$4,200',
+          budgetType: 'Fixed Price (Milestones)',
+          tags: ['Figma Systems', 'Dark Mode UX', 'Prototyping', 'Fintech'],
+          proposals: '8 proposals received',
+          posted: 'Posted 4 hours ago',
+          verified: true,
+          category: 'design',
+        },
+      ];
+
+  const filteredJobs = filter === 'all' ? liveJobs : liveJobs.filter((j) => j.category === filter);
+
 
   return (
     <section className="max-w-[1280px] mx-auto px-4 md:px-8 py-16 w-full">

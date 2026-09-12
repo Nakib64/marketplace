@@ -21,3 +21,14 @@ export interface AuthSuccessResponse {
     createdAt?: string;
   };
 }
+
+export interface VerifyEmailPayload {
+  email?: string;
+  code?: string;
+}
+
+export interface VerifyEmailResponse {
+  message: string;
+  isEmailVerified: boolean;
+}
+

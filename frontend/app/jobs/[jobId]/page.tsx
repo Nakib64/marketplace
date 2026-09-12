@@ -5,6 +5,7 @@ import { Briefcase } from 'lucide-react';
 import { jobsApi } from '@/features/jobs/api/jobsApi';
 import { JobDetailsView } from '@/features/jobs/components/JobDetailsView';
 import { Button } from '@/components/ui/Button';
+import { FALLBACK_JOBS } from '@/features/jobs/data/mockJobs';
 
 interface PageProps {
   params: Promise<{ jobId: string }>;
@@ -19,9 +20,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: job.description.slice(0, 155),
     };
   } catch {
+    const fallback = FALLBACK_JOBS.find((j) => j.id === jobId || j.id === `job-${jobId}`);
     return {
-      title: 'Job Posting | Banglance Marketplace',
-      description: 'View verified escrow-protected job opportunities on Banglance.',
+      title: fallback ? `${fallback.title} | Banglance` : 'Job Posting | Banglance Marketplace',
+      description: fallback?.description.slice(0, 155) || 'View verified escrow-protected job opportunities on Banglance.',
     };
   }
 }
@@ -33,8 +35,9 @@ export default async function JobDetailsPage({ params }: PageProps) {
   try {
     job = await jobsApi.getJobDetails(jobId);
   } catch {
-    job = null;
+    job = FALLBACK_JOBS.find((j) => j.id === jobId || j.id === `job-${jobId}`) || null;
   }
+
 
   if (!job) {
     return (
