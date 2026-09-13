@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 import { useAuthStore } from '@/stores/useAuthStore';
 
 export const ClientDashboardBanner: React.FC = () => {
@@ -42,7 +43,7 @@ export const ClientDashboardBanner: React.FC = () => {
       <div className="flex flex-wrap items-center gap-2 pt-2 xl:pt-0">
         <button
           type="button"
-          onClick={() => alert('Escrow Vault deposit address copied to clipboard')}
+          onClick={() => toast.success('Escrow Vault deposit address copied to clipboard')}
           className="px-4 py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-sm font-semibold transition-colors flex items-center gap-2 border border-outline-variant/30 shadow-sm"
         >
           <span className="material-symbols-outlined text-[18px]">account_balance_wallet</span>

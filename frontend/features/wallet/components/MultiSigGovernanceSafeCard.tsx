@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'sonner';
 
 interface MultiSigGovernanceSafeCardProps {
   onManagePolicies?: () => void;
@@ -28,7 +29,7 @@ export const MultiSigGovernanceSafeCard: React.FC<MultiSigGovernanceSafeCardProp
         </div>
         <button
           type="button"
-          onClick={() => alert('Safe address copied')}
+          onClick={() => toast.success('Safe address copied to clipboard')}
           className="text-on-surface-variant hover:text-on-surface p-1 rounded transition-colors"
         >
           <span className="material-symbols-outlined text-[16px]">content_copy</span>
@@ -74,7 +75,7 @@ export const MultiSigGovernanceSafeCard: React.FC<MultiSigGovernanceSafeCardProp
 
       <button
         type="button"
-        onClick={onManagePolicies || (() => alert('Safe settings opening...'))}
+        onClick={onManagePolicies || (() => toast.info('Managing multi-sig governance policies'))}
         className="w-full py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 border border-outline-variant/30"
       >
         <span className="material-symbols-outlined text-[15px]">settings</span>

@@ -1,9 +1,20 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import { walletApi } from '@/features/wallet/api/walletApi';
+import { WithdrawalModal } from '@/features/wallet/components/WithdrawalModal';
 
 export const FreelancerSmartWalletCard: React.FC = () => {
+  const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
+  const [walletBalance, setWalletBalance] = useState(12500);
+
+  useEffect(() => {
+    walletApi.getWalletBalance().then((res) => {
+      if (res?.walletBalance !== undefined) setWalletBalance(res.walletBalance);
+    });
+  }, []);
+
   return (
     <div className="bg-surface-container-low border border-outline-variant/30 rounded-xl p-5 shadow-sm flex flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -33,13 +44,13 @@ export const FreelancerSmartWalletCard: React.FC = () => {
         <div className="flex items-center justify-between py-2">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center font-mono text-[11px] font-bold text-primary">
-              $
+              ৳
             </div>
-            <span className="font-semibold text-on-surface">USDC</span>
+            <span className="font-semibold text-on-surface">BDT Balance</span>
           </div>
           <div className="text-right font-mono">
-            <div className="font-bold text-on-surface">6,200.00</div>
-            <div className="text-[10px] text-on-surface-variant">$6,200.00</div>
+            <div className="font-bold text-on-surface">৳{walletBalance.toLocaleString()}</div>
+            <div className="text-[10px] text-primary">Available for Payout</div>
           </div>
         </div>
 
@@ -48,11 +59,11 @@ export const FreelancerSmartWalletCard: React.FC = () => {
             <div className="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center font-mono text-[11px] font-bold text-secondary">
               Ξ
             </div>
-            <span className="font-semibold text-on-surface">ETH</span>
+            <span className="font-semibold text-on-surface">ETH Gas Reserve</span>
           </div>
           <div className="text-right font-mono">
-            <div className="font-bold text-on-surface">2.45</div>
-            <div className="text-[10px] text-on-surface-variant">$6,420.00</div>
+            <div className="font-bold text-on-surface">0.085</div>
+            <div className="text-[10px] text-on-surface-variant">Paymaster Funded</div>
           </div>
         </div>
 
@@ -82,13 +93,24 @@ export const FreelancerSmartWalletCard: React.FC = () => {
         </button>
         <button
           type="button"
-          onClick={() => toast.info('Initiating gasless withdrawal to your connected external wallet...')}
+          onClick={() => setIsWithdrawOpen(true)}
           className="py-2 bg-primary hover:bg-primary-container text-on-primary text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm"
         >
           <span className="material-symbols-outlined text-[16px]">south_west</span>
           <span>Withdraw</span>
         </button>
       </div>
+
+      <WithdrawalModal
+        isOpen={isWithdrawOpen}
+        walletBalance={walletBalance}
+        onClose={() => setIsWithdrawOpen(false)}
+        onSuccess={() => {
+          walletApi.getWalletBalance().then((res) => {
+            if (res?.walletBalance !== undefined) setWalletBalance(res.walletBalance);
+          });
+        }}
+      />
     </div>
   );
 };

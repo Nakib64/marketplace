@@ -1,4 +1,6 @@
+'use client';
 import React from 'react';
+import { toast } from 'sonner';
 
 const TRANSACTIONS = [
   {
@@ -47,7 +49,7 @@ export const ClientSettlementLedger: React.FC = () => {
 
       <button
         type="button"
-        onClick={() => alert('Opening Arbiscan / Etherscan block explorer ledger...')}
+        onClick={() => toast.info('Connecting to Arbitrum block explorer ledger...')}
         className="text-xs text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1 transition-colors pt-1"
       >
         <span>View All On-Chain Settlements</span>

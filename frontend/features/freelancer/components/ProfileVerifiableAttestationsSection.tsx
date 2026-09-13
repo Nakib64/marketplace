@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'sonner';
 
 const ATTESTATIONS = [
   {
@@ -56,7 +57,7 @@ export const ProfileVerifiableAttestationsSection: React.FC = () => {
         </div>
         <button
           type="button"
-          onClick={() => alert('Initiating EAS / Verifiable Credential schema attestation...')}
+          onClick={() => toast.info('Initiating EAS / Verifiable Credential schema attestation...')}
           className="px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface text-xs font-semibold flex items-center gap-1 self-start transition-colors border border-outline-variant/30"
         >
           <span className="material-symbols-outlined text-[15px] text-primary">add</span>

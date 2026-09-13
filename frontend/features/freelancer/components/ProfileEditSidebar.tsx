@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 export const ProfileEditSidebar: React.FC = () => {
   return (
@@ -74,7 +75,7 @@ export const ProfileEditSidebar: React.FC = () => {
             <span className="font-mono text-primary text-[11px]">+20%</span>
           </div>
         </div>
-        <button type="button" onClick={() => alert('Opening SBT Credential Minting modal...')} className="w-full py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface text-xs font-semibold transition-colors flex items-center justify-center gap-1 border border-outline-variant/30">
+        <button type="button" onClick={() => toast.info('Opening SBT Credential Minting modal...')} className="w-full py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface text-xs font-semibold transition-colors flex items-center justify-center gap-1 border border-outline-variant/30">
           <span className="material-symbols-outlined text-[15px]">security_update_good</span>
           <span>Boost Score</span>
         </button>

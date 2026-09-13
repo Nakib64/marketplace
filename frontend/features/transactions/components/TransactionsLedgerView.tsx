@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { toast } from 'sonner';
 import { LedgerTransaction, TransactionsMetrics, TxType } from '../types/transactionTypes';
 import { transactionsApi } from '../api/transactionsApi';
 import { INITIAL_TRANSACTIONS, INITIAL_TX_METRICS } from '../data/mockTransactionsData';
@@ -46,8 +47,8 @@ export const TransactionsLedgerView: React.FC = () => {
       <div className="mx-auto max-w-[1440px]">
         <TransactionsHeader
           onExportIrs={() => transactionsApi.exportIrsCsv()}
-          onExportQuickbooks={() => alert('QuickBooks Online accounting sync initiated.')}
-          onVerifyMerkle={() => alert('Batch Merkle proof 0x7c9f... valid on Sepolia L1.')}
+          onExportQuickbooks={() => toast.info('QuickBooks Online accounting sync initiated.')}
+          onVerifyMerkle={() => toast.success('Batch Merkle proof 0x7c9f... valid on Sepolia L1.')}
         />
 
         <TransactionsKpiGrid metrics={metrics} />

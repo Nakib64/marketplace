@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { toast } from 'sonner';
 import { ProposalItem } from '../types/proposalsTypes';
 import { ProposalMilestoneList } from './ProposalMilestoneList';
 
@@ -96,7 +97,7 @@ export const ProposalCandidateCard: React.FC<ProposalCandidateCardProps> = ({ pr
       {/* Action Strip */}
       <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-outline-variant/30">
         <div className="flex items-center gap-2">
-          <button type="button" onClick={() => alert(`Starting encrypted workroom with ${proposal.freelancerHandle}...`)} className="px-3.5 py-1.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-colors text-xs font-semibold flex items-center gap-1.5">
+          <button type="button" onClick={() => toast.info(`Starting encrypted workroom with ${proposal.freelancerHandle}...`)} className="px-3.5 py-1.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-colors text-xs font-semibold flex items-center gap-1.5">
             <span className="material-symbols-outlined text-[16px]">chat</span>
             <span>Message &amp; Schedule</span>
           </button>

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 import { useAuthStore } from '@/stores/useAuthStore';
 
 export const FreelancerIdentityBanner: React.FC = () => {
@@ -50,7 +51,7 @@ export const FreelancerIdentityBanner: React.FC = () => {
         </Link>
         <button
           type="button"
-          onClick={() => alert('Select a live contract to upload deliverable artifact.')}
+          onClick={() => toast.info('Select an active contract below to submit code deliverables.')}
           className="flex-1 lg:flex-initial px-4 py-2 bg-primary hover:bg-primary-container text-on-primary text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm"
         >
           <span className="material-symbols-outlined text-[16px]">upload_file</span>

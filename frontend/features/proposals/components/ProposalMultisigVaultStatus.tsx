@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'sonner';
 
 export const ProposalMultisigVaultStatus: React.FC = () => {
   return (
@@ -22,7 +23,7 @@ export const ProposalMultisigVaultStatus: React.FC = () => {
           <span>0x3C49...81B7</span>
           <button
             type="button"
-            onClick={() => alert('Copied Safe address to clipboard')}
+            onClick={() => toast.success('Copied Safe address to clipboard')}
             className="text-on-surface-variant hover:text-on-surface"
             title="Copy Address"
           >
@@ -51,7 +52,7 @@ export const ProposalMultisigVaultStatus: React.FC = () => {
 
       <button
         type="button"
-        onClick={() => alert('Simulating Safe batch transaction: Gas estimate 142,850 units on Arbitrum One')}
+        onClick={() => toast.info('Simulating Safe batch transaction: Gas estimate 142,850 units on Arbitrum One')}
         className="w-full py-2.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface text-xs font-semibold transition-colors flex items-center justify-center gap-2 border border-outline-variant/30"
       >
         <span className="material-symbols-outlined text-[18px]">verified</span>

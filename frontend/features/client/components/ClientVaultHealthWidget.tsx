@@ -1,6 +1,6 @@
 'use client';
-
 import React from 'react';
+import { toast } from 'sonner';
 
 export const ClientVaultHealthWidget: React.FC = () => {
   return (
@@ -50,7 +50,7 @@ export const ClientVaultHealthWidget: React.FC = () => {
 
       <button
         type="button"
-        onClick={() => alert('Multisig config modal: 2/3 signatures threshold active on Arbitrum One')}
+        onClick={() => toast.info('Multisig threshold active: 2/3 signatures configured on Arbitrum One.')}
         className="w-full px-4 py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold transition-colors flex items-center justify-center gap-2 border border-outline-variant/30 shadow-sm"
       >
         <span className="material-symbols-outlined text-[16px]">manage_accounts</span>

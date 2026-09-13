@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'sonner';
 
 interface ZkStateCommitmentBannerProps {
   merkleRoot?: string;
@@ -33,7 +34,7 @@ export const ZkStateCommitmentBanner: React.FC<ZkStateCommitmentBannerProps> = (
       <div className="flex items-center gap-2 w-full lg:w-auto justify-end shrink-0 text-xs">
         <button
           type="button"
-          onClick={onVerifyProof || (() => alert(`State root ${merkleRoot} verified on Sepolia L1 contract.`))}
+          onClick={onVerifyProof || (() => toast.success(`State root ${merkleRoot} verified on Sepolia L1 contract.`))}
           className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-semibold transition-all border border-outline-variant/30 shadow-sm"
         >
           <span className="material-symbols-outlined text-[16px] text-primary">security_update_good</span>

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 interface ContractDetailsHeaderProps {
   contractId: string;
@@ -42,7 +43,7 @@ export const ContractDetailsHeader: React.FC<ContractDetailsHeaderProps> = ({
       <div className="flex items-center gap-2.5 self-start lg:self-center">
         <button
           type="button"
-          onClick={() => alert(`Contract ABI copied for address ${contractAddress} (Ref: ${contractId})`)}
+          onClick={() => toast.success(`Contract ABI copied for address ${contractAddress} (Ref: ${contractId})`)}
           className="flex items-center gap-1.5 px-3.5 py-2 bg-surface-container hover:bg-surface-container-high text-on-surface rounded-lg text-xs font-semibold transition-colors border border-outline-variant/30 shadow-sm"
         >
           <span className="material-symbols-outlined text-primary text-[16px]">terminal</span>

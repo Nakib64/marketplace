@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'sonner';
 
 interface ProposalFilterStripProps {
   search: string;
@@ -85,7 +86,7 @@ export const ProposalFilterStrip: React.FC<ProposalFilterStripProps> = ({
 
         <button
           type="button"
-          onClick={() => alert('Filter drawer toggle')}
+          onClick={() => toast.info('Advanced candidate criteria filters active.')}
           className="p-2 rounded-lg bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"
         >
           <span className="material-symbols-outlined text-[18px]">tune</span>

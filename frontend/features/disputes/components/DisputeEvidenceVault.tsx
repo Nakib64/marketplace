@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'sonner';
 import { DisputeEvidenceItem } from '../types/disputesTypes';
 
 interface DisputeEvidenceVaultProps {
@@ -69,7 +70,7 @@ export const DisputeEvidenceVault: React.FC<DisputeEvidenceVaultProps> = ({
             <div className="flex items-center gap-2 shrink-0 self-start md:self-center text-xs">
               <button
                 type="button"
-                onClick={() => alert(`Opening evidence details: ${ev.title}`)}
+                onClick={() => toast.info(`Viewing evidence: ${ev.title}`)}
                 className="px-2.5 py-1 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface transition-colors font-medium flex items-center gap-1 border border-outline-variant/30"
               >
                 <span className="material-symbols-outlined text-[14px]">difference</span>
@@ -77,7 +78,7 @@ export const DisputeEvidenceVault: React.FC<DisputeEvidenceVaultProps> = ({
               </button>
               <button
                 type="button"
-                onClick={() => alert(`IPFS gateway redirect for CID ${ev.ipfsCid}`)}
+                onClick={() => toast.info(`IPFS CID ${ev.ipfsCid} copied to clipboard.`)}
                 className="w-7 h-7 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors border border-outline-variant/30"
                 title="Open IPFS"
               >

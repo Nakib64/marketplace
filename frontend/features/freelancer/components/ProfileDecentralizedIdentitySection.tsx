@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { toast } from 'sonner';
 
 interface ProfileDecentralizedIdentitySectionProps {
   title: string;
@@ -60,7 +61,7 @@ export const ProfileDecentralizedIdentitySection: React.FC<ProfileDecentralizedI
             <span className="text-on-surface">ERC-6551 Token Bound Active</span>
           </div>
           <div className="flex items-center gap-2 pt-1">
-            <button type="button" onClick={() => alert('Connect Web3 wallet to select NFT avatar...')} className="px-3 py-1 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface text-xs font-semibold flex items-center gap-1 transition-colors">
+            <button type="button" onClick={() => toast.info('Connect Web3 wallet to select an NFT avatar.')} className="px-3 py-1 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface text-xs font-semibold flex items-center gap-1 transition-colors">
               <span className="material-symbols-outlined text-[14px]">upload_file</span>
               <span>Update PFP NFT</span>
             </button>

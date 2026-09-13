@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'sonner';
 
 interface ContractVaultSidebarProps {
   onMessageHirer: () => void;
@@ -44,7 +45,7 @@ export const ContractVaultSidebar: React.FC<ContractVaultSidebarProps> = ({ onMe
           <span className="text-on-surface-variant">Smart Vault Address</span>
           <div className="flex items-center justify-between bg-surface-container px-3 py-2 rounded-lg border border-outline-variant/20 font-mono text-[11px]">
             <span className="text-on-surface truncate">0x3bF2a9C1284dE780E23014E</span>
-            <button type="button" onClick={() => alert('Copied vault address')} className="text-on-surface-variant hover:text-on-surface">
+            <button type="button" onClick={() => toast.success('Copied vault address to clipboard')} className="text-on-surface-variant hover:text-on-surface">
               <span className="material-symbols-outlined text-[15px]">content_copy</span>
             </button>
           </div>

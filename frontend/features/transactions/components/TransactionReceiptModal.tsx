@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'sonner';
 import { LedgerTransaction } from '../types/transactionTypes';
 
 interface TransactionReceiptModalProps {
@@ -62,7 +63,7 @@ export const TransactionReceiptModal: React.FC<TransactionReceiptModalProps> = (
           </span>
           <button
             type="button"
-            onClick={() => alert(`Downloaded receipt payload for Tx ${transaction.txHash.slice(0, 10)}...`)}
+            onClick={() => toast.success(`Downloaded receipt payload for Tx ${transaction.txHash.slice(0, 10)}...`)}
             className="px-3.5 py-1.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-sans font-bold text-xs shadow-sm"
           >
             Download Receipt JSON
