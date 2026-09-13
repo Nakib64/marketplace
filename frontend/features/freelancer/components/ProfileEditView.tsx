@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import { freelancerApi } from '../api/freelancerApi';
 import { ProfileEditHeader } from './ProfileEditHeader';
 import { ProfileEditSidebar } from './ProfileEditSidebar';
@@ -9,26 +10,32 @@ import { ProfileDecentralizedIdentitySection } from './ProfileDecentralizedIdent
 import { ProfileVerifiableAttestationsSection } from './ProfileVerifiableAttestationsSection';
 import { ProfileWorkParametersSection } from './ProfileWorkParametersSection';
 
-export const ProfileEditView: React.FC = () => {
-  const { data: userProfile } = useQuery({
-    queryKey: ['my-profile'],
-    queryFn: () => freelancerApi.getMyProfile().catch(() => null),
-  });
+interface ProfileEditContentProps {
+  initialTitle?: string;
+  initialBio?: string;
+  initialHourlyRate?: number;
+}
 
-  const profile = userProfile?.freelancerProfile;
-  const [title, setTitle] = useState(profile?.title || 'Senior Distributed Systems & Stylus Invariants Researcher');
-  const [bio, setBio] = useState(profile?.description || 'Senior Distributed Systems & Stylus Invariants Researcher. Auditing zero-knowledge proofs and custom EVM state transitions with mathematical precision.');
+const ProfileEditContent: React.FC<ProfileEditContentProps> = ({
+  initialTitle = 'Senior Distributed Systems & Stylus Invariants Researcher',
+  initialBio = 'Senior Distributed Systems & Stylus Invariants Researcher. Auditing zero-knowledge proofs and custom EVM state transitions with mathematical precision.',
+  initialHourlyRate = 140,
+}) => {
+  const [title, setTitle] = useState(initialTitle);
+  const [bio, setBio] = useState(initialBio);
   const [ensDomain, setEnsDomain] = useState('alexr.eth');
-  const [hourlyRate, setHourlyRate] = useState<number>(profile?.hourlyRate ? Number(profile.hourlyRate) : 140);
+  const [hourlyRate, setHourlyRate] = useState<number>(initialHourlyRate);
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async () => {
     setIsSaving(true);
     try {
       await freelancerApi.updateFreelancerProfile({ title, description: bio, hourlyRate });
-      alert('On-Chain Identity & Verifiable Credentials updated successfully!');
-    } catch {
-      alert('Profile updated and cryptographic attestation cached!');
+      toast.success('On-Chain Identity & Verifiable Credentials updated successfully!');
+    } catch (err: unknown) {
+      const errorObj = err as { response?: { data?: { message?: string } } };
+      const msg = errorObj.response?.data?.message || 'Profile updated and cryptographic attestation cached!';
+      toast.info(msg);
     } finally {
       setIsSaving(false);
     }
@@ -64,3 +71,22 @@ export const ProfileEditView: React.FC = () => {
     </div>
   );
 };
+
+export const ProfileEditView: React.FC = () => {
+  const { data: userProfile } = useQuery({
+    queryKey: ['my-profile'],
+    queryFn: () => freelancerApi.getMyProfile().catch(() => null),
+  });
+
+  const profile = userProfile?.freelancerProfile;
+
+  return (
+    <ProfileEditContent
+      key={profile?.id || 'default'}
+      initialTitle={profile?.title}
+      initialBio={profile?.description}
+      initialHourlyRate={profile?.hourlyRate ? Number(profile.hourlyRate) : undefined}
+    />
+  );
+};
+

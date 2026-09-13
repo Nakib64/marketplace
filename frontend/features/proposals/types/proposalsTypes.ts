@@ -44,5 +44,20 @@ export interface ProposalItem {
 export interface SubmitProposalPayload {
   coverLetter: string;
   bidAmount: number;
-  duration: number;
+  duration?: number;
+  workHistoryIds?: string[];
+  portfolioItemIds?: string[];
 }
+
+export interface AcceptProposalResponse {
+  paymentRequired: boolean;
+  message: string;
+  contract?: {
+    id: string;
+    status: string;
+    escrowAmount?: number;
+  } | null;
+  gatewayUrl?: string;
+  tranId?: string;
+}
+

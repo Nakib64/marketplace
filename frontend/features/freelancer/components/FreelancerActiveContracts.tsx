@@ -1,8 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ContractFilterTab, FreelancerContractItem } from '../types/freelancerTypes';
+import { contractsApi } from '@/features/contracts/api/contractsApi';
 
 const DEMO_CONTRACTS: FreelancerContractItem[] = [
   {
@@ -47,9 +49,41 @@ const DEMO_CONTRACTS: FreelancerContractItem[] = [
 ];
 
 export const FreelancerActiveContracts: React.FC = () => {
+  const router = useRouter();
   const [filter, setFilter] = useState<ContractFilterTab>('ALL');
+  const [contracts, setContracts] = useState<FreelancerContractItem[]>(DEMO_CONTRACTS);
 
-  const filtered = DEMO_CONTRACTS.filter((c) => {
+  useEffect(() => {
+    let isMounted = true;
+    contractsApi.getUserContracts()
+      .then((data) => {
+        if (isMounted && data && data.length > 0) {
+          const mapped: FreelancerContractItem[] = data.map((c) => {
+            const isPending = c.status === 'PENDING_APPROVAL';
+            return {
+              id: c.id,
+              title: c.title || 'Decentralized Milestone',
+              clientName: c.clientName || 'Client',
+              amount: Number(c.amount || 0),
+              currency: c.currency || 'BDT',
+              contractAddress: c.contractAddress || (c.id ? `0x${c.id.replace(/-/g, '').slice(0, 4)}...${c.id.replace(/-/g, '').slice(-4)}` : '0x71c8...39A1'),
+              milestoneStep: 'Milestone 1 of 1',
+              milestoneTitle: c.title || 'Deliverable Submission',
+              dueDate: isPending ? 'Under Review' : 'In Progress',
+              progressPct: c.status === 'COMPLETED' ? 100 : (isPending ? 95 : 60),
+              status: isPending ? 'PENDING_REVIEW' : (c.status === 'COMPLETED' ? 'COMPLETED' : 'IN_PROGRESS'),
+            };
+          });
+          setContracts(mapped);
+        }
+      })
+      .catch(() => {
+        // Fall back gracefully to demo contracts
+      });
+    return () => { isMounted = false; };
+  }, []);
+
+  const filtered = contracts.filter((c) => {
     if (filter === 'PENDING') return c.status === 'PENDING_REVIEW';
     if (filter === 'IN_PROGRESS') return c.status === 'IN_PROGRESS';
     return true;
@@ -61,7 +95,7 @@ export const FreelancerActiveContracts: React.FC = () => {
         <div className="flex items-center gap-2">
           <h2 className="text-base font-bold text-on-surface">Active Contracts</h2>
           <span className="font-mono text-xs bg-surface-container px-2 py-0.5 rounded text-on-surface-variant">
-            {DEMO_CONTRACTS.length}
+            {contracts.length}
           </span>
         </div>
         <div className="flex items-center gap-1 bg-surface-container-lowest p-1 rounded-lg border border-outline-variant/20">
@@ -130,7 +164,11 @@ export const FreelancerActiveContracts: React.FC = () => {
                 <Link href={`/contracts/${item.id}`} className="px-3.5 py-1.5 bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold rounded-lg transition-colors border border-outline-variant/30">
                   Contract Details
                 </Link>
-                <button type="button" onClick={() => alert(`Submitting deliverable for ${item.title}...`)} className="px-3.5 py-1.5 bg-primary hover:bg-primary-container text-on-primary text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 shadow-sm">
+                <button
+                  type="button"
+                  onClick={() => router.push(`/contracts/${item.id}`)}
+                  className="px-3.5 py-1.5 bg-primary hover:bg-primary-container text-on-primary text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 shadow-sm"
+                >
                   <span className="material-symbols-outlined text-[15px]">send</span>
                   <span>Submit Deliverable</span>
                 </button>
@@ -142,3 +180,4 @@ export const FreelancerActiveContracts: React.FC = () => {
     </div>
   );
 };
+

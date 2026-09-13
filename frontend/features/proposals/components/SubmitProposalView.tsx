@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { jobsApi } from '@/features/jobs/api/jobsApi';
 import { proposalsApi } from '../api/proposalsApi';
+import { toast } from 'sonner';
+import { isAxiosError } from 'axios';
 import { ProposalMilestone } from '../types/proposalsTypes';
 import { SubmitProposalHeader } from './SubmitProposalHeader';
 import { SubmitProposalJobSnapshot } from './SubmitProposalJobSnapshot';
@@ -32,20 +34,31 @@ export const SubmitProposalView: React.FC<{ jobId: string }> = ({ jobId }) => {
   ]);
 
   const handleSubmit = async () => {
-    if (!agreedToArbitration) return alert('Please agree to the decentralized arbitration clause.');
-    if (coverLetter.length < 30) return alert('Please provide at least 30 characters in your technical proposal.');
+    if (!agreedToArbitration) {
+      toast.error('Please agree to the decentralized arbitration and escrow terms.');
+      return;
+    }
+    if (coverLetter.length < 30) {
+      toast.error('Please provide at least 30 characters in your technical proposal.');
+      return;
+    }
     setIsSubmitting(true);
     try {
       await proposalsApi.submitProposal(jobId, { bidAmount, duration: durationWeeks, coverLetter });
-      alert('Proposal cryptographically signed & submitted to Arbitrum escrow pool!');
+      toast.success('Proposal submitted successfully!');
       router.push(`/jobs/${jobId}`);
-    } catch {
-      alert('Proposal signed! Vault simulation passed.');
-      router.push(`/jobs/${jobId}`);
+    } catch (err: unknown) {
+      let msg = 'Failed to submit proposal. Please ensure you are logged in as a freelancer with a verified email.';
+      if (isAxiosError<{ message?: string | string[] }>(err) && err.response?.data?.message) {
+        const serverMsg = err.response.data.message;
+        msg = Array.isArray(serverMsg) ? serverMsg[0] : serverMsg;
+      }
+      toast.error(msg);
     } finally {
       setIsSubmitting(false);
     }
   };
+
 
   return (
     <div className="w-full bg-background min-h-screen py-6">

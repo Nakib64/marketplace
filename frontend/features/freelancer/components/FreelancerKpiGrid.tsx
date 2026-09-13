@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'sonner';
 
 interface FreelancerKpiGridProps {
   onWithdrawClick?: () => void;
@@ -43,7 +44,7 @@ export const FreelancerKpiGrid: React.FC<FreelancerKpiGridProps> = ({ onWithdraw
           </div>
           <button
             type="button"
-            onClick={onWithdrawClick || (() => alert('Opening gasless withdrawal modal...'))}
+            onClick={onWithdrawClick || (() => toast.info('Opening gasless withdrawal modal...'))}
             className="px-3 py-1.5 bg-primary hover:bg-primary-container text-on-primary text-xs font-bold rounded-lg transition-colors flex items-center gap-1 shadow-sm"
           >
             <span className="material-symbols-outlined text-[15px]">south_west</span>

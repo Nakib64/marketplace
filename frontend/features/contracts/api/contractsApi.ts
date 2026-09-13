@@ -1,5 +1,10 @@
 import { apiClient } from '@/lib/api/apiClient';
-import { ContractDetail, WorkSubmissionPayload } from '../types/contractsTypes';
+import {
+  ContractDetail,
+  WorkSubmissionPayload,
+  SubmitReviewPayload,
+  ReviewResponse,
+} from '../types/contractsTypes';
 
 export const contractsApi = {
   /**
@@ -21,7 +26,7 @@ export const contractsApi = {
   /**
    * Freelancer submits completed milestone work
    */
-  async submitWork(id: string, payload: WorkSubmissionPayload): Promise<{ success?: boolean; message?: string }> {
+  async submitWork(id: string, payload?: WorkSubmissionPayload): Promise<{ success?: boolean; message?: string }> {
     const { data } = await apiClient.post<{ success?: boolean; message?: string }>(`/contracts/${id}/submit-work`, payload);
     return data;
   },
@@ -41,4 +46,21 @@ export const contractsApi = {
     const { data } = await apiClient.post<{ success?: boolean; message?: string }>(`/contracts/${id}/dispute`);
     return data;
   },
+
+  /**
+   * Submit double-blind review for completed contract
+   */
+  async submitReview(payload: SubmitReviewPayload): Promise<ReviewResponse> {
+    const { data } = await apiClient.post<ReviewResponse>('/reviews', payload);
+    return data;
+  },
+
+  /**
+   * Fetch reviews for a specific contract
+   */
+  async getContractReviews(contractId: string): Promise<ReviewResponse[]> {
+    const { data } = await apiClient.get<ReviewResponse[]>(`/reviews/contract/${contractId}`);
+    return data;
+  },
 };
+

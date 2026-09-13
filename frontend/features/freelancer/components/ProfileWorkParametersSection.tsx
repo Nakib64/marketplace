@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'sonner';
 
 interface ProfileWorkParametersSectionProps {
   hourlyRate: number;
@@ -120,7 +121,7 @@ export const ProfileWorkParametersSection: React.FC<ProfileWorkParametersSection
           <span>Identity parameters auto-cached to IndexedDB</span>
         </div>
         <div className="flex items-center gap-2">
-          <button type="button" onClick={() => alert('Changes discarded')} className="px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-bright text-on-surface-variant hover:text-on-surface text-xs font-semibold transition-colors">
+          <button type="button" onClick={() => toast.info('Changes discarded')} className="px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-bright text-on-surface-variant hover:text-on-surface text-xs font-semibold transition-colors">
             Discard
           </button>
           <button type="button" disabled={isSaving} onClick={onSave} className="px-4 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-xs font-bold flex items-center gap-1.5 shadow-md transition-all">

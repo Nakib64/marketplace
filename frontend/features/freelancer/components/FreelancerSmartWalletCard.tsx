@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'sonner';
 
 export const FreelancerSmartWalletCard: React.FC = () => {
   return (
@@ -20,7 +21,7 @@ export const FreelancerSmartWalletCard: React.FC = () => {
         <span className="font-mono text-xs text-on-surface">0x8F92...0XA</span>
         <button
           type="button"
-          onClick={() => alert('Copied smart wallet address to clipboard')}
+          onClick={() => toast.success('Smart wallet address copied to clipboard')}
           className="text-on-surface-variant hover:text-on-surface transition-colors"
         >
           <span className="material-symbols-outlined text-[16px]">content_copy</span>
@@ -73,7 +74,7 @@ export const FreelancerSmartWalletCard: React.FC = () => {
       <div className="grid grid-cols-2 gap-2 pt-1">
         <button
           type="button"
-          onClick={() => alert('Displaying deposit QR code & Arbitrum One address...')}
+          onClick={() => toast.info('Displaying deposit QR code & Arbitrum One address...')}
           className="py-2 bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-1.5 border border-outline-variant/30"
         >
           <span className="material-symbols-outlined text-[16px] text-on-surface-variant">north_east</span>
@@ -81,7 +82,7 @@ export const FreelancerSmartWalletCard: React.FC = () => {
         </button>
         <button
           type="button"
-          onClick={() => alert('Initiating gasless withdrawal to your connected external wallet...')}
+          onClick={() => toast.info('Initiating gasless withdrawal to your connected external wallet...')}
           className="py-2 bg-primary hover:bg-primary-container text-on-primary text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm"
         >
           <span className="material-symbols-outlined text-[16px]">south_west</span>
@@ -91,3 +92,4 @@ export const FreelancerSmartWalletCard: React.FC = () => {
     </div>
   );
 };
+

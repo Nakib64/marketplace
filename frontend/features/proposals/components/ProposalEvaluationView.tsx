@@ -1,7 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { isAxiosError } from 'axios';
 import { jobsApi } from '@/features/jobs/api/jobsApi';
 import { proposalsApi } from '../api/proposalsApi';
 import { ProposalItem } from '../types/proposalsTypes';
@@ -75,11 +78,61 @@ const DEMO_PROPOSALS: ProposalItem[] = [
   },
 ];
 
-interface ProposalEvaluationViewProps {
+interface RawProposal {
+  id: string;
   jobId: string;
+  freelancerId: string;
+  bidAmount: number | string;
+  coverLetter: string;
+  status: string;
+  createdAt: string;
+  freelancer?: {
+    email?: string;
+    freelancerProfile?: {
+      title?: string;
+      rating?: number;
+      description?: string;
+    };
+  };
 }
 
-export const ProposalEvaluationView: React.FC<ProposalEvaluationViewProps> = ({ jobId }) => {
+function mapBackendProposal(raw: RawProposal): ProposalItem {
+  const profile = raw.freelancer?.freelancerProfile;
+  const name = raw.freelancer?.email?.split('@')[0] || 'Talent Candidate';
+  const amount = Number(raw.bidAmount) || 0;
+  return {
+    id: raw.id,
+    jobId: raw.jobId,
+    freelancerId: raw.freelancerId,
+    freelancerName: name,
+    freelancerHandle: `@${name.toLowerCase()}`,
+    freelancerAvatar: DEMO_PROPOSALS[0].freelancerAvatar,
+    freelancerRole: profile?.title || 'Verified Specialist',
+    sbtId: `SBT #${raw.freelancerId.slice(0, 4)}`,
+    bio: profile?.description || 'Experienced developer with verified escrow track record.',
+    fitScore: profile?.rating ? Math.round(profile.rating * 20) : 95,
+    bidAmount: amount,
+    currency: 'USDC',
+    budgetComparison: 'Competitive bid',
+    durationWeeks: 3,
+    deliveryDate: new Date(Date.now() + 21 * 24 * 3600 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+    milestoneCount: 2,
+    arbitration: 'Kleros Core',
+    courtId: '#32',
+    coverLetter: raw.coverLetter,
+    isShortlisted: raw.status === 'ACCEPTED',
+    credentials: [],
+    milestones: [
+      { step: 'M1', title: 'Initial Milestone Sprint', durationDays: 7, amount: Math.round(amount * 0.4), currency: 'USDC' },
+      { step: 'M2', title: 'Final Delivery & Acceptance', durationDays: 14, amount: Math.round(amount * 0.6), currency: 'USDC' },
+    ],
+    createdAt: raw.createdAt,
+    status: (raw.status as ProposalItem['status']) || 'PENDING',
+  };
+}
+
+export const ProposalEvaluationView: React.FC<{ jobId: string }> = ({ jobId }) => {
+  const router = useRouter();
   const [search, setSearch] = useState('');
   const [seniority, setSeniority] = useState('ALL');
   const [hasCertikFilter, setHasCertikFilter] = useState(true);
@@ -89,21 +142,38 @@ export const ProposalEvaluationView: React.FC<ProposalEvaluationViewProps> = ({ 
     queryFn: () => jobsApi.getJobDetails(jobId).catch(() => null),
   });
 
-  const { data: realProposals = [] } = useQuery({
+  const { data: rawProposals = [] } = useQuery({
     queryKey: ['job-proposals', jobId],
     queryFn: () => proposalsApi.getJobProposals(jobId).catch(() => []),
   });
 
   const handleAccept = async (proposalId: string) => {
     try {
-      await proposalsApi.acceptProposal(proposalId);
-      alert('Proposal accepted! Escrow contract formation transaction initiated on Arbitrum One.');
-    } catch {
-      alert('Escrow smart contract co-signing initiated for Safe multi-sig co-signers.');
+      const res = await proposalsApi.acceptProposal(proposalId);
+      if (res.paymentRequired && res.gatewayUrl) {
+        toast.info('Redirecting to SSLCommerz Escrow Gateway...');
+        window.location.href = res.gatewayUrl;
+      } else if (res.contract) {
+        toast.success('Proposal accepted! Escrow funded from wallet balance.');
+        router.push(`/contracts/${res.contract.id}`);
+      } else {
+        toast.success('Proposal accepted successfully!');
+        router.push('/client/jobs');
+      }
+    } catch (err: unknown) {
+      let msg = 'Failed to accept proposal. Please ensure you have sufficient balance or gateway access.';
+      if (isAxiosError<{ message?: string | string[] }>(err) && err.response?.data?.message) {
+        const serverMsg = err.response.data.message;
+        msg = Array.isArray(serverMsg) ? serverMsg[0] : serverMsg;
+      }
+      toast.error(msg);
     }
   };
 
-  const proposals: ProposalItem[] = realProposals.length > 0 ? realProposals : DEMO_PROPOSALS;
+  const proposals: ProposalItem[] = rawProposals.length > 0
+    ? (rawProposals as unknown as RawProposal[]).map(mapBackendProposal)
+    : DEMO_PROPOSALS;
+
   const filtered = proposals.filter((p) => {
     if (search && !p.freelancerName.toLowerCase().includes(search.toLowerCase()) && !p.freelancerHandle.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
