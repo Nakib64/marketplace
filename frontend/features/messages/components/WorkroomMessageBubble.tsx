@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'sonner';
 import { WorkroomMessage } from '../types/messageTypes';
 
 interface WorkroomMessageBubbleProps {
@@ -54,7 +55,7 @@ export const WorkroomMessageBubble: React.FC<WorkroomMessageBubbleProps> = ({ me
             <div className="flex items-center gap-2 pt-1 text-xs">
               <button
                 type="button"
-                onClick={() => alert(`Copied artifact CID: ${message.ipfsCid}`)}
+                onClick={() => toast.success(`Copied artifact CID: ${message.ipfsCid}`)}
                 className="px-3 py-1.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-colors font-medium flex items-center gap-1 border border-outline-variant/30"
               >
                 <span className="material-symbols-outlined text-[14px]">content_copy</span>
@@ -62,7 +63,7 @@ export const WorkroomMessageBubble: React.FC<WorkroomMessageBubbleProps> = ({ me
               </button>
               <button
                 type="button"
-                onClick={() => alert('Verifying cryptographic proofs on Arbitrum One...')}
+                onClick={() => toast.info('Verifying cryptographic proofs on Arbitrum One...')}
                 className="px-3 py-1.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-colors font-medium flex items-center gap-1 border border-outline-variant/30"
               >
                 <span className="material-symbols-outlined text-primary text-[14px]">verified</span>

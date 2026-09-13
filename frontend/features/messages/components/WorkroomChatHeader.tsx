@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 import { WorkroomChannel } from '../types/messageTypes';
 
 interface WorkroomChatHeaderProps {
@@ -46,7 +47,7 @@ export const WorkroomChatHeader: React.FC<WorkroomChatHeaderProps> = ({ channel 
           </Link>
           <button
             type="button"
-            onClick={() => alert('Launching WebRTC peer-to-peer encrypted huddle...')}
+            onClick={() => toast.info('Launching WebRTC peer-to-peer encrypted huddle...')}
             className="px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors flex items-center gap-1 border border-outline-variant/20 font-medium"
           >
             <span className="material-symbols-outlined text-[15px]">videocam</span>
@@ -62,7 +63,7 @@ export const WorkroomChatHeader: React.FC<WorkroomChatHeaderProps> = ({ channel 
         </div>
         <button
           type="button"
-          onClick={() => alert('Handshake verified cryptographically on Arbitrum')}
+          onClick={() => toast.success('Handshake verified cryptographically on Arbitrum')}
           className="text-primary hover:underline shrink-0 flex items-center gap-0.5"
         >
           <span>Verify</span>

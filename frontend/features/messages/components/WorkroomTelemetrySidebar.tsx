@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 import { WorkroomEscrowContext } from '../types/messageTypes';
 
 interface WorkroomTelemetrySidebarProps {
@@ -79,7 +80,7 @@ export const WorkroomTelemetrySidebar: React.FC<WorkroomTelemetrySidebarProps> =
             {context.artifacts.map((art, idx) => (
               <div
                 key={idx}
-                onClick={() => alert(`Artifact clicked: ${art.title}`)}
+                onClick={() => toast.info(`Viewing verifiable artifact: ${art.title}`)}
                 className="p-1.5 rounded bg-surface-container hover:bg-surface-container-high cursor-pointer flex items-center justify-between font-mono text-[11px] text-on-surface transition-colors border border-outline-variant/10"
               >
                 <div className="flex items-center gap-1.5 truncate">

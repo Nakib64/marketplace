@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { toast } from 'sonner';
 
 interface WorkroomMessageComposerProps {
   onSendMessage: (text: string) => Promise<void>;
@@ -36,11 +37,11 @@ export const WorkroomMessageComposer: React.FC<WorkroomMessageComposerProps> = (
             <span className="material-symbols-outlined text-[16px]">code</span>
           </button>
           <div className="w-[1px] h-3.5 bg-surface-container-high mx-1" />
-          <button type="button" onClick={() => alert('IPFS file uploader opened')} className="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center gap-1 font-mono text-[11px]">
+          <button type="button" onClick={() => toast.info('IPFS pinning pipeline ready for deliverable upload')} className="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center gap-1 font-mono text-[11px]">
             <span className="material-symbols-outlined text-[14px] text-primary">cloud_upload</span>
             <span>Pin IPFS</span>
           </button>
-          <button type="button" onClick={() => alert('GitHub PR attach modal')} className="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center gap-1 font-mono text-[11px]">
+          <button type="button" onClick={() => toast.info('Attach verified GitHub PR payload to workroom')} className="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center gap-1 font-mono text-[11px]">
             <span className="material-symbols-outlined text-[14px]">data_object</span>
             <span>Attach PR</span>
           </button>

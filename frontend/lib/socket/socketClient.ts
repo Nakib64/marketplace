@@ -13,11 +13,12 @@ export function getSocket(): Socket {
 
   if (!socket) {
     socket = io(`${WS_URL}/chat`, {
+      withCredentials: true,
       auth: {
         token: token ? `Bearer ${token}` : '',
       },
       autoConnect: false,
-      transports: ['websocket'],
+      transports: ['websocket', 'polling'],
     });
   } else if (token) {
     socket.auth = { token: `Bearer ${token}` };

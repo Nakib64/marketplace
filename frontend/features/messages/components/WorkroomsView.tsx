@@ -1,7 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { WorkroomChannel, WorkroomMessage } from '../types/messageTypes';
+import React, { useState, useEffect, useRef } from 'react';
+import { useAuthStore } from '@/stores/useAuthStore';
+import { connectSocket } from '@/lib/socket/socketClient';
+import {
+  WorkroomChannel,
+  WorkroomMessage,
+  BackendMessageItem,
+  mapBackendMessage,
+} from '../types/messageTypes';
 import { messagesApi } from '../api/messagesApi';
 import { INITIAL_CHANNELS, INITIAL_MESSAGES, ACTIVE_ESCROW_CONTEXT } from '../data/mockMessagesData';
 import { WorkroomTopNav } from './WorkroomTopNav';
@@ -12,25 +19,75 @@ import { WorkroomMessageComposer } from './WorkroomMessageComposer';
 import { WorkroomTelemetrySidebar } from './WorkroomTelemetrySidebar';
 
 export const WorkroomsView: React.FC = () => {
+  const user = useAuthStore((s) => s.user);
+  const currentUserId = user?.id;
+
   const [channels, setChannels] = useState<WorkroomChannel[]>(INITIAL_CHANNELS);
   const [activeChannelId, setActiveChannelId] = useState<string>(INITIAL_CHANNELS[0].id);
   const [messages, setMessages] = useState<WorkroomMessage[]>(INITIAL_MESSAGES);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     messagesApi.getConversations().then((data) => {
-      if (data && data.length > 0) setChannels(data);
+      if (data && data.length > 0) {
+        setChannels(data);
+        if (!data.some((c) => c.id === activeChannelId)) {
+          setActiveChannelId(data[0].id);
+        }
+      }
     });
-  }, []);
+  }, [activeChannelId]);
 
   useEffect(() => {
-    messagesApi.getMessages(activeChannelId).then(setMessages);
-  }, [activeChannelId]);
+    messagesApi.getMessages(activeChannelId, currentUserId).then(setMessages);
+    messagesApi.markAsRead(activeChannelId);
+
+    const socket = connectSocket();
+    socket.emit('join_conversation', { conversationId: activeChannelId });
+
+    const handleNewMessage = (rawMsg: BackendMessageItem) => {
+      if (rawMsg.conversationId === activeChannelId) {
+        setMessages((prev) => {
+          if (prev.some((m) => m.id === rawMsg.id)) return prev;
+          return [...prev, mapBackendMessage(rawMsg, currentUserId)];
+        });
+      }
+      setChannels((prev) =>
+        prev.map((c) =>
+          c.id === rawMsg.conversationId
+            ? { ...c, lastMessage: rawMsg.content, timestamp: 'Just now' }
+            : c
+        )
+      );
+    };
+
+    socket.on('new_message', handleNewMessage);
+
+    return () => {
+      socket.emit('leave_conversation', { conversationId: activeChannelId });
+      socket.off('new_message', handleNewMessage);
+    };
+  }, [activeChannelId, currentUserId]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const activeChannel = channels.find((c) => c.id === activeChannelId) || channels[0];
 
   const handleSendMessage = async (text: string) => {
-    const newMsg = await messagesApi.sendMessage(activeChannelId, text);
-    setMessages((prev) => [...prev, newMsg]);
+    const newMsg = await messagesApi.sendMessage(activeChannelId, text, currentUserId);
+    setMessages((prev) => {
+      if (prev.some((m) => m.id === newMsg.id)) return prev;
+      return [...prev, newMsg];
+    });
+    setChannels((prev) =>
+      prev.map((c) =>
+        c.id === activeChannelId
+          ? { ...c, lastMessage: text, timestamp: 'Just now' }
+          : c
+      )
+    );
   };
 
   return (
@@ -68,6 +125,7 @@ export const WorkroomsView: React.FC = () => {
             {messages.map((msg) => (
               <WorkroomMessageBubble key={msg.id} message={msg} />
             ))}
+            <div ref={messagesEndRef} />
           </div>
 
           <WorkroomMessageComposer onSendMessage={handleSendMessage} />
