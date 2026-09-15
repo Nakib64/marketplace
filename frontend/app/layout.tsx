@@ -13,27 +13,30 @@ const geistMono = Geist_Mono({
 });
 
 import { Providers } from "@/components/providers/Providers";
-import { Navbar } from "@/components/layout/Navbar";
-import { MobileNav } from "@/components/layout/MobileNav";
-import { Footer } from "@/components/layout/Footer";
+import { AppShell } from "@/components/layout/AppShell";
 
 export const metadata: Metadata = {
   title: "Banglance | Hire Talent & Find Work",
   description: "Secure freelance marketplace with escrow protection and local mobile payouts.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-on-surface">
         <Providers>
-          <Navbar />
-          <main className="flex-1 pt-20">{children}</main>
-          <Footer />
-          <MobileNav />
+          <AppShell>{children}</AppShell>
         </Providers>
       </body>
     </html>
