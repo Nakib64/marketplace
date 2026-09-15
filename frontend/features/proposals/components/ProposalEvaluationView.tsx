@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { isAxiosError } from 'axios';
@@ -14,69 +15,6 @@ import { ProposalCandidateCard } from './ProposalCandidateCard';
 import { ProposalEscrowSummaryWidget } from './ProposalEscrowSummaryWidget';
 import { ProposalBenchmarkMatrixWidget } from './ProposalBenchmarkMatrixWidget';
 import { ProposalMultisigVaultStatus } from './ProposalMultisigVaultStatus';
-
-const DEMO_PROPOSALS: ProposalItem[] = [
-  {
-    id: 'prop-alex-rivera',
-    jobId: 'job-1',
-    freelancerId: 'freelancer-1',
-    freelancerName: 'Alex Rivera',
-    freelancerHandle: 'alexr.eth',
-    freelancerAvatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBgX-gsExAvS3JC8vMl4Vg9Hu7-MWSyIskhiNNUQMC_zDRul90MCEgPP3N4_mbzvtDWyiBUg9fXK75M0Igb010eQpdGrEudPIwBFJfNEoiEhLCeQrBqU3RhVodVHc0ny0JWmgQJXTKzjaO4k-PAtMY6RsccMSfcokqduFQJ4EA9SqZZPhMCS6uHIaQUo_kW3WtREiI9GFlUXaOMZsWWue086BcOUStUclB6SdlT6B0zo4-Vi52Uh9qC',
-    freelancerRole: 'Tier 4 Builder',
-    sbtId: 'SBT #0412',
-    bio: 'Senior Distributed Systems & Stylus Invariants Researcher • Ex-Offchain Labs Contributor',
-    fitScore: 98.4,
-    bidAmount: 14500,
-    currency: 'USDC',
-    budgetComparison: '-$500 vs. budget',
-    durationWeeks: 3,
-    deliveryDate: 'May 14, 2025',
-    milestoneCount: 3,
-    arbitration: 'Kleros Core',
-    courtId: '#32',
-    coverLetter: 'We have already built an EVM-to-Stylus equivalence testing harness. We can port your Uniswap v2 constant-product curve into Rust while reducing gas footprint by ~68% on swaps through optimized SIMD operations.',
-    isShortlisted: true,
-    credentials: [],
-    milestones: [
-      { step: 'M1', title: 'Formal Math Specification & Wasm Memory Model', durationDays: 5, amount: 3500, currency: 'USDC' },
-      { step: 'M2', title: 'Foundry Invariant Fuzzing & Dual-VM State Tests', durationDays: 9, amount: 6000, currency: 'USDC' },
-      { step: 'M3', title: 'Arbitrum Sepolia Deployment & Subgraph Sync', durationDays: 7, amount: 5000, currency: 'USDC' },
-    ],
-    createdAt: new Date().toISOString(),
-    status: 'SHORTLISTED',
-  },
-  {
-    id: 'prop-marcus-vance',
-    jobId: 'job-1',
-    freelancerId: 'freelancer-2',
-    freelancerName: 'Marcus Vance',
-    freelancerHandle: 'mvance.eth',
-    freelancerAvatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB8YKJWef_OpPBLMFrBMZEIAD1R2KhrMKCZkgHl0rtsxP23IqdT5ims02gamv9tjxwfV_OLt-_mmqfgdGPbCHih_QkYE1gVm7JQZ47KaJkAY8g1ESXS4mQH2P1nWYvDyBjvNEGmD2-0DeGY4iIMDXoejeeKNE7in9e7Wqii9n3EaAwb3Mx1rfRgUrlC9NaAB6w1YSvIx7QJao2h5HQJ64guNt2ycOjEfbphAdoWVAPDgVFEuJoMF8nf',
-    freelancerRole: 'Core Rust Engineer',
-    sbtId: 'SBT #0891',
-    bio: 'Ex-Trail of Bits Fellow • Stylus SDK Maintainer & Wasm Optimization Lead',
-    fitScore: 94.1,
-    bidAmount: 15000,
-    currency: 'USDC',
-    budgetComparison: 'Exact Target Budget',
-    durationWeeks: 4,
-    deliveryDate: 'May 21, 2025',
-    milestoneCount: 4,
-    arbitration: 'OpenZeppelin',
-    courtId: '#12',
-    coverLetter: 'Lead maintainer for WebAssembly core libraries. We will ensure formal verification on all mathematical functions with comprehensive Slither pipelines.',
-    isShortlisted: true,
-    credentials: [],
-    milestones: [
-      { step: 'M1', title: 'Rust Stylus Architecture & Memory Safety Spec', durationDays: 7, amount: 4000, currency: 'USDC' },
-      { step: 'M2', title: 'Integration Test Harness & Benchmark Analysis', durationDays: 10, amount: 6000, currency: 'USDC' },
-      { step: 'M3', title: 'Production Deployment & Acceptance', durationDays: 7, amount: 5000, currency: 'USDC' },
-    ],
-    createdAt: new Date().toISOString(),
-    status: 'SHORTLISTED',
-  },
-];
 
 interface RawProposal {
   id: string;
@@ -92,6 +30,7 @@ interface RawProposal {
       title?: string;
       rating?: number;
       description?: string;
+      avatarUrl?: string;
     };
   };
 }
@@ -106,13 +45,13 @@ function mapBackendProposal(raw: RawProposal): ProposalItem {
     freelancerId: raw.freelancerId,
     freelancerName: name,
     freelancerHandle: `@${name.toLowerCase()}`,
-    freelancerAvatar: DEMO_PROPOSALS[0].freelancerAvatar,
+    freelancerAvatar: profile?.avatarUrl || '',
     freelancerRole: profile?.title || 'Verified Specialist',
     sbtId: `SBT #${raw.freelancerId.slice(0, 4)}`,
-    bio: profile?.description || 'Experienced specialist with verified track record.',
+    bio: profile?.description || 'Experienced specialist with verified platform track record.',
     fitScore: profile?.rating ? Math.round(profile.rating * 20) : 95,
     bidAmount: amount,
-    currency: 'USDC',
+    currency: 'BDT',
     budgetComparison: 'Competitive bid',
     durationWeeks: 3,
     deliveryDate: new Date(Date.now() + 21 * 24 * 3600 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
@@ -123,8 +62,8 @@ function mapBackendProposal(raw: RawProposal): ProposalItem {
     isShortlisted: raw.status === 'ACCEPTED',
     credentials: [],
     milestones: [
-      { step: 'M1', title: 'Initial Milestone Sprint', durationDays: 7, amount: Math.round(amount * 0.4), currency: 'USDC' },
-      { step: 'M2', title: 'Final Delivery & Acceptance', durationDays: 14, amount: Math.round(amount * 0.6), currency: 'USDC' },
+      { step: 'M1', title: 'Initial Milestone Sprint', durationDays: 7, amount: Math.round(amount * 0.4), currency: 'BDT' },
+      { step: 'M2', title: 'Final Delivery & Acceptance', durationDays: 14, amount: Math.round(amount * 0.6), currency: 'BDT' },
     ],
     createdAt: raw.createdAt,
     status: (raw.status as ProposalItem['status']) || 'PENDING',
@@ -135,14 +74,14 @@ export const ProposalEvaluationView: React.FC<{ jobId: string }> = ({ jobId }) =
   const router = useRouter();
   const [search, setSearch] = useState('');
   const [seniority, setSeniority] = useState('ALL');
-  const [hasCertikFilter, setHasCertikFilter] = useState(true);
+  const [hasCertikFilter, setHasCertikFilter] = useState(false);
 
   const { data: job } = useQuery({
     queryKey: ['job', jobId],
     queryFn: () => jobsApi.getJobDetails(jobId).catch(() => null),
   });
 
-  const { data: rawProposals = [] } = useQuery({
+  const { data: rawProposals = [], isLoading } = useQuery({
     queryKey: ['job-proposals', jobId],
     queryFn: () => proposalsApi.getJobProposals(jobId).catch(() => []),
   });
@@ -170,29 +109,89 @@ export const ProposalEvaluationView: React.FC<{ jobId: string }> = ({ jobId }) =
     }
   };
 
-  const proposals: ProposalItem[] = rawProposals.length > 0
-    ? (rawProposals as unknown as RawProposal[]).map(mapBackendProposal)
-    : DEMO_PROPOSALS;
+  const proposals: ProposalItem[] = (rawProposals as unknown as RawProposal[]).map(mapBackendProposal);
 
   const filtered = proposals.filter((p) => {
     if (search && !p.freelancerName.toLowerCase().includes(search.toLowerCase()) && !p.freelancerHandle.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
+  const handleCopyJobLink = () => {
+    const publicSlug = job?.slug || jobId;
+    const url = `${window.location.origin}/jobs/${publicSlug}`;
+    navigator.clipboard.writeText(url);
+    toast.success('Job link copied to clipboard! Share it with candidates to receive proposals.');
+  };
+
   return (
     <div className="w-full bg-background min-h-screen py-6">
-      <div className="w-full max-w-[1440px] mx-auto px-4 lg:px-8">
+      <div className="w-full max-w-[1440px] mx-auto px-4 lg:px-8 flex flex-col gap-6">
         <ProposalHeaderTelemetry jobId={jobId} jobTitle={job?.title} budget={job?.budget} totalProposals={proposals.length} />
-        <ProposalFilterStrip search={search} onSearchChange={setSearch} seniority={seniority} onSeniorityChange={setSeniority} hasCertikFilter={hasCertikFilter} onToggleCertik={() => setHasCertikFilter(!hasCertikFilter)} />
+        
+        {proposals.length > 0 && (
+          <ProposalFilterStrip search={search} onSearchChange={setSearch} seniority={seniority} onSeniorityChange={setSeniority} hasCertikFilter={hasCertikFilter} onToggleCertik={() => setHasCertikFilter(!hasCertikFilter)} />
+        )}
+
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
           <div className="xl:col-span-8 flex flex-col gap-6 min-w-0">
-            {filtered.map((item) => (
-              <ProposalCandidateCard key={item.id} proposal={item} onAccept={handleAccept} />
-            ))}
+            {isLoading ? (
+              <div className="space-y-4">
+                {[1, 2].map((i) => (
+                  <div key={i} className="bg-surface-container border border-outline-variant/30 p-6 rounded-2xl animate-pulse h-48" />
+                ))}
+              </div>
+            ) : proposals.length === 0 ? (
+              <div className="bg-surface-container-low border border-outline-variant/30 rounded-2xl p-10 flex flex-col items-center justify-center text-center gap-4 shadow-sm">
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                  <span className="material-symbols-outlined text-[36px]">assignment_ind</span>
+                </div>
+                <div className="flex flex-col gap-1 max-w-md">
+                  <h3 className="text-lg font-bold text-on-surface">No Proposals Received Yet</h3>
+                  <p className="text-xs text-on-surface-variant leading-relaxed">
+                    Freelancers are currently discovering this project. You can share your job listing link to invite targeted talent directly.
+                  </p>
+                </div>
+                <div className="flex items-center gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={handleCopyJobLink}
+                    className="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold transition-colors flex items-center gap-1.5 border border-outline-variant/30"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">content_copy</span>
+                    <span>Copy Job Link</span>
+                  </button>
+                  <Link
+                    href={`/jobs/${job?.slug || jobId}`}
+                    target="_blank"
+                    className="px-4 py-2 rounded-xl bg-primary hover:bg-primary-container text-on-primary text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-sm"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">open_in_new</span>
+                    <span>View Public Listing</span>
+                  </Link>
+                </div>
+              </div>
+            ) : filtered.length === 0 ? (
+              <div className="bg-surface-container-low border border-outline-variant/30 rounded-2xl p-8 flex flex-col items-center justify-center text-center gap-2">
+                <span className="material-symbols-outlined text-[28px] text-on-surface-variant">search_off</span>
+                <span className="text-xs text-on-surface-variant">No proposals match your search criteria.</span>
+                <button
+                  type="button"
+                  onClick={() => setSearch('')}
+                  className="mt-2 px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-xs font-semibold text-on-surface"
+                >
+                  Clear Search
+                </button>
+              </div>
+            ) : (
+              filtered.map((item) => (
+                <ProposalCandidateCard key={item.id} proposal={item} onAccept={handleAccept} />
+              ))
+            )}
           </div>
+
           <div className="xl:col-span-4 flex flex-col gap-6 xl:sticky xl:top-20">
-            <ProposalEscrowSummaryWidget budget={job?.budget} />
-            <ProposalBenchmarkMatrixWidget />
+            <ProposalEscrowSummaryWidget budget={job?.budget} proposals={proposals} />
+            <ProposalBenchmarkMatrixWidget proposals={proposals} />
             <ProposalMultisigVaultStatus />
           </div>
         </div>

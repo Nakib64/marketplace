@@ -2,7 +2,7 @@ import React from 'react';
 
 export function PlatformMetrics() {
   const metrics = [
-    { value: '$48M+', label: 'Protected Payments', sub: 'Completed projects', color: 'text-primary' },
+    { value: '৳50M+', label: 'Protected Payments', sub: 'Completed projects', color: 'text-primary' },
     { value: '99.4%', label: 'Dispute-Free Rate', sub: 'Successful contracts', color: 'text-secondary' },
     { value: '14,000+', label: 'Verified Pros', sub: 'Technical talent', color: 'text-on-surface' },
     { value: '< 5 min', label: 'Average Payout', sub: 'Instant mobile releases', color: 'text-primary-container' },

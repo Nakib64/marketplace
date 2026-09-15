@@ -11,7 +11,7 @@ export function Testimonials() {
       badge: 'Verified Client',
       quote:
         'Hired two NestJS and React developers for our platform within 48 hours. Payment protection gave both parties complete peace of mind, and the transparent fee is unbeatable compared to legacy platforms.',
-      stat: '$210K',
+      stat: '৳2.1M',
       statLabel: 'Paid Securely',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80',
     },
@@ -21,7 +21,7 @@ export function Testimonials() {
       badge: 'Top Rated Talent',
       quote:
         'As a software consultant, getting paid without 14-day clearance delays or currency conversion fee gouging is game changing. Approved milestone payments land directly into my wallet within minutes.',
-      stat: '$145K',
+      stat: '৳1.45M',
       statLabel: 'Earned & Payouts',
       avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=120&h=120&q=80',
     },
@@ -31,7 +31,7 @@ export function Testimonials() {
       badge: 'Enterprise Client',
       quote:
         'Our engineering team manages multiple ongoing contractor workstreams solely through Banglance milestone contracts. Zero payment disputes, automatic delivery tracking, and honest feedback ratings.',
-      stat: '$380K',
+      stat: '৳3.8M',
       statLabel: 'Total Volume',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&h=120&q=80',
     },

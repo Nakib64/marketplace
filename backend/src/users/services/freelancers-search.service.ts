@@ -60,9 +60,13 @@ export class FreelancersSearchService {
     };
   }
 
-  async getPublicFreelancerProfile(freelancerProfileId: string) {
-    const profile = await this.prisma.freelancerProfile.findUnique({
-      where: { id: freelancerProfileId },
+  async getPublicFreelancerProfile(identifier: string) {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(identifier);
+
+    let profile = await this.prisma.freelancerProfile.findFirst({
+      where: isUuid
+        ? { OR: [{ id: identifier }, { userId: identifier }, { slug: identifier }] }
+        : { slug: identifier },
       include: {
         user: {
           select: {
@@ -78,6 +82,27 @@ export class FreelancersSearchService {
         },
       },
     });
+
+    if (!profile && !isUuid) {
+      // Fallback
+      profile = await this.prisma.freelancerProfile.findFirst({
+        where: { OR: [{ id: identifier }, { userId: identifier }] },
+        include: {
+          user: {
+            select: {
+              id: true,
+              email: true,
+              createdAt: true,
+              workHistories: { orderBy: { startDate: 'desc' } },
+            },
+          },
+          portfolioItems: {
+            include: { images: { orderBy: { order: 'asc' } } },
+            orderBy: { createdAt: 'desc' },
+          },
+        },
+      });
+    }
 
     if (!profile) {
       throw new NotFoundException('Freelancer profile not found.');

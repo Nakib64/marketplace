@@ -11,9 +11,16 @@ interface PostJobPreviewSidebarProps {
 export function PostJobPreviewSidebar({ form }: PostJobPreviewSidebarProps) {
   const { watch } = form;
   const title = watch('title') || 'Untitled Project Post';
-  const category = watch('category') || 'Web & App Development';
+  const category = watch('category');
+  const subCategory = watch('subCategory');
   const budget = watch('budget') || 0;
   const skills = watch('skills') || [];
+
+  const categoryDisplay = category
+    ? subCategory
+      ? `${category} › ${subCategory}`
+      : category
+    : 'No Category Selected';
 
   return (
     <aside className="w-full lg:w-80 xl:w-96 shrink-0 flex flex-col gap-6 lg:sticky lg:top-24">
@@ -31,16 +38,16 @@ export function PostJobPreviewSidebar({ form }: PostJobPreviewSidebarProps) {
 
         {/* Inner Simulated Card */}
         <div className="p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/20 flex flex-col gap-2.5">
-          <span className="text-[11px]  text-secondary">{category}</span>
+          <span className="text-[11px] text-secondary">{categoryDisplay}</span>
           <h3 className="text-sm font-bold text-on-surface line-clamp-2 leading-snug">
             {title}
           </h3>
 
           <div className="py-1 flex items-baseline gap-1">
             <span className="text-xl font-bold  text-primary">
-              {budget > 0 ? formatCurrency(budget) : '$0'}
+              {budget > 0 ? formatCurrency(budget) : '৳0'}
             </span>
-            <span className="text-xs  text-on-surface-variant">USD</span>
+            <span className="text-xs  text-on-surface-variant">BDT</span>
           </div>
 
           <div className="flex flex-wrap gap-1 pt-1">
@@ -76,12 +83,12 @@ export function PostJobPreviewSidebar({ form }: PostJobPreviewSidebarProps) {
           <div className="flex justify-between">
             <span>Project Budget:</span>
             <span className=" text-on-surface font-semibold">
-              {budget > 0 ? formatCurrency(budget) : '$0.00'}
+              {budget > 0 ? formatCurrency(budget) : '৳0.00'}
             </span>
           </div>
           <div className="flex justify-between">
             <span>Platform Fee:</span>
-            <span className=" text-primary font-bold">0.00% ($0.00)</span>
+            <span className=" text-primary font-bold">0.00% (৳0.00)</span>
           </div>
           <div className="flex justify-between">
             <span>Payment Guarantee:</span>

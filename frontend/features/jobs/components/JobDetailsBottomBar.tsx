@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
+import { useAuthStore } from '@/stores/useAuthStore';
 import { Job } from '../types/jobsTypes';
 
 interface JobDetailsBottomBarProps {
@@ -10,6 +11,7 @@ interface JobDetailsBottomBarProps {
 }
 
 export function JobDetailsBottomBar({ job }: JobDetailsBottomBarProps) {
+  const { user } = useAuthStore();
   const budgetNum = Number(job.budget) || 0;
 
   return (
@@ -26,16 +28,18 @@ export function JobDetailsBottomBar({ job }: JobDetailsBottomBarProps) {
           </span>
         </div>
 
-        <Link href={`/jobs/${job.id}/apply`} className="shrink-0">
-          <Button
-            variant="primary"
-            size="md"
-            className="px-5 shadow-lg shadow-primary-container/25 font-semibold"
-          >
-            <span>Submit Proposal</span>
-            <ArrowRight className="w-4 h-4 ml-1" />
-          </Button>
-        </Link>
+        {user?.role !== 'CLIENT' && (
+          <Link href={`/jobs/${job.slug || job.id}/apply`} className="shrink-0">
+            <Button
+              variant="primary"
+              size="md"
+              className="px-5 shadow-lg shadow-primary-container/25 font-semibold"
+            >
+              <span>Submit Proposal</span>
+              <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
+          </Link>
+        )}
       </div>
     </div>
   );

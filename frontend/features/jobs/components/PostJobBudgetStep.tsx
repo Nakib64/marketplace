@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
-import { ShieldCheck, CheckCircle2, DollarSign } from 'lucide-react';
+import { ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { CreateJobFormData } from '../schemas/createJobSchema';
 
 interface PostJobBudgetStepProps {
@@ -12,7 +12,7 @@ interface PostJobBudgetStepProps {
 export function PostJobBudgetStep({ form }: PostJobBudgetStepProps) {
   const { register, formState: { errors } } = form;
   const [escrowType, setEscrowType] = useState<'milestone' | 'fixed'>('milestone');
-  const [currency, setCurrency] = useState('USD');
+  const [currency, setCurrency] = useState('BDT');
 
   return (
     <div className="bg-surface-container rounded-2xl p-6 sm:p-8 flex flex-col gap-6 border border-outline-variant/30 shadow-sm">
@@ -21,7 +21,7 @@ export function PostJobBudgetStep({ form }: PostJobBudgetStepProps) {
           <span className="w-2 h-2 rounded-full bg-primary" />
           <h2 className="text-lg font-bold text-on-surface">3. Budget &amp; Payment Setup</h2>
         </div>
-        <span className="text-xs  text-on-surface-variant">Step 03 / 03</span>
+        <span className="text-xs text-on-surface-variant">Step 03 / 03</span>
       </div>
 
       {/* Payment Type Selection */}
@@ -78,7 +78,6 @@ export function PostJobBudgetStep({ form }: PostJobBudgetStepProps) {
               onChange={(e) => setCurrency(e.target.value)}
               className="w-full appearance-none bg-surface-container-low border border-outline-variant/30 px-3.5 py-2.5 rounded-xl text-xs font-medium text-on-surface outline-none focus:border-primary transition-colors cursor-pointer"
             >
-              <option value="USD">USD ($ - US Dollars)</option>
               <option value="BDT">BDT (৳ - Bangladeshi Taka)</option>
             </select>
           </div>
@@ -87,18 +86,18 @@ export function PostJobBudgetStep({ form }: PostJobBudgetStepProps) {
         {/* Total Budget */}
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-bold text-on-surface uppercase tracking-wider">
-            Total Project Budget
+            Total Project Budget (BDT)
           </label>
           <div className="flex items-center bg-surface-container-low border border-outline-variant/30 px-3.5 py-2 rounded-xl focus-within:border-primary transition-colors">
-            <DollarSign className="w-4 h-4 text-primary mr-1 shrink-0" />
+            <span className="text-lg font-bold text-primary mr-2 shrink-0">৳</span>
             <input
               type="number"
               {...register('budget', { valueAsNumber: true })}
-              placeholder="e.g. 5000"
-              className="w-full bg-transparent  text-lg font-bold text-on-surface outline-none"
+              placeholder="e.g. 50000"
+              className="w-full bg-transparent text-lg font-bold text-on-surface outline-none"
             />
-            <span className="text-xs text-primary bg-surface-container-high px-2 py-0.5 rounded ml-2">
-              USDC
+            <span className="text-xs text-primary bg-surface-container-high px-2 py-0.5 rounded ml-2 font-bold">
+              BDT
             </span>
           </div>
           {errors.budget && (

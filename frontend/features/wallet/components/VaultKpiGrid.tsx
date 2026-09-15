@@ -18,8 +18,8 @@ export const VaultKpiGrid: React.FC<VaultKpiGridProps> = ({ metrics }) => {
         </div>
         <div className="mt-3">
           <div className="flex items-baseline gap-1">
-            <span className="text-2xl font-bold  text-on-surface">${metrics.tvl.toLocaleString()}</span>
-            <span className="text-xs  text-on-surface-variant">USDC</span>
+            <span className="text-2xl font-bold  text-on-surface">৳{metrics.tvl.toLocaleString()}</span>
+            <span className="text-xs  text-on-surface-variant">BDT</span>
           </div>
           <div className="mt-1 flex items-center justify-between text-[11px]">
             <span className="flex items-center gap-0.5 text-primary font-medium">
@@ -48,7 +48,7 @@ export const VaultKpiGrid: React.FC<VaultKpiGridProps> = ({ metrics }) => {
           </div>
           <div className="mt-1 flex items-center justify-between text-[11px]">
             <span className="text-on-surface-variant">Awaiting Review:</span>
-            <span className=" font-semibold text-primary">${metrics.pendingReleaseAmount.toLocaleString()} USDC</span>
+            <span className=" font-semibold text-primary">৳{metrics.pendingReleaseAmount.toLocaleString()} BDT</span>
           </div>
         </div>
         <div className="w-full bg-surface-container-highest h-1 rounded-full mt-3 overflow-hidden">

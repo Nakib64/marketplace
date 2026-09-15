@@ -37,9 +37,9 @@ export const SubmitProposalView: React.FC<{ jobId: string }> = ({ jobId }) => {
   const [agreedToArbitration, setAgreedToArbitration] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [milestones, setMilestones] = useState<ProposalMilestone[]>([
-    { step: 'M1', title: 'Architecture Specification & Setup', durationDays: 5, amount: 2500, currency: 'USDC' },
-    { step: 'M2', title: 'Core Implementation & Test Suite', durationDays: 9, amount: 3500, currency: 'USDC' },
-    { step: 'M3', title: 'Production Deployment & Handoff', durationDays: 7, amount: 2500, currency: 'USDC' },
+    { step: 'M1', title: 'Architecture Specification & Setup', durationDays: 5, amount: 2500, currency: 'BDT' },
+    { step: 'M2', title: 'Core Implementation & Test Suite', durationDays: 9, amount: 3500, currency: 'BDT' },
+    { step: 'M3', title: 'Production Deployment & Handoff', durationDays: 7, amount: 2500, currency: 'BDT' },
   ]);
 
   const handleSubmit = async () => {
@@ -78,7 +78,7 @@ export const SubmitProposalView: React.FC<{ jobId: string }> = ({ jobId }) => {
             <SubmitProposalJobSnapshot job={job} />
             <SubmitProposalTermsSection bidAmount={bidAmount} onBidAmountChange={setBidAmount} durationWeeks={durationWeeks} onDurationChange={setDurationWeeks} strategy={strategy} onStrategyChange={setStrategy} targetBudget={job?.budget} />
             <SubmitProposalCoverLetterSection coverLetter={coverLetter} onChange={setCoverLetter} />
-            <SubmitProposalMilestonesSection milestones={milestones} onAddMilestone={() => setMilestones((prev) => [...prev, { step: `M${prev.length + 1}`, title: 'Additional Milestone Sprint', durationDays: 5, amount: 1000, currency: 'USDC' }])} onRemoveMilestone={(idx) => setMilestones((prev) => prev.filter((_, i) => i !== idx))} totalBid={bidAmount} />
+            <SubmitProposalMilestonesSection milestones={milestones} onAddMilestone={() => setMilestones((prev) => [...prev, { step: `M${prev.length + 1}`, title: 'Additional Milestone Sprint', durationDays: 5, amount: 1000, currency: 'BDT' }])} onRemoveMilestone={(idx) => setMilestones((prev) => prev.filter((_, i) => i !== idx))} totalBid={bidAmount} />
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-xl bg-surface-container-low border border-outline-variant/30 shadow-sm">
               <div className="flex items-center gap-2 text-on-surface-variant text-xs">
                 <span className="material-symbols-outlined text-primary text-[18px]">verified_user</span>

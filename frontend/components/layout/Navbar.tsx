@@ -3,24 +3,46 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, Wallet, User as UserIcon, LogOut, PlusCircle, Briefcase } from 'lucide-react';
+import { Search, LayoutDashboard, PlusCircle, Briefcase } from 'lucide-react';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { cn } from '@/lib/utils';
 
 export function Navbar() {
   const pathname = usePathname();
-  const { user, isAuthenticated, logout } = useAuthStore();
+  const { user, isAuthenticated } = useAuthStore();
 
   const isClient = user?.role === 'CLIENT';
+  const isFreelancer = user?.role === 'FREELANCER';
 
-  const navLinks = [
-    { label: 'Find Work', href: '/jobs' },
+  // Role-targeted navigation links
+  const clientNavLinks = [
+    { label: 'My Job Posts', href: '/client/jobs' },
     { label: 'Find Talent', href: '/freelancers' },
-    { label: 'Payments', href: '/wallet' },
+    { label: 'Messages', href: '/messages' },
     { label: 'Activity', href: '/transactions' },
     { label: 'Resolutions', href: '/disputes' },
-    { label: 'Messages', href: '/messages', authRequired: true },
   ];
+
+  const freelancerNavLinks = [
+    { label: 'Find Work', href: '/jobs' },
+    { label: 'My Workspace', href: '/freelancer/dashboard' },
+    { label: 'Messages', href: '/messages' },
+    { label: 'Activity', href: '/transactions' },
+    { label: 'Resolutions', href: '/disputes' },
+  ];
+
+  const publicNavLinks = [
+    { label: 'Find Work', href: '/jobs' },
+    { label: 'Find Talent', href: '/freelancers' },
+  ];
+
+  const navLinks = isAuthenticated
+    ? isClient
+      ? clientNavLinks
+      : freelancerNavLinks
+    : publicNavLinks;
+
+  const dashboardHref = isClient ? '/client/jobs' : '/freelancer/dashboard';
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl border-b border-outline-variant/40">
@@ -40,7 +62,6 @@ export function Navbar() {
         {/* Navigation Links */}
         <nav className="hidden lg:flex items-center gap-1">
           {navLinks.map((link) => {
-            if (link.authRequired && !isAuthenticated) return null;
             const isActive = pathname === link.href;
             return (
               <Link
@@ -62,11 +83,13 @@ export function Navbar() {
         {/* Search & Actions */}
         <div className="flex items-center gap-3 flex-shrink-0">
           <Link
-            href="/jobs"
+            href={isClient ? '/freelancers' : '/jobs'}
             className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface-variant text-xs hover:border-outline transition-colors"
           >
             <Search className="w-4 h-4 text-primary" />
-            <span className="text-outline pr-4">Search jobs, talent...</span>
+            <span className="text-outline pr-4">
+              {isClient ? 'Search talent...' : 'Search jobs...'}
+            </span>
             <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high text-outline text-[10px] ">
               ⌘K
             </kbd>
@@ -88,8 +111,8 @@ export function Navbar() {
               </Link>
             </div>
           ) : (
-            <div className="flex items-center gap-3">
-              {isClient ? (
+            <div className="flex items-center gap-2.5">
+              {isClient && (
                 <Link
                   href="/client/jobs/new"
                   className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-container text-surface text-xs font-semibold hover:bg-primary transition-all"
@@ -97,7 +120,9 @@ export function Navbar() {
                   <PlusCircle className="w-3.5 h-3.5" />
                   <span>Post a Job</span>
                 </Link>
-              ) : (
+              )}
+
+              {isFreelancer && (
                 <Link
                   href="/jobs"
                   className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high text-on-surface text-xs font-medium hover:bg-surface-container-highest transition-all"
@@ -107,32 +132,14 @@ export function Navbar() {
                 </Link>
               )}
 
+              {/* Dedicated Dashboard Button */}
               <Link
-                href="/wallet"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container border border-outline-variant/50 text-xs text-on-surface hover:border-primary/50 transition-colors"
+                href={dashboardHref}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-primary text-surface text-xs font-bold hover:bg-tertiary shadow-sm transition-all cursor-pointer"
               >
-                <Wallet className="w-3.5 h-3.5 text-primary" />
-                <span className=" text-xs font-medium">Wallet</span>
+                <LayoutDashboard className="w-3.5 h-3.5" />
+                <span>Dashboard</span>
               </Link>
-
-              <Link
-                href={isClient ? '/client/settings' : '/freelancer/profile/edit'}
-                title={user?.name || 'Profile'}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-surface-container text-xs text-on-surface hover:bg-surface-container-high transition-colors"
-              >
-                <UserIcon className="w-3.5 h-3.5 text-primary" />
-                <span className="hidden xl:inline text-xs font-medium max-w-[100px] truncate">
-                  {user?.name || 'Account'}
-                </span>
-              </Link>
-
-              <button
-                onClick={logout}
-                title="Log Out"
-                className="p-2 rounded-lg text-on-surface-variant hover:text-error hover:bg-surface-container transition-colors cursor-pointer"
-              >
-                <LogOut className="w-4 h-4" />
-              </button>
             </div>
           )}
         </div>

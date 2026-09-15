@@ -1,8 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Bookmark, BookmarkCheck, Zap } from 'lucide-react';
+import { ArrowRight, Bookmark, BookmarkCheck, Zap, Settings, Users } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
+import { useAuthStore } from '@/stores/useAuthStore';
 import { Job } from '../types/jobsTypes';
 
 interface JobBudgetActionCardProps {
@@ -16,7 +17,10 @@ export function JobBudgetActionCard({
   isBookmarked,
   onToggleBookmark,
 }: JobBudgetActionCardProps) {
+  const { user } = useAuthStore();
   const budgetNum = Number(job.budget) || 0;
+  const isOwner = user?.id === job.clientId;
+  const isClient = user?.role === 'CLIENT';
 
   return (
     <section className="bg-surface-container-low rounded-2xl p-6 sm:p-8 border border-outline-variant/30 shadow-sm flex flex-col">
@@ -42,16 +46,39 @@ export function JobBudgetActionCard({
 
       {/* Action Buttons */}
       <div className="flex flex-col gap-3">
-        <Link href={`/jobs/${job.id}/apply`} className="w-full">
-          <Button
-            variant="primary"
-            size="lg"
-            className="w-full justify-center shadow-lg shadow-primary-container/20 font-semibold"
-          >
-            <span>Submit a Proposal</span>
-            <ArrowRight className="w-4 h-4 ml-1" />
-          </Button>
-        </Link>
+        {isOwner ? (
+          <Link href={`/client/jobs/${job.id}/proposals`} className="w-full">
+            <Button
+              variant="primary"
+              size="lg"
+              className="w-full justify-center shadow-lg shadow-primary-container/20 font-semibold"
+            >
+              <Users className="w-4 h-4 mr-1.5" />
+              <span>Review Proposals ({job._count?.proposals || 0})</span>
+            </Button>
+          </Link>
+        ) : isClient ? (
+          <Link href="/client/jobs/new" className="w-full">
+            <Button
+              variant="secondary"
+              size="lg"
+              className="w-full justify-center font-semibold"
+            >
+              <span>Post a Similar Job</span>
+            </Button>
+          </Link>
+        ) : (
+          <Link href={`/jobs/${job.slug || job.id}/apply`} className="w-full">
+            <Button
+              variant="primary"
+              size="lg"
+              className="w-full justify-center shadow-lg shadow-primary-container/20 font-semibold"
+            >
+              <span>Submit a Proposal</span>
+              <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
+          </Link>
+        )}
 
         <Button
           variant="secondary"

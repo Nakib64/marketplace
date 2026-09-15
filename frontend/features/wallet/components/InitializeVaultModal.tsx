@@ -16,7 +16,7 @@ export const InitializeVaultModal: React.FC<InitializeVaultModalProps> = ({
   const [title, setTitle] = useState('');
   const [contractorAddress, setContractorAddress] = useState('');
   const [amount, setAmount] = useState('5000');
-  const [currency, setCurrency] = useState('USDC');
+  const [currency, setCurrency] = useState('BDT');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
@@ -89,8 +89,7 @@ export const InitializeVaultModal: React.FC<InitializeVaultModalProps> = ({
                 onChange={(e) => setCurrency(e.target.value)}
                 className="bg-surface-container-low border border-outline-variant/30 p-2.5 rounded-lg text-on-surface focus:outline-none"
               >
-                <option value="USDC">USDC ($)</option>
-                <option value="BDT">BDT (৳)</option>
+                <option value="BDT">BDT (৳ - Bangladeshi Taka)</option>
               </select>
             </div>
           </div>

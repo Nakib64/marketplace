@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileEdit, ShieldCheck, CheckCircle2, DollarSign, Scale } from 'lucide-react';
+import { FileEdit, ShieldCheck, CheckCircle2, Banknote, Scale } from 'lucide-react';
 
 export function EscrowExplainer() {
   const steps = [
@@ -30,7 +30,7 @@ export function EscrowExplainer() {
       title: 'Instant Payout Release',
       description: 'Client clicks Approve, and funds release instantly into the freelancer wallet for bKash or Nagad withdrawal.',
       tag: 'Instant wallet release',
-      icon: DollarSign,
+      icon: Banknote,
     },
   ];
 

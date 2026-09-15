@@ -109,6 +109,7 @@ model ClientProfile {
   id             String   @id @default(uuid())
   userId         String   @unique
   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slug           String?  @unique
   companyName    String?
   billingDetails String?
   totalJobPosts  Int      @default(0)
@@ -117,12 +118,15 @@ model ClientProfile {
   totalReviews   Int      @default(0)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+
+  @@index([slug])
 }
 
 model FreelancerProfile {
   id             String          @id @default(uuid())
   userId         String          @unique
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slug           String?         @unique
   title          String?
   description    String?
   hourlyRate     Decimal?        @db.Decimal(10, 2)
@@ -135,6 +139,8 @@ model FreelancerProfile {
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   portfolioItems PortfolioItem[]
+
+  @@index([slug])
 }
 
 model WorkHistory {
@@ -228,6 +234,7 @@ model Job {
   id              String       @id @default(uuid())
   clientId        String
   client          User         @relation("ClientJobs", fields: [clientId], references: [id], onDelete: Cascade)
+  slug            String?      @unique
   title           String
   description     String
   categoryId      String?
@@ -251,6 +258,7 @@ model Job {
 
   @@index([status, createdAt])
   @@index([clientId])
+  @@index([slug])
   @@index([categoryId, subCategoryId])
   @@index([isFlagged])
 }

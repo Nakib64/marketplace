@@ -44,7 +44,7 @@ export const VaultCard: React.FC<VaultCardProps> = ({ vault }) => {
 
         <div className="bg-surface-container p-2.5 rounded-lg text-left sm:text-right shrink-0 border border-outline-variant/20">
           <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-semibold block">Total Budget</span>
-          <span className="text-base font-bold  text-on-surface">${vault.totalLocked.toLocaleString()}</span>
+          <span className="text-base font-bold  text-on-surface">৳{vault.totalLocked.toLocaleString()}</span>
           <span className="text-[10px] text-primary font-medium block">Protected Payment</span>
         </div>
       </div>

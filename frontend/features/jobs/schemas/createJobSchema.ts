@@ -11,8 +11,8 @@ export const createJobSchema = z.object({
     .string()
     .min(20, 'Please provide at least 20 characters describing project scope & deliverables'),
   budget: z
-    .number({ invalid_type_error: 'Budget must be a valid number' })
-    .min(1, 'Budget must be at least $1'),
+    .number({ invalid_type_error: 'Please enter your project budget amount' })
+    .min(1, 'Budget must be at least ৳1'),
   skills: z
     .array(z.string())
     .min(1, 'Please add at least one technical skill tag'),

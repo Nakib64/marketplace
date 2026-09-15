@@ -92,13 +92,17 @@ export class AuthCredentialsService {
         },
       });
 
+      const emailPrefix = normalizedEmail.split('@')[0].replace(/[^a-z0-9]/g, '').slice(0, 15) || 'user';
+      const randomSuffix = Math.random().toString(36).substring(2, 6);
+      const profileSlug = `${emailPrefix}-${randomSuffix}`;
+
       if (dto.role === Role.CLIENT) {
         await tx.clientProfile.create({
-          data: { userId: user.id },
+          data: { userId: user.id, slug: profileSlug },
         });
       } else if (dto.role === Role.FREELANCER) {
         await tx.freelancerProfile.create({
-          data: { userId: user.id },
+          data: { userId: user.id, slug: profileSlug },
         });
       }
 

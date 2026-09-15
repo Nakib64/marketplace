@@ -16,7 +16,7 @@ export const EscrowYieldSweepCard: React.FC = () => {
       <div className="p-3 rounded-lg bg-surface-container flex flex-col gap-2 border border-outline-variant/20">
         <div className="flex justify-between items-baseline">
           <span className="text-on-surface-variant text-[11px]">Earned Rewards</span>
-          <span className="text-base font-bold text-primary ">+$184.20 USDC</span>
+          <span className="text-base font-bold text-primary ">+৳1,840.00 BDT</span>
         </div>
         <div className="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
           <div className="bg-primary h-full rounded-full" style={{ width: '82%' }} />

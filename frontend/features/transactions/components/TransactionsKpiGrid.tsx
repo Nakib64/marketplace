@@ -15,7 +15,7 @@ export const TransactionsKpiGrid: React.FC<TransactionsKpiGridProps> = ({ metric
         </div>
         <div className="flex flex-col gap-1">
           <span className="text-xl font-bold  text-on-surface">
-            ${metrics.totalSettledUsdc.toLocaleString()}.00 <span className="text-xs text-on-surface-variant">USDC</span>
+            ৳{metrics.totalSettledUsdc.toLocaleString()}.00 <span className="text-xs text-on-surface-variant">BDT</span>
           </span>
           <div className="flex items-center gap-1.5 text-on-surface-variant text-[11px]">
             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
@@ -31,7 +31,7 @@ export const TransactionsKpiGrid: React.FC<TransactionsKpiGridProps> = ({ metric
         </div>
         <div className="flex flex-col gap-1">
           <span className="text-xl font-bold  text-on-surface">
-            ${metrics.gasSavedUsd.toLocaleString()} <span className="text-xs text-on-surface-variant">Saved</span>
+            ৳{metrics.gasSavedUsd.toLocaleString()} <span className="text-xs text-on-surface-variant">Saved</span>
           </span>
           <div className="flex items-center gap-1 text-on-surface-variant text-[11px]">
             <span className=" text-primary font-bold">{metrics.gaslessRelayCount}</span>

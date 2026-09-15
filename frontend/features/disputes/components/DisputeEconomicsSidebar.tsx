@@ -29,11 +29,11 @@ export const DisputeEconomicsSidebar: React.FC<DisputeEconomicsSidebarProps> = (
         <div className="flex flex-col gap-2 bg-surface-container-low p-3 rounded-lg border border-outline-variant/20">
           <div className="flex items-center justify-between">
             <span className="text-on-surface-variant">Disputed Amount:</span>
-            <span className="text-on-surface font-semibold ">${caseDetail.surchargeUsdc ? (caseDetail.surchargeUsdc * 25).toLocaleString() : '3,500'}.00 USDC</span>
+            <span className="text-on-surface font-semibold ">৳{caseDetail.surchargeUsdc ? (caseDetail.surchargeUsdc * 25).toLocaleString() : '3,500'}.00 BDT</span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-on-surface-variant">Resolution Fee:</span>
-            <span className="text-primary font-semibold">$0.00 (Covered)</span>
+            <span className="text-primary font-semibold">৳0.00 (Covered)</span>
           </div>
           <div className="pt-1.5 flex flex-col gap-1">
             <div className="flex items-center justify-between text-[11px]">

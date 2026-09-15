@@ -84,24 +84,21 @@ export const ProfileWorkParametersSection: React.FC<ProfileWorkParametersSection
           <div className="flex flex-col gap-1">
             <label className="text-xs font-semibold text-on-surface">Hourly Rate</label>
             <div className="flex items-center px-3 py-2 rounded-xl bg-surface-container-low border border-outline-variant/30">
-              <span className=" text-primary font-bold text-sm mr-2">$</span>
+              <span className=" text-primary font-bold text-sm mr-2">৳</span>
               <input
                 type="number"
                 value={hourlyRate || ''}
                 onChange={(e) => onHourlyRateChange(Number(e.target.value))}
                 className="w-full bg-transparent  text-xs text-on-surface font-bold focus:outline-none"
               />
-              <span className="text-[11px] text-on-surface-variant">USD / hr</span>
+              <span className="text-[11px] text-on-surface-variant">BDT / hr</span>
             </div>
           </div>
           <div className="flex flex-col gap-1">
             <label className="text-xs font-semibold text-on-surface">Preferred Payout Currencies</label>
             <div className="flex items-center gap-2 pt-1 text-xs">
               <span className="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface flex items-center gap-1 border border-outline-variant/20 font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" /> USD
-              </span>
-              <span className="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface flex items-center gap-1 border border-outline-variant/20 font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" /> BDT (৳)
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" /> BDT (৳ - Bangladeshi Taka)
               </span>
             </div>
           </div>

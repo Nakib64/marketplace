@@ -43,7 +43,7 @@ export const DisputeKpiGrid: React.FC<DisputeKpiGridProps> = ({ metrics }) => {
         </div>
         <div className="my-2">
           <span className="text-2xl font-bold text-on-surface ">
-            ${metrics.totalDisputedUsdc.toLocaleString()} <span className="text-xs text-on-surface-variant font-normal font-sans">USDC</span>
+            ৳{metrics.totalDisputedUsdc.toLocaleString()} <span className="text-xs text-on-surface-variant font-normal font-sans">BDT</span>
           </span>
         </div>
         <div className="flex items-center gap-1 text-on-surface-variant text-xs">

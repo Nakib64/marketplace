@@ -119,13 +119,15 @@ export const MilestoneReviewView: React.FC<MilestoneReviewViewProps> = ({ contra
           <div className="lg:col-span-8 flex flex-col gap-6">
             <MilestoneContributorCard
               scopeTitle={contract.title}
-              contributorName={contract.freelancerName}
-              onCopyHash={(hash) => toast.info(`Hash ${hash.slice(0, 8)}... copied to clipboard`)}
+              amount={amount}
+              currency={currency}
+              contributorName={contract.freelancerName || 'Freelancer'}
+              onCopyHash={(hash) => toast.info(`Reference ${hash.slice(0, 8)}... copied`)}
             />
             <MilestoneArtifactsInspectionCard
               onCopyCid={(cid) => toast.info(`CID ${cid.slice(0, 10)}... copied`)}
             />
-            <MilestoneHandoverNotesCard />
+            <MilestoneHandoverNotesCard notes={contract.scopeOfWork} />
             <MilestoneSecurityReportCard />
           </div>
 

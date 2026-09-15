@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 interface ProfileEditHeaderProps {
   onSave: () => void;
@@ -9,6 +10,9 @@ interface ProfileEditHeaderProps {
 }
 
 export const ProfileEditHeader: React.FC<ProfileEditHeaderProps> = ({ onSave, isSaving }) => {
+  const { user } = useAuthStore();
+  const profileHref = user?.id ? `/freelancers/${user.id}` : '/freelancers';
+
   return (
     <div className="flex flex-col gap-4 mb-6 pb-4 border-b border-outline-variant/30">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -20,7 +24,7 @@ export const ProfileEditHeader: React.FC<ProfileEditHeaderProps> = ({ onSave, is
 
         <div className="flex items-center gap-2.5 shrink-0">
           <Link
-            href="/freelancers/demo-1"
+            href={profileHref}
             className="px-4 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold flex items-center gap-1.5 transition-colors border border-outline-variant/30 shadow-sm"
           >
             <span className="material-symbols-outlined text-[16px] text-on-surface-variant">visibility</span>

@@ -51,9 +51,9 @@ export const TransactionsTable: React.FC<TransactionsTableProps> = ({
                 <td className="py-3.5 px-3 text-right whitespace-nowrap">
                   <div className="flex flex-col items-end">
                     <span className={`font-semibold  ${tx.isCredit ? 'text-primary' : 'text-on-surface'}`}>
-                      {tx.isCredit ? '+' : '-'}${tx.amount.toLocaleString()}
+                      {tx.isCredit ? '+' : '-'}৳{tx.amount.toLocaleString()}
                     </span>
-                    <span className="text-[10px] text-on-surface-variant">{tx.currency}</span>
+                    <span className="text-[10px] text-on-surface-variant">{tx.currency === 'USDC' ? 'BDT' : (tx.currency || 'BDT')}</span>
                   </div>
                 </td>
 

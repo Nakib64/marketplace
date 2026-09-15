@@ -1,14 +1,20 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { Terminal, Paintbrush, Smartphone, Brain, ShieldCheck, FileEdit, ArrowRight } from 'lucide-react';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 export function CategoryGrid() {
+  const user = useAuthStore((s) => s.user);
+  const isClient = user?.role === 'CLIENT';
+
   const categories = [
     {
       title: 'Fullstack & Web Architecture',
       description: 'Next.js 16, NestJS, TypeScript, PostgreSQL, and scalable microservices.',
       jobs: '2,110 Open Jobs',
-      rates: '$45 - $110/hr',
+      rates: '৳500 - ৳1,200/hr',
       tags: ['#NextJS', '#NestJS', '#PostgreSQL'],
       icon: Terminal,
       slug: 'development',
@@ -17,7 +23,7 @@ export function CategoryGrid() {
       title: 'UI/UX Design & Systems',
       description: 'Modern design systems, spatial UI, Figma prototypes, and micro-interactions.',
       jobs: '890 Open Jobs',
-      rates: '$50 - $125/hr',
+      rates: '৳500 - ৳1,500/hr',
       tags: ['#Figma', '#DesignSystems', '#DesignOps'],
       icon: Paintbrush,
       slug: 'design',
@@ -26,7 +32,7 @@ export function CategoryGrid() {
       title: 'Mobile Apps & Cross-Platform',
       description: 'React Native, Flutter, iOS Swift, and native Android applications.',
       jobs: '1,420 Open Jobs',
-      rates: '$55 - $130/hr',
+      rates: '৳600 - ৳1,500/hr',
       tags: ['#ReactNative', '#Flutter', '#Mobile'],
       icon: Smartphone,
       slug: 'mobile',
@@ -35,7 +41,7 @@ export function CategoryGrid() {
       title: 'AI, Agents & Machine Learning',
       description: 'Autonomous AI agents, LLM integrations, PyTorch models, and RAG pipelines.',
       jobs: '740 Open Jobs',
-      rates: '$80 - $190/hr',
+      rates: '৳800 - ৳2,000/hr',
       tags: ['#AI', '#Python', '#LLMAgents'],
       icon: Brain,
       slug: 'ai',
@@ -44,7 +50,7 @@ export function CategoryGrid() {
       title: 'Cybersecurity & Audit',
       description: 'Penetration testing, code audits, compliance, and vulnerability mitigation.',
       jobs: '530 Open Jobs',
-      rates: '$110 - $250/hr',
+      rates: '৳1,200 - ৳3,000/hr',
       tags: ['#Security', '#Audit', '#Compliance'],
       icon: ShieldCheck,
       slug: 'security',
@@ -53,12 +59,14 @@ export function CategoryGrid() {
       title: 'Technical Writing & Growth',
       description: 'Developer documentation, API reference guides, and tech marketing content.',
       jobs: '615 Open Jobs',
-      rates: '$40 - $95/hr',
+      rates: '৳400 - ৳1,000/hr',
       tags: ['#Documentation', '#APIs', '#TechWriting'],
       icon: FileEdit,
       slug: 'writing',
     },
   ];
+
+  const browseAllHref = isClient ? '/freelancers' : '/jobs';
 
   return (
     <section className="w-full bg-surface-container-lowest py-16 px-4 md:px-8 border-y border-outline-variant/30">
@@ -73,10 +81,10 @@ export function CategoryGrid() {
             </h2>
           </div>
           <Link
-            href="/jobs"
+            href={browseAllHref}
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-secondary transition-colors group"
           >
-            <span>Browse all categories</span>
+            <span>{isClient ? 'Browse all talent' : 'Browse all categories'}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
@@ -84,10 +92,14 @@ export function CategoryGrid() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((cat) => {
             const Icon = cat.icon;
+            const categoryHref = isClient
+              ? `/freelancers?category=${cat.slug}`
+              : `/jobs?category=${cat.slug}`;
+
             return (
               <Link
                 key={cat.title}
-                href={`/jobs?category=${cat.slug}`}
+                href={categoryHref}
                 className="group p-6 rounded-2xl bg-surface-container border border-outline-variant/40 hover:bg-surface-container-high hover:border-primary/50 transition-all duration-200 flex flex-col justify-between shadow-xs"
               >
                 <div>

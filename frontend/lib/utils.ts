@@ -9,12 +9,12 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * Formats a numeric amount into USD or BDT currency string
+ * Formats a numeric amount into BDT currency string (৳)
  */
-export function formatCurrency(amount: number, currency: 'USD' | 'BDT' = 'USD'): string {
-  const symbol = currency === 'USD' ? '$' : '৳';
+export function formatCurrency(amount: number, currency: 'USD' | 'BDT' = 'BDT'): string {
+  const symbol = '৳';
   return `${symbol}${amount.toLocaleString('en-US', {
-    minimumFractionDigits: 2,
+    minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   })}`;
 }

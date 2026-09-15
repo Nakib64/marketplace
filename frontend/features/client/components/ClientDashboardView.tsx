@@ -12,7 +12,7 @@ import { ClientSettlementLedger } from './ClientSettlementLedger';
 import { ClientReputationCard } from './ClientReputationCard';
 
 export const ClientDashboardView: React.FC = () => {
-  const { data: myJobs = [], isLoading } = useQuery({
+  const { data: myJobs = [], isLoading, refetch } = useQuery({
     queryKey: ['my-jobs'],
     queryFn: () => jobsApi.getMyJobs(),
     staleTime: 30_000,
@@ -25,14 +25,14 @@ export const ClientDashboardView: React.FC = () => {
         <ClientDashboardBanner />
 
         {/* 4-Column Protocol KPI Cards */}
-        <ClientKpiGrid />
+        <ClientKpiGrid jobs={myJobs} />
 
         {/* Main Content Split Grid (68% Left / 32% Right) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Left Column (8 cols) */}
           <div className="lg:col-span-8 flex flex-col gap-6">
             <ClientPendingDeliverables />
-            <ClientActiveJobsList jobs={myJobs} isLoading={isLoading} />
+            <ClientActiveJobsList jobs={myJobs} isLoading={isLoading} onRefresh={refetch} />
           </div>
 
           {/* Right Column (4 cols) */}

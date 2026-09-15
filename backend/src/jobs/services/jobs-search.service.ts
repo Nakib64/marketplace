@@ -127,9 +127,11 @@ export class JobsSearchService {
     };
   }
 
-  async getJobDetails(jobId: string) {
-    const job = await this.prisma.job.findUnique({
-      where: { id: jobId },
+  async getJobDetails(identifier: string) {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(identifier);
+    
+    let job = await this.prisma.job.findFirst({
+      where: isUuid ? { OR: [{ id: identifier }, { slug: identifier }] } : { slug: identifier },
       include: {
         category: true,
         subCategory: true,
@@ -144,6 +146,26 @@ export class JobsSearchService {
         _count: { select: { proposals: true } },
       },
     });
+
+    if (!job && !isUuid) {
+      // Fallback in case a non-standard ID format is passed
+      job = await this.prisma.job.findUnique({
+        where: { id: identifier },
+        include: {
+          category: true,
+          subCategory: true,
+          client: {
+            select: {
+              id: true,
+              email: true,
+              createdAt: true,
+              clientProfile: true,
+            },
+          },
+          _count: { select: { proposals: true } },
+        },
+      });
+    }
 
     if (!job) {
       throw new NotFoundException('Job posting not found.');

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { useAuthStore } from '@/stores/useAuthStore';
@@ -26,9 +25,10 @@ export const ProfileDecentralizedIdentitySection: React.FC<ProfileDecentralizedI
   const user = useAuthStore((s) => s.user);
   const displayName = user?.name || user?.email?.split('@')[0] || 'Freelancer';
   const isVerified = user?.isEmailVerified;
+  const initial = displayName.charAt(0).toUpperCase();
 
   return (
-    <section className="p-5 rounded-xl bg-surface-container border border-outline-variant/30 flex flex-col gap-4 shadow-sm">
+    <section className="p-5 rounded-2xl bg-surface-container border border-outline-variant/30 flex flex-col gap-4 shadow-sm">
       <div className="flex items-center justify-between pb-2 border-b border-outline-variant/20">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
@@ -39,13 +39,8 @@ export const ProfileDecentralizedIdentitySection: React.FC<ProfileDecentralizedI
       </div>
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/20">
-        <div className="relative w-16 h-16 rounded-2xl overflow-hidden bg-surface-container-highest border border-outline-variant/30 shrink-0">
-          <Image
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWrrP3YPoJ486PaQz1H0J1DpoBodlKcYfiNVAQhmWwmFXjMNSxAo8SDW76NNQ--LcV-Dp8DEWcBgS0jxt0uYC_efyzeBEKiS2-gp6EJGBBaWlI5C6_15C399Cf3PqamKv6nrBKVjJX9ViKFtL-yAPrkZa10gT8GQellz8qCW8YYaWidW6WUMEpFC4GfjvJzY2JOyIh3xgUEsuBvVuwuxf9IGR1efjrlwnkpK0wK932bHM0XIyueE1k"
-            alt="Profile Photo"
-            fill
-            className="object-cover"
-          />
+        <div className="w-16 h-16 rounded-2xl bg-surface-container-high border border-outline-variant/30 flex items-center justify-center font-bold text-2xl text-primary shrink-0">
+          {initial}
         </div>
         <div className="flex flex-col gap-1 flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -68,7 +63,7 @@ export const ProfileDecentralizedIdentitySection: React.FC<ProfileDecentralizedI
           <div className="flex items-center gap-2 pt-1">
             <button
               type="button"
-              onClick={() => toast.info('Select an image from your device.')}
+              onClick={() => toast.info('Profile picture upload will be enabled soon.')}
               className="px-3 py-1 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface text-xs font-semibold flex items-center gap-1 transition-colors border border-outline-variant/30"
             >
               <span className="material-symbols-outlined text-[14px]">upload</span>
@@ -88,7 +83,7 @@ export const ProfileDecentralizedIdentitySection: React.FC<ProfileDecentralizedI
             value={ensDomain}
             onChange={(e) => onEnsChange(e.target.value)}
             placeholder="https://yourportfolio.com"
-            className="w-full bg-surface-container-low border border-outline-variant/30 px-3 py-2 rounded-xl text-xs text-on-surface focus:outline-none focus:border-primary transition-colors"
+            className="w-full bg-surface-container-low border border-outline-variant/30 px-3.5 py-2 rounded-xl text-xs text-on-surface focus:outline-none focus:border-primary transition-colors"
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -98,7 +93,7 @@ export const ProfileDecentralizedIdentitySection: React.FC<ProfileDecentralizedI
             value={title}
             onChange={(e) => onTitleChange(e.target.value)}
             placeholder="e.g. Senior Full Stack Engineer"
-            className="w-full bg-surface-container-low border border-outline-variant/30 px-3 py-2 rounded-xl text-xs text-on-surface focus:outline-none focus:border-primary transition-colors"
+            className="w-full bg-surface-container-low border border-outline-variant/30 px-3.5 py-2 rounded-xl text-xs text-on-surface focus:outline-none focus:border-primary transition-colors"
           />
         </div>
       </div>
@@ -116,4 +111,3 @@ export const ProfileDecentralizedIdentitySection: React.FC<ProfileDecentralizedI
     </section>
   );
 };
-

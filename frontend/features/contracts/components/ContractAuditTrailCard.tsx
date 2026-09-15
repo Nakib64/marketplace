@@ -23,7 +23,7 @@ export const ContractAuditTrailCard: React.FC = () => {
           </span>
         </div>
         <div className="flex flex-wrap items-center gap-3 pt-1 text-[11px] text-on-surface-variant">
-          <span className="font-semibold text-on-surface">$2,500 USDC</span>
+          <span className="font-semibold text-on-surface">৳2,500 BDT</span>
           <span>•</span>
           <span>Turnaround: 18h 40m</span>
         </div>

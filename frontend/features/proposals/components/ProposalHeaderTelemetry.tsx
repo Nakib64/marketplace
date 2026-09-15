@@ -13,10 +13,10 @@ interface ProposalHeaderTelemetryProps {
 
 export const ProposalHeaderTelemetry: React.FC<ProposalHeaderTelemetryProps> = ({
   jobId,
-  jobTitle = 'Arbitrum Stylus Rust AMM DEX V2',
-  totalProposals = 14,
-  shortlistedCount = 3,
-  budget = 15000,
+  jobTitle = 'Project Deliverable',
+  totalProposals = 0,
+  shortlistedCount = 0,
+  budget = 0,
 }) => {
   return (
     <div className="flex flex-col gap-2 mb-6">
@@ -24,7 +24,7 @@ export const ProposalHeaderTelemetry: React.FC<ProposalHeaderTelemetryProps> = (
       <div className="flex items-center gap-1.5 text-on-surface-variant text-xs font-medium flex-wrap">
         <Link href="/client/jobs" className="hover:text-on-surface transition-colors">Client Workspace</Link>
         <span className="material-symbols-outlined text-[14px]">chevron_right</span>
-        <Link href="/client/jobs" className="hover:text-on-surface transition-colors">My Job RFPs</Link>
+        <Link href="/client/jobs" className="hover:text-on-surface transition-colors">My Job Postings</Link>
         <span className="material-symbols-outlined text-[14px]">chevron_right</span>
         <span className=" text-on-surface truncate max-w-xs">
           {jobTitle} (#{jobId.slice(0, 8)})
@@ -47,12 +47,8 @@ export const ProposalHeaderTelemetry: React.FC<ProposalHeaderTelemetryProps> = (
             <span className="text-xs text-on-surface font-medium">{totalProposals} Total Proposals</span>
           </div>
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-container">
-            <span className="w-2 h-2 rounded-full bg-secondary"></span>
-            <span className="text-xs text-on-surface font-medium">{shortlistedCount} Shortlisted</span>
-          </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-container">
             <span className="text-xs text-on-surface-variant">Budget:</span>
-            <span className=" text-xs text-on-surface font-semibold">${budget.toLocaleString()} USDC</span>
+            <span className="text-xs text-on-surface font-semibold">৳{budget.toLocaleString()} BDT</span>
           </div>
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-container text-on-surface-variant">
             <span className="material-symbols-outlined text-[16px] text-primary">verified_user</span>

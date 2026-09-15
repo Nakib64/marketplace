@@ -29,10 +29,12 @@ export const jobsApi = {
   },
 
   /**
-   * Fetch standardized skill tags
+   * Fetch standardized skill tags with optional category or search query
    */
-  async getSkills(): Promise<string[]> {
-    const { data } = await apiClient.get<string[]>('/skills');
+  async getSkills(params?: { category?: string; q?: string }): Promise<Array<{ id: string; name: string; slug: string; category?: string }>> {
+    const { data } = await apiClient.get<Array<{ id: string; name: string; slug: string; category?: string }>>('/skills', {
+      params,
+    });
     return data;
   },
 
@@ -66,7 +68,23 @@ export const jobsApi = {
    * Cancel an open job posting
    */
   async cancelJob(jobId: string): Promise<Job> {
-    const { data } = await apiClient.delete<Job>(`/jobs/${jobId}`);
+    const { data } = await apiClient.patch<Job>(`/jobs/${jobId}/cancel`);
+    return data;
+  },
+
+  /**
+   * Permanently delete a job posting
+   */
+  async deleteJob(jobId: string): Promise<{ success: boolean; message: string }> {
+    const { data } = await apiClient.delete<{ success: boolean; message: string }>(`/jobs/${jobId}`);
+    return data;
+  },
+
+  /**
+   * Update an existing job posting
+   */
+  async updateJob(jobId: string, payload: import('../types/jobsTypes').UpdateJobPayload): Promise<Job> {
+    const { data } = await apiClient.patch<Job>(`/jobs/${jobId}`, payload);
     return data;
   },
 };

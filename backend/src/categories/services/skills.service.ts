@@ -35,10 +35,15 @@ export class SkillsService {
     });
   }
 
-  async getSkills(includeInactive = false, search?: string) {
+  async getSkills(includeInactive = false, search?: string, category?: string) {
     return this.prisma.skill.findMany({
       where: {
         ...(includeInactive ? {} : { isActive: true }),
+        ...(category
+          ? {
+              category: { contains: category, mode: 'insensitive' },
+            }
+          : {}),
         ...(search
           ? {
               OR: [

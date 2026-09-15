@@ -38,11 +38,13 @@ export const DashboardTopHeader: React.FC<DashboardTopHeaderProps> = ({ onOpenMo
       {/* Desktop: Quick Search */}
       <div className="hidden md:flex items-center flex-1 max-w-md">
         <Link
-          href="/jobs"
+          href={isClient ? '/freelancers' : '/jobs'}
           className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-surface-container border border-outline-variant/30 text-xs text-on-surface-variant hover:border-outline-variant transition-colors"
         >
           <Search className="w-4 h-4 text-primary" />
-          <span className="flex-1 text-outline">Search marketplace jobs, skills, builders...</span>
+          <span className="flex-1 text-outline">
+            {isClient ? 'Search talent, skills, builders...' : 'Search marketplace jobs, skills, builders...'}
+          </span>
           <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high text-outline text-[10px] ">
             ⌘K
           </kbd>

@@ -73,9 +73,7 @@ export const VaultFilterStrip: React.FC<VaultFilterStripProps> = ({
           onChange={(e) => onChainChange(e.target.value)}
           className="bg-surface-container text-on-surface px-2.5 py-1 rounded-lg border border-outline-variant/30 text-xs focus:outline-none"
         >
-          <option value="Arbitrum One">All Currencies</option>
-          <option value="USDC">USDC</option>
-          <option value="BDT">BDT (৳)</option>
+          <option value="BDT">BDT (৳ - Bangladeshi Taka)</option>
         </select>
       </div>
     </div>

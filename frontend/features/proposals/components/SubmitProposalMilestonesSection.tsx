@@ -33,7 +33,7 @@ export const SubmitProposalMilestonesSection: React.FC<SubmitProposalMilestonesS
         <div className="flex items-center gap-1.5 bg-surface-container px-3 py-1 rounded-full border border-outline-variant/20">
           <span className={`w-2 h-2 rounded-full ${delta === 0 ? 'bg-primary' : 'bg-secondary animate-pulse'}`} />
           <span className=" text-xs text-on-surface">
-            Allocated: ${allocatedSum.toLocaleString()} / ${totalBid.toLocaleString()} USDC
+            Allocated: ৳{allocatedSum.toLocaleString()} / ৳{totalBid.toLocaleString()} BDT
           </span>
         </div>
       </div>
@@ -49,7 +49,7 @@ export const SubmitProposalMilestonesSection: React.FC<SubmitProposalMilestonesS
                 <span className="text-xs font-bold text-on-surface">{m.title}</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className=" text-xs font-bold text-on-surface">${m.amount.toLocaleString()} USDC</span>
+                <span className=" text-xs font-bold text-on-surface">৳{m.amount.toLocaleString()} BDT</span>
                 {milestones.length > 1 && (
                   <button type="button" onClick={() => onRemoveMilestone(idx)} className="text-on-surface-variant hover:text-error text-xs">
                     <span className="material-symbols-outlined text-[16px]">delete</span>
@@ -80,7 +80,7 @@ export const SubmitProposalMilestonesSection: React.FC<SubmitProposalMilestonesS
         <div className="flex items-center gap-2 text-right">
           <div className="text-[11px]  text-primary flex items-center gap-1">
             <span className="material-symbols-outlined text-[14px]">lock_clock</span>
-            <span>{delta === 0 ? '100% Budget Allocated' : `Delta: $${delta} USDC`}</span>
+            <span>{delta === 0 ? '100% Budget Allocated' : `Delta: ৳${delta} BDT`}</span>
           </div>
         </div>
       </div>
@@ -93,7 +93,7 @@ export const SubmitProposalMilestonesSection: React.FC<SubmitProposalMilestonesS
             <div className="text-on-surface-variant text-[11px]">Total milestones equal proposed bid amount.</div>
           </div>
         </div>
-        <span className=" font-bold text-primary">{delta === 0 ? 'Exact Match' : `-$${delta}`}</span>
+        <span className=" font-bold text-primary">{delta === 0 ? 'Exact Match' : `-৳${delta}`}</span>
       </div>
     </div>
   );

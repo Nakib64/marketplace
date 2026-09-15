@@ -28,15 +28,23 @@ export interface SettlementLedgerEntry {
 
 export interface ClientDisplayJob {
   id: string;
+  slug?: string;
   title: string;
+  description?: string;
   categoryName?: string;
-  category?: { id?: string; name: string } | null;
+  subCategoryName?: string;
+  category?: { id?: string; name: string; slug?: string } | null;
+  subCategory?: { id?: string; name: string; slug?: string } | null;
   budget: number;
-  status: string;
+  skills?: string[];
+  status: 'OPEN' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELED' | 'CANCELLED' | string;
   createdAt: string;
+  updatedAt?: string;
   proposalsCount?: number;
   leadCandidate?: string;
+  isFlagged?: boolean;
+  flagReason?: string | null;
   _count?: { proposals?: number };
 }
 
-export type JobFilterTab = 'ALL' | 'ACTIVE' | 'DRAFTS';
+export type JobFilterTab = 'ALL' | 'OPEN' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELED';

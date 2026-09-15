@@ -38,22 +38,22 @@ export const SubmitProposalTermsSection: React.FC<SubmitProposalTermsSectionProp
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-semibold text-on-surface flex items-center justify-between">
             <span>Proposed Total Compensation</span>
-            <span className=" text-[11px] text-primary flex items-center gap-1">
+            <span className="text-[11px] text-primary flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-              {bidAmount === targetBudget ? 'Matching Target Budget' : `${bidAmount < targetBudget ? '-' : '+'}$${Math.abs(bidAmount - targetBudget)} vs. budget`}
+              {bidAmount === targetBudget ? 'Matching Target Budget' : `${bidAmount < targetBudget ? '-' : '+'}৳${Math.abs(bidAmount - targetBudget).toLocaleString()} vs. budget`}
             </span>
           </label>
           <div className="relative flex items-center">
-            <span className="absolute left-3 text-lg text-on-surface-variant font-bold">$</span>
+            <span className="absolute left-3 text-lg text-on-surface-variant font-bold">৳</span>
             <input
               type="number"
               value={bidAmount || ''}
               onChange={(e) => onBidAmountChange(Number(e.target.value))}
-              className="w-full bg-surface-container border border-outline-variant/30 pl-8 pr-20 py-2 rounded-lg  text-lg font-bold text-on-surface focus:outline-none focus:border-primary transition-colors"
+              className="w-full bg-surface-container border border-outline-variant/30 pl-8 pr-20 py-2 rounded-xl text-lg font-bold text-on-surface focus:outline-none focus:border-primary transition-colors"
             />
-            <div className="absolute right-2 flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded text-xs text-on-surface ">
+            <div className="absolute right-2 flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded text-xs text-on-surface">
               <span className="w-2 h-2 rounded-full bg-primary" />
-              <span>USDC</span>
+              <span>BDT</span>
             </div>
           </div>
         </div>

@@ -114,7 +114,7 @@ export const EscrowVaultsView: React.FC = () => {
         onClose={() => setIsInitModalOpen(false)}
         onSubmit={async (payload) => {
           await walletApi.initializeVault(payload);
-          toast.success(`Project funds set up for ${payload.title} with $${payload.amount} ${payload.currency}`);
+          toast.success(`Project funds set up for ${payload.title} with ৳${payload.amount} ${payload.currency}`);
         }}
       />
 

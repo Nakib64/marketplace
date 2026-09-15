@@ -137,6 +137,7 @@ export const ContractDetailsView: React.FC<ContractDetailsViewProps> = ({ contra
 
           <aside className="lg:col-span-4 sticky top-20">
             <ContractVaultSidebar
+              contract={contract}
               onMessageHirer={() => router.push('/messages')}
             />
           </aside>

@@ -3,12 +3,18 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, ArrowRight, ShieldCheck, Zap, CheckCircle2, Percent } from 'lucide-react';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 export function HeroSection() {
   const router = useRouter();
+  const user = useAuthStore((s) => s.user);
+  const isClient = user?.role === 'CLIENT';
+
   const [searchMode, setSearchMode] = useState<'talent' | 'jobs'>('talent');
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('all');
+
+  const activeMode = isClient ? 'talent' : searchMode;
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,7 +22,7 @@ export function HeroSection() {
     if (query) params.set('q', query);
     if (category !== 'all') params.set('category', category);
 
-    if (searchMode === 'talent') {
+    if (activeMode === 'talent') {
       router.push(`/freelancers?${params.toString()}`);
     } else {
       router.push(`/jobs?${params.toString()}`);
@@ -50,28 +56,32 @@ export function HeroSection() {
         </p>
 
         {/* Pill Toggle: Find Talent / Find Work */}
-        <div className="inline-flex p-1 rounded-full bg-surface-container-lowest shadow-inner mb-6 border border-outline-variant/30">
-          <button
-            type="button"
-            onClick={() => setSearchMode('talent')}
-            className={`px-6 py-2 rounded-full text-xs font-semibold transition-all ${searchMode === 'talent'
-                ? 'bg-surface-container-high text-on-surface shadow-sm font-bold'
-                : 'text-on-surface-variant hover:text-on-surface'
+        {!isClient && (
+          <div className="inline-flex p-1 rounded-full bg-surface-container-lowest shadow-inner mb-6 border border-outline-variant/30">
+            <button
+              type="button"
+              onClick={() => setSearchMode('talent')}
+              className={`px-6 py-2 rounded-full text-xs font-semibold transition-all ${
+                searchMode === 'talent'
+                  ? 'bg-surface-container-high text-on-surface shadow-sm font-bold'
+                  : 'text-on-surface-variant hover:text-on-surface'
               }`}
-          >
-            Find Talent
-          </button>
-          <button
-            type="button"
-            onClick={() => setSearchMode('jobs')}
-            className={`px-6 py-2 rounded-full text-xs font-semibold transition-all ${searchMode === 'jobs'
-                ? 'bg-surface-container-high text-on-surface shadow-sm font-bold'
-                : 'text-on-surface-variant hover:text-on-surface'
+            >
+              Find Talent
+            </button>
+            <button
+              type="button"
+              onClick={() => setSearchMode('jobs')}
+              className={`px-6 py-2 rounded-full text-xs font-semibold transition-all ${
+                searchMode === 'jobs'
+                  ? 'bg-surface-container-high text-on-surface shadow-sm font-bold'
+                  : 'text-on-surface-variant hover:text-on-surface'
               }`}
-          >
-            Find Work
-          </button>
-        </div>
+            >
+              Find Work
+            </button>
+          </div>
+        )}
 
         {/* Integrated Search Bar */}
         <form

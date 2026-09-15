@@ -17,7 +17,10 @@ export class PublicCategoriesController {
   }
 
   @Get('skills')
-  async getSkills(@Query('q') search?: string) {
-    return this.skillsService.getSkills(false, search);
+  async getSkills(
+    @Query('q') search?: string,
+    @Query('category') category?: string,
+  ) {
+    return this.skillsService.getSkills(false, search, category);
   }
 }

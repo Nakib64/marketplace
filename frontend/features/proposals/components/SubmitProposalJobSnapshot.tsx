@@ -35,8 +35,8 @@ export const SubmitProposalJobSnapshot: React.FC<SubmitProposalJobSnapshotProps>
         </div>
         <div className="flex items-baseline gap-1.5 self-start sm:self-auto bg-surface-container px-3 py-1.5 rounded-lg border border-outline-variant/20">
           <span className="text-xs text-on-surface-variant">Target Budget:</span>
-          <span className="text-base font-bold text-on-surface ">${budget.toLocaleString()}</span>
-          <span className=" text-xs text-on-surface-variant">USDC</span>
+          <span className="text-base font-bold text-on-surface ">৳{budget.toLocaleString()}</span>
+          <span className=" text-xs text-on-surface-variant">BDT</span>
         </div>
       </div>
 

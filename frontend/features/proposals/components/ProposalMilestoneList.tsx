@@ -29,7 +29,7 @@ export const ProposalMilestoneList: React.FC<ProposalMilestoneListProps> = ({ mi
               </div>
             </div>
             <span className=" text-xs font-semibold text-on-surface shrink-0">
-              ${m.amount.toLocaleString()} {m.currency}
+              ৳{m.amount.toLocaleString()} {m.currency === 'USDC' || !m.currency ? 'BDT' : m.currency}
             </span>
           </div>
         ))}

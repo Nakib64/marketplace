@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { SubmitProposalView } from '@/features/proposals/components/SubmitProposalView';
+import { RoleGuard } from '@/components/auth/RoleGuard';
 
 interface ApplyPageProps {
   params: Promise<{ jobId: string }>;
@@ -15,5 +16,10 @@ export async function generateMetadata({ params }: ApplyPageProps): Promise<Meta
 
 export default async function JobApplyPage({ params }: ApplyPageProps) {
   const { jobId } = await params;
-  return <SubmitProposalView jobId={jobId} />;
+  return (
+    <RoleGuard allowedRoles={['FREELANCER']}>
+      <SubmitProposalView jobId={jobId} />
+    </RoleGuard>
+  );
 }
+

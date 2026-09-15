@@ -6,7 +6,6 @@ import { Job } from '../types/jobsTypes';
 import { JobDetailsBreadcrumb } from './JobDetailsBreadcrumb';
 import { JobDetailsHeader } from './JobDetailsHeader';
 import { JobScopeCard } from './JobScopeCard';
-import { JobMilestonesCard } from './JobMilestonesCard';
 import { JobMetaActions } from './JobMetaActions';
 import { JobBudgetActionCard } from './JobBudgetActionCard';
 import { JobClientCard } from './JobClientCard';
@@ -67,7 +66,6 @@ export function JobDetailsView({ job }: JobDetailsViewProps) {
         <div className="lg:col-span-8 flex flex-col gap-6">
           <JobDetailsHeader job={job} />
           <JobScopeCard job={job} />
-          <JobMilestonesCard job={job} />
           <JobMetaActions
             isBookmarked={isBookmarked}
             onToggleBookmark={handleToggleBookmark}

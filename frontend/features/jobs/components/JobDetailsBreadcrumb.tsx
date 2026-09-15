@@ -1,6 +1,9 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { Home, ChevronRight } from 'lucide-react';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 interface JobDetailsBreadcrumbProps {
   categoryName?: string;
@@ -13,7 +16,16 @@ export function JobDetailsBreadcrumb({
   categorySlug,
   jobTitle,
 }: JobDetailsBreadcrumbProps) {
-  const categoryHref = categorySlug ? `/jobs?category=${categorySlug}` : '/jobs';
+  const user = useAuthStore((s) => s.user);
+  const isClient = user?.role === 'CLIENT';
+
+  const browseHref = isClient ? '/client/jobs' : '/jobs';
+  const browseLabel = isClient ? 'My Job Posts' : 'Browse Jobs';
+  const categoryHref = isClient
+    ? `/freelancers?category=${categorySlug}`
+    : categorySlug
+      ? `/jobs?category=${categorySlug}`
+      : '/jobs';
 
   return (
     <nav
@@ -29,18 +41,22 @@ export function JobDetailsBreadcrumb({
       </Link>
       <ChevronRight className="w-3.5 h-3.5 text-outline-variant shrink-0" />
       <Link
-        href="/jobs"
+        href={browseHref}
         className="hover:text-on-surface transition-colors"
       >
-        Browse Jobs
+        {browseLabel}
       </Link>
-      <ChevronRight className="w-3.5 h-3.5 text-outline-variant shrink-0" />
-      <Link
-        href={categoryHref}
-        className="hover:text-on-surface transition-colors"
-      >
-        {categoryName}
-      </Link>
+      {!isClient && (
+        <>
+          <ChevronRight className="w-3.5 h-3.5 text-outline-variant shrink-0" />
+          <Link
+            href={categoryHref}
+            className="hover:text-on-surface transition-colors"
+          >
+            {categoryName}
+          </Link>
+        </>
+      )}
       <ChevronRight className="w-3.5 h-3.5 text-outline-variant shrink-0" />
       <span className="text-on-surface font-semibold truncate max-w-[240px] sm:max-w-none">
         {jobTitle}

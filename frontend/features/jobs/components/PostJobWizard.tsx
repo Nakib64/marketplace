@@ -25,15 +25,17 @@ export function PostJobWizard() {
     resolver: zodResolver(createJobSchema),
     defaultValues: {
       title: '',
-      category: 'DeFi Protocol',
+      category: '',
+      subCategory: '',
       description: '',
-      budget: 5000,
-      skills: ['Solidity', 'Foundry'],
+      budget: undefined as unknown as number,
+      skills: [],
     },
     mode: 'onTouched',
   });
 
-  const handleNextStep = async () => {
+  const handleNextStep = async (e?: React.MouseEvent) => {
+    e?.preventDefault();
     if (currentStep === 1) {
       const isValid = await form.trigger(['title', 'category', 'description']);
       if (!isValid) return;
@@ -46,11 +48,16 @@ export function PostJobWizard() {
   };
 
   const onSubmit = async (data: CreateJobFormData) => {
+    // Strictly prevent submission unless user is on the final step (Step 3)
+    if (currentStep !== 3) {
+      return;
+    }
+
     try {
       setIsSubmitting(true);
       const job = await jobsApi.createJob(data);
       toast.success('Project RFP created successfully!');
-      router.push(`/jobs/${job.id}`);
+      router.push(`/jobs/${(job as any).slug || job.id}`);
     } catch (err: unknown) {
       let displayMsg =
         'Failed to create job posting. Please ensure you are logged in as a client with a verified email.';
@@ -64,9 +71,23 @@ export function PostJobWizard() {
     }
   };
 
-
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-8 w-full">
+    <form
+      onSubmit={(e) => {
+        if (currentStep < 3) {
+          e.preventDefault();
+          handleNextStep();
+          return;
+        }
+        form.handleSubmit(onSubmit)(e);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' && e.target instanceof HTMLInputElement) {
+          e.preventDefault();
+        }
+      }}
+      className="flex flex-col gap-8 w-full"
+    >
       <PostJobStepper currentStep={currentStep} onSelectStep={setCurrentStep} />
 
       <div className="flex flex-col lg:flex-row items-start gap-8 w-full">

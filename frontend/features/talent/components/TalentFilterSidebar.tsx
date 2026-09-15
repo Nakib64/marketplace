@@ -11,10 +11,10 @@ interface TalentFilterSidebarProps {
 }
 
 const RATE_BRACKETS = [
-  { label: '< $50', min: undefined, max: 50 },
-  { label: '$50 - $100', min: 50, max: 100 },
-  { label: '$100 - $150', min: 100, max: 150 },
-  { label: '$150+', min: 150, max: undefined },
+  { label: '< ৳500', min: undefined, max: 500 },
+  { label: '৳500 - ৳1,500', min: 500, max: 1500 },
+  { label: '৳1,500 - ৳3,000', min: 1500, max: 3000 },
+  { label: '৳3,000+', min: 3000, max: undefined },
 ];
 
 const SPECIALIZATIONS = [
@@ -75,7 +75,7 @@ export function TalentFilterSidebar({
         </div>
       </div>
 
-      {/* Hourly Rate (USDC/hr) */}
+      {/* Hourly Rate (BDT/hr) */}
       <div className="flex flex-col gap-3 pt-3 border-t border-outline-variant/20">
         <div className="flex items-center justify-between">
           <label className="text-xs font-bold text-on-surface uppercase tracking-wider">
@@ -83,7 +83,7 @@ export function TalentFilterSidebar({
           </label>
           <span className="text-xs  text-primary font-semibold">
             {currentMin || currentMax
-              ? `$${currentMin || 0} - $${currentMax || 250}+`
+              ? `৳${currentMin || 0} - ৳${currentMax || 5000}+`
               : 'Any rate'}
           </span>
         </div>

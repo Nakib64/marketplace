@@ -35,7 +35,7 @@ export function JobCard({ job }: JobCardProps) {
       {/* Title & Client Overview */}
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
         <div className="flex-1">
-          <Link href={`/jobs/${job.id}`}>
+          <Link href={`/jobs/${job.slug || job.id}`}>
             <h3 className="text-base md:text-lg font-bold text-on-surface hover:text-primary transition-colors cursor-pointer mb-1.5">
               {job.title}
             </h3>
@@ -81,7 +81,7 @@ export function JobCard({ job }: JobCardProps) {
         </div>
 
         <Link
-          href={`/jobs/${job.id}`}
+          href={`/jobs/${job.slug || job.id}`}
           className="px-5 py-2 rounded-xl bg-primary text-surface font-semibold text-xs hover:bg-tertiary transition-all duration-200 shadow-xs text-center cursor-pointer whitespace-nowrap"
         >
           View &amp; Apply

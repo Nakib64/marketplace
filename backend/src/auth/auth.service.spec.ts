@@ -86,7 +86,7 @@ describe('AuthService (Facade & Sub-Services)', () => {
       expect(result.message).toContain('Registration successful');
       expect(result.user.email).toBe('client@example.com');
       expect(prismaMock.clientProfile.create).toHaveBeenCalledWith({
-        data: { userId: 'client-uuid-1' },
+        data: expect.objectContaining({ userId: 'client-uuid-1' }),
       });
       expect(mailServiceMock.sendVerificationEmail).toHaveBeenCalledWith(
         'client@example.com',

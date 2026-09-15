@@ -47,12 +47,20 @@ export class JobsController {
     return this.jobsService.updateJob(clientId, jobId, dto);
   }
 
-  @Delete(':id')
+  @Patch(':id/cancel')
   async cancelJob(
     @CurrentUser('id') clientId: string,
     @Param('id') jobId: string,
   ) {
     return this.jobsService.cancelJob(clientId, jobId);
+  }
+
+  @Delete(':id')
+  async deleteJob(
+    @CurrentUser('id') clientId: string,
+    @Param('id') jobId: string,
+  ) {
+    return this.jobsService.deleteJob(clientId, jobId);
   }
 
   @Roles(Role.CLIENT, Role.FREELANCER, Role.ADMIN)

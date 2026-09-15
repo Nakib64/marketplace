@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { JobStatus } from '@prisma/client';
 import { AntiCircumventionService } from '../../admin/moderation/services/anti-circumvention.service.js';
 import { PrismaService } from '../../prisma/prisma.service.js';
@@ -12,6 +12,17 @@ export class JobsService {
     private readonly prisma: PrismaService,
     private readonly antiCircumventionService: AntiCircumventionService,
   ) {}
+
+  private generateSlug(title: string): string {
+    const base = title
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/[\s-]+/g, '-')
+      .slice(0, 50);
+    const randomSuffix = Math.random().toString(36).substring(2, 7);
+    return base ? `${base}-${randomSuffix}` : `job-${randomSuffix}`;
+  }
 
   async createJob(clientId: string, dto: CreateJobDto) {
     const clientProfile = await this.prisma.clientProfile.findUnique({
@@ -29,10 +40,13 @@ export class JobsService {
       ? [...titleScan.reasons, ...descScan.reasons].join('; ')
       : null;
 
+    const slug = this.generateSlug(dto.title);
+
     return await this.prisma.$transaction(async (tx) => {
       const job = await tx.job.create({
         data: {
           clientId,
+          slug,
           title: dto.title,
           description: dto.description,
           categoryName: dto.category,
@@ -158,5 +172,34 @@ export class JobsService {
       where: { id: jobId },
       data: { status: JobStatus.CANCELED },
     });
+  }
+
+  async deleteJob(clientId: string, jobId: string) {
+    const job = await this.prisma.job.findUnique({
+      where: { id: jobId },
+      include: { contracts: true },
+    });
+
+    if (!job) {
+      throw new NotFoundException('Job posting not found.');
+    }
+
+    if (job.clientId !== clientId) {
+      throw new ForbiddenException('You do not have permission to delete this job posting.');
+    }
+
+    const hasActiveContract = job.contracts?.some(
+      (c) => c.status === 'FUNDED',
+    );
+
+    if (hasActiveContract) {
+      throw new BadRequestException('Cannot delete a job with an active funded contract.');
+    }
+
+    await this.prisma.job.delete({
+      where: { id: jobId },
+    });
+
+    return { success: true, message: 'Job posting deleted permanently.' };
   }
 }

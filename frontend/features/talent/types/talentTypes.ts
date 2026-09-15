@@ -42,6 +42,7 @@ export interface FreelancerUser {
 export interface FreelancerProfile {
   id: string;
   userId: string;
+  slug?: string | null;
   title: string | null;
   description: string | null;
   hourlyRate: number | null;

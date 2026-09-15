@@ -79,11 +79,11 @@ export function JobFilterSidebar({ currentParams, onUpdate, onClear }: JobFilter
       <div className="flex flex-col gap-2.5 pt-2 border-t border-outline-variant/30">
         <div className="flex items-center justify-between text-xs ">
           <span className="uppercase text-[11px] text-outline font-semibold">Budget Range</span>
-          <span className="text-primary font-semibold">USD ($)</span>
+          <span className="text-primary font-semibold">BDT (৳)</span>
         </div>
         <div className="grid grid-cols-2 gap-2">
           <div className="flex items-center bg-surface-container-low px-2.5 py-1.5 rounded-lg border border-outline-variant/40">
-            <span className="text-xs text-outline  mr-1">$</span>
+            <span className="text-xs text-outline  mr-1">৳</span>
             <input
               type="number"
               placeholder="Min"
@@ -94,7 +94,7 @@ export function JobFilterSidebar({ currentParams, onUpdate, onClear }: JobFilter
             />
           </div>
           <div className="flex items-center bg-surface-container-low px-2.5 py-1.5 rounded-lg border border-outline-variant/40">
-            <span className="text-xs text-outline  mr-1">$</span>
+            <span className="text-xs text-outline  mr-1">৳</span>
             <input
               type="number"
               placeholder="Max"
@@ -109,10 +109,10 @@ export function JobFilterSidebar({ currentParams, onUpdate, onClear }: JobFilter
         {/* Quick Budget Brackets */}
         <div className="flex flex-wrap gap-1.5 pt-1">
           {[
-            { label: '$500-$2k', min: 500, max: 2000 },
-            { label: '$2k-$5k', min: 2000, max: 5000 },
-            { label: '$5k-$15k', min: 5000, max: 15000 },
-            { label: '$15k+', min: 15000, max: undefined },
+            { label: '৳5k-৳20k', min: 5000, max: 20000 },
+            { label: '৳20k-৳50k', min: 20000, max: 50000 },
+            { label: '৳50k-৳150k', min: 50000, max: 150000 },
+            { label: '৳150k+', min: 150000, max: undefined },
           ].map((b) => (
             <button
               key={b.label}

@@ -16,7 +16,7 @@ export const MilestoneReviewHeader: React.FC<MilestoneReviewHeaderProps> = ({
   contractId,
   contractAddress = '0x71c8...39A1',
   amount = 3500,
-  currency = 'USDC',
+  currency = 'BDT',
   graceHoursRemaining = '36h 14m Remaining',
 }) => {
   return (
@@ -61,8 +61,8 @@ export const MilestoneReviewHeader: React.FC<MilestoneReviewHeaderProps> = ({
           <div>
             <span className="text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold block">Protected Payment</span>
             <div className="flex items-baseline gap-1 ">
-              <span className="text-2xl font-bold text-on-surface">${amount.toLocaleString()}</span>
-              <span className="text-xs font-bold text-primary">{currency}</span>
+              <span className="text-2xl font-bold text-on-surface">৳{amount.toLocaleString()}</span>
+              <span className="text-xs font-bold text-primary">{currency === 'USDC' ? 'BDT' : currency}</span>
             </div>
           </div>
           <span className="inline-flex items-center gap-1 text-[11px] text-primary font-medium">

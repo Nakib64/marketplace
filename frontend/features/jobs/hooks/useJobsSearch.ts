@@ -5,7 +5,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { jobsApi } from '../api/jobsApi';
 import { JobSearchParams } from '../types/jobsTypes';
 
-export function useJobsSearch() {
+export function useJobsSearch(enabled: boolean = true) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -25,6 +25,7 @@ export function useJobsSearch() {
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['jobs', currentParams],
     queryFn: () => jobsApi.searchJobs(currentParams),
+    enabled,
   });
 
   const updateFilters = (newFilters: Partial<JobSearchParams>) => {

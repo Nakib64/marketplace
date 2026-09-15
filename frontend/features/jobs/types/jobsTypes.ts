@@ -3,6 +3,7 @@ export interface JobCategory {
   name: string;
   slug?: string;
   description?: string;
+  subCategories?: JobSubCategory[];
 }
 
 export interface JobSubCategory {
@@ -32,10 +33,11 @@ export interface JobClientInfo {
 
 export interface Job {
   id: string;
+  slug?: string;
   title: string;
   description: string;
   budget: number;
-  status: 'OPEN' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+  status: 'OPEN' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELED' | 'CANCELLED';
   category?: JobCategory | null;
   subCategory?: JobSubCategory | null;
   categoryName?: string;
@@ -43,6 +45,8 @@ export interface Job {
   skills: string[];
   clientId: string;
   client?: JobClientInfo;
+  isFlagged?: boolean;
+  flagReason?: string | null;
   createdAt: string;
   updatedAt?: string;
   _count?: {
@@ -78,5 +82,14 @@ export interface CreateJobPayload {
   subCategory?: string;
   budget: number;
   skills: string[];
+}
+
+export interface UpdateJobPayload {
+  title?: string;
+  description?: string;
+  category?: string;
+  subCategory?: string;
+  budget?: number;
+  skills?: string[];
 }
 

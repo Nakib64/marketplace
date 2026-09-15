@@ -1,57 +1,51 @@
 'use client';
-import React from 'react';
-import { toast } from 'sonner';
 
-const TRANSACTIONS = [
-  {
-    id: 'tx-1',
-    title: 'Milestone 1 Approved',
-    subtitle: 'Alex Rivera • Payment released',
-    amount: '$2,500 USDC',
-  },
-  {
-    id: 'tx-2',
-    title: 'Project Funded',
-    subtitle: 'Security Audit Contract',
-    amount: '$12,000 USDC',
-  },
-  {
-    id: 'tx-3',
-    title: 'Contract Completed',
-    subtitle: 'David Chen • Successfully completed',
-    amount: '$6,400 USDC',
-  },
-];
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { contractsApi } from '@/features/contracts/api/contractsApi';
+import { RawBackendContract } from '@/features/contracts/types/contractsTypes';
 
 export const ClientSettlementLedger: React.FC = () => {
+  const { data: rawContracts = [] } = useQuery({
+    queryKey: ['user-contracts'],
+    queryFn: () => contractsApi.getUserContracts(),
+    staleTime: 30_000,
+  });
+
+  const contracts = rawContracts as unknown as RawBackendContract[];
+
   return (
-    <div className="bg-surface-container-low border border-outline-variant/30 rounded-xl p-4 lg:p-5 shadow-sm flex flex-col gap-4">
+    <div className="bg-surface-container-low border border-outline-variant/30 rounded-2xl p-5 shadow-sm flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-base font-bold text-on-surface">Recent Activity</h3>
+        <h3 className="text-base font-bold text-on-surface">Recent Contract Activity</h3>
         <span className="material-symbols-outlined text-[18px] text-on-surface-variant">receipt_long</span>
       </div>
 
-      <div className="flex flex-col gap-2.5">
-        {TRANSACTIONS.map((tx) => (
-          <div key={tx.id} className="flex items-center justify-between gap-2 p-2.5 bg-surface-container rounded-lg border border-outline-variant/20">
-            <div className="flex flex-col gap-0.5">
-              <span className="text-xs font-semibold text-on-surface">{tx.title}</span>
-              <span className="text-[11px] text-on-surface-variant">{tx.subtitle}</span>
+      {contracts.length === 0 ? (
+        <div className="py-6 flex flex-col items-center justify-center text-center gap-2">
+          <span className="material-symbols-outlined text-[24px] text-on-surface-variant/50">account_balance_wallet</span>
+          <span className="text-xs text-on-surface-variant">No contract settlements yet</span>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2.5">
+          {contracts.slice(0, 4).map((c) => (
+            <div
+              key={c.id || Math.random().toString()}
+              className="flex items-center justify-between gap-2 p-3 bg-surface-container rounded-xl border border-outline-variant/20"
+            >
+              <div className="flex flex-col gap-0.5">
+                <span className="text-xs font-bold text-on-surface">{c.job?.title || 'Contract Escrow'}</span>
+                <span className="text-[11px] text-on-surface-variant">
+                  {c.status === 'COMPLETED' ? 'Settled & Released' : c.status === 'FUNDED' ? 'Funded in Escrow' : c.status}
+                </span>
+              </div>
+              <span className="text-xs font-extrabold text-on-surface shrink-0">
+                ${Number(c.escrowAmount || c.amount || 0).toLocaleString()} <span className="text-[10px] font-normal text-on-surface-variant">{c.currency || 'BDT'}</span>
+              </span>
             </div>
-            <span className=" text-xs font-semibold text-on-surface shrink-0">{tx.amount}</span>
-          </div>
-        ))}
-      </div>
-
-      <button
-        type="button"
-        onClick={() => toast.info('Loading full transaction history...')}
-        className="text-xs text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1 transition-colors pt-1"
-      >
-        <span>View All Transactions</span>
-        <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-      </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
-

@@ -13,7 +13,7 @@ interface MilestoneEscrowReleaseSidebarProps {
 
 export const MilestoneEscrowReleaseSidebar: React.FC<MilestoneEscrowReleaseSidebarProps> = ({
   amount = 3500,
-  currency = 'USDC',
+  currency = 'BDT',
   isApproving,
   onApprove,
   onRequestChanges,
@@ -32,22 +32,22 @@ export const MilestoneEscrowReleaseSidebar: React.FC<MilestoneEscrowReleaseSideb
       <div className="p-3.5 rounded-lg bg-surface-container-low border border-outline-variant/20 flex flex-col gap-2 text-xs">
         <div className="flex items-center justify-between">
           <span className="text-on-surface-variant">Milestone Amount:</span>
-          <span className=" font-semibold text-on-surface">${amount.toLocaleString()} {currency}</span>
+          <span className=" font-semibold text-on-surface">৳{amount.toLocaleString()} {currency === 'USDC' ? 'BDT' : currency}</span>
         </div>
         <div className="flex items-center justify-between">
           <span className="text-on-surface-variant">Platform Fee:</span>
-          <span className=" text-primary">0.00% ($0.00)</span>
+          <span className=" text-primary">0.00% (৳0.00)</span>
         </div>
         <div className="pt-2 border-t border-outline-variant/20 flex items-center justify-between">
           <span className="font-bold text-on-surface">Total Payment Release:</span>
-          <span className=" text-base font-bold text-on-surface">${amount.toLocaleString()} {currency}</span>
+          <span className=" text-base font-bold text-on-surface">৳{amount.toLocaleString()} {currency === 'USDC' ? 'BDT' : currency}</span>
         </div>
       </div>
 
       {/* Remaining Funds */}
       <div className="flex items-center justify-between px-3 py-2 rounded bg-surface-container-low text-on-surface-variant text-xs  border border-outline-variant/20">
         <span>Remaining in Protection:</span>
-        <span className="font-semibold text-on-surface">$2,500.00 USDC</span>
+        <span className="font-semibold text-on-surface">৳0.00 BDT</span>
       </div>
 
       {/* Action Buttons */}
@@ -59,7 +59,7 @@ export const MilestoneEscrowReleaseSidebar: React.FC<MilestoneEscrowReleaseSideb
           className="w-full py-2.5 px-3 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md"
         >
           <span className="material-symbols-outlined text-[16px]">check_circle</span>
-          <span>{isApproving ? 'Approving Payment...' : `Approve & Release Payment ($${amount.toLocaleString()})`}</span>
+          <span>{isApproving ? 'Approving Payment...' : `Approve & Release Payment (৳${amount.toLocaleString()})`}</span>
         </button>
 
         <button

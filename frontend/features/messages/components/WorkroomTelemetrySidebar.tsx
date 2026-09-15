@@ -59,7 +59,7 @@ export const WorkroomTelemetrySidebar: React.FC<WorkroomTelemetrySidebarProps> =
             className="w-full py-2 px-3 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm"
           >
             <span className="material-symbols-outlined text-[15px]">verified</span>
-            <span>Review &amp; Approve ($3,500)</span>
+            <span>Review &amp; Approve Deliverable</span>
           </Link>
           <Link
             href={`/contracts/${contractId}`}

@@ -69,7 +69,7 @@ export const NewDisputeModal: React.FC<NewDisputeModalProps> = ({
 
           <div className="p-2.5 rounded bg-surface-container-low border border-outline-variant/20  text-[11px] text-on-surface-variant">
             <span>Arbitration Surcharge: </span>
-            <strong className="text-primary font-bold">50.00 USDC</strong> (Refunded to winning party)
+            <strong className="text-primary font-bold">৳50.00 BDT</strong> (Refunded to winning party)
           </div>
 
           <div className="flex items-center justify-end gap-2 pt-2">
