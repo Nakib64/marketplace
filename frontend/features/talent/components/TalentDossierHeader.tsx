@@ -16,7 +16,7 @@ export function TalentDossierHeader({ profile }: TalentDossierHeaderProps) {
   return (
     <section className="bg-surface-container rounded-2xl p-6 sm:p-8 border border-outline-variant/30 shadow-sm flex flex-col gap-6">
       {/* Navigation Breadcrumb */}
-      <nav className="flex items-center gap-1.5 text-xs text-on-surface-variant font-mono">
+      <nav className="flex items-center gap-1.5 text-xs text-on-surface-variant ">
         <Link href="/" className="hover:text-primary transition-colors">
           Home
         </Link>
@@ -49,16 +49,9 @@ export function TalentDossierHeader({ profile }: TalentDossierHeaderProps) {
             <h1 className="text-2xl sm:text-3xl font-bold text-on-surface tracking-tight capitalize">
               {displayName.replace('.', ' ')}
             </h1>
-            <span className="text-xs font-mono text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded border border-outline-variant/20">
-              {handle}
-            </span>
-            <span className="inline-flex items-center gap-1 text-xs font-mono font-semibold bg-surface-container-high text-primary px-2.5 py-0.5 rounded-full border border-primary/20">
+            <span className="inline-flex items-center gap-1 text-xs font-semibold bg-surface-container-high text-primary px-2.5 py-0.5 rounded-full border border-primary/20">
               <ShieldCheck className="w-3 h-3" />
               Verified Expert
-            </span>
-            <span className="inline-flex items-center gap-1 text-xs font-mono text-secondary bg-surface-container-low px-2.5 py-0.5 rounded-full border border-secondary/20">
-              <Award className="w-3 h-3 text-secondary" />
-              SBT #0418
             </span>
           </div>
 
@@ -96,7 +89,7 @@ export function TalentDossierHeader({ profile }: TalentDossierHeaderProps) {
         {profile.skills.map((skill) => (
           <span
             key={skill}
-            className="px-3 py-1 rounded-full text-xs font-mono bg-surface-container-high text-on-surface border border-outline-variant/30 hover:border-primary/50 transition-colors"
+            className="px-3 py-1 rounded-full text-xs  bg-surface-container-high text-on-surface border border-outline-variant/30 hover:border-primary/50 transition-colors"
           >
             {skill}
           </span>

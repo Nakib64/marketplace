@@ -1,7 +1,6 @@
 import { apiClient } from '@/lib/api/apiClient';
 import { EscrowVaultItem, VaultKpiMetrics } from '../types/walletTypes';
 import { contractsApi } from '@/features/contracts/api/contractsApi';
-import { DEFAULT_VAULTS } from '../data/mockVaults';
 
 export interface WithdrawalPayload {
   amount: number;
@@ -38,7 +37,7 @@ export const walletApi = {
       return data;
     } catch {
       return {
-        walletBalance: 12500,
+        walletBalance: 0,
         withdrawals: [],
         refunds: [],
       };
@@ -61,16 +60,22 @@ export const walletApi = {
       const { data } = await apiClient.get<VaultKpiMetrics>('/wallet/metrics');
       return data;
     } catch {
+      const contracts = await contractsApi.getUserContracts().catch(() => []);
+      const totalLocked = contracts.reduce((sum, c) => sum + (c.status !== 'COMPLETED' ? Number(c.amount || 0) : 0), 0);
+      const pendingRelease = contracts.filter((c) => c.status === 'PENDING_APPROVAL');
+      const pendingReleaseAmount = pendingRelease.reduce((sum, c) => sum + Number(c.amount || 0), 0);
+      const openDisputes = contracts.filter((c) => c.status === 'DISPUTED').length;
+
       return {
-        tvl: 48200,
-        tvlGrowthPct: 12.4,
-        bufferAmount: 2450,
-        pendingReleaseCount: 2,
-        pendingReleaseAmount: 6000,
-        avgSettleHours: 14.2,
+        tvl: totalLocked,
+        tvlGrowthPct: 0,
+        bufferAmount: 0,
+        pendingReleaseCount: pendingRelease.length,
+        pendingReleaseAmount,
+        avgSettleHours: 0,
         onTimeSlaPct: 100,
-        openDisputesCount: 0,
-        collateralSecurityPct: 99.4,
+        openDisputesCount: openDisputes,
+        collateralSecurityPct: 100,
       };
     }
   },
@@ -110,7 +115,7 @@ export const walletApi = {
             contributorEns: `${(c.clientHandle || 'partner').replace('@', '')}.eth`,
             contributorRole: 'Verified Contract Participant',
             contributorAvatarText: (c.clientName || 'FL').slice(0, 2).toUpperCase(),
-            vaultAddress: c.contractAddress || (c.id ? `0x${c.id.replace(/-/g, '').slice(0, 4)}...${c.id.replace(/-/g, '').slice(-4)}` : '0x811a...ef34'),
+            vaultAddress: c.contractAddress || (c.id ? `0x${c.id.replace(/-/g, '').slice(0, 4)}...${c.id.replace(/-/g, '').slice(-4)}` : '0x0000...0000'),
             escrowHash: `0x${c.id.replace(/-/g, '').slice(-8)}`,
             totalLocked: amount,
             currency: c.currency || 'BDT',
@@ -127,9 +132,9 @@ export const walletApi = {
           };
         });
       }
-      return DEFAULT_VAULTS;
+      return [];
     } catch {
-      return DEFAULT_VAULTS;
+      return [];
     }
   },
 
@@ -142,15 +147,10 @@ export const walletApi = {
     amount: number;
     currency: string;
   }): Promise<{ success: boolean; vaultAddress?: string }> {
-    try {
-      const { data } = await apiClient.post<{ success: boolean; vaultAddress?: string }>(
-        '/wallet/vaults/initialize',
-        payload
-      );
-      return data;
-    } catch {
-      return { success: true, vaultAddress: `0x${Date.now().toString(16)}...safe` };
-    }
+    const { data } = await apiClient.post<{ success: boolean; vaultAddress?: string }>(
+      '/wallet/vaults/initialize',
+      payload
+    );
+    return data;
   },
 };
-

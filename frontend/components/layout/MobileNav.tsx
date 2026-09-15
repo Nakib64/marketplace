@@ -35,7 +35,7 @@ export function MobileNav() {
               )}
             >
               <Icon className="w-5 h-5" />
-              <span className="text-[10px] font-mono">{item.label}</span>
+              <span className="text-[10px] ">{item.label}</span>
               {isActive && (
                 <span className="w-1 h-1 rounded-full bg-primary absolute -bottom-1" />
               )}

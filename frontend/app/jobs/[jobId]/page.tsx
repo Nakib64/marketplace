@@ -5,7 +5,6 @@ import { Briefcase } from 'lucide-react';
 import { jobsApi } from '@/features/jobs/api/jobsApi';
 import { JobDetailsView } from '@/features/jobs/components/JobDetailsView';
 import { Button } from '@/components/ui/Button';
-import { FALLBACK_JOBS } from '@/features/jobs/data/mockJobs';
 
 interface PageProps {
   params: Promise<{ jobId: string }>;
@@ -20,10 +19,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: job.description.slice(0, 155),
     };
   } catch {
-    const fallback = FALLBACK_JOBS.find((j) => j.id === jobId || j.id === `job-${jobId}`);
     return {
-      title: fallback ? `${fallback.title} | Banglance` : 'Job Posting | Banglance Marketplace',
-      description: fallback?.description.slice(0, 155) || 'View verified escrow-protected job opportunities on Banglance.',
+      title: 'Job Posting | Banglance Marketplace',
+      description: 'View verified escrow-protected job opportunities on Banglance.',
     };
   }
 }
@@ -35,9 +33,8 @@ export default async function JobDetailsPage({ params }: PageProps) {
   try {
     job = await jobsApi.getJobDetails(jobId);
   } catch {
-    job = FALLBACK_JOBS.find((j) => j.id === jobId || j.id === `job-${jobId}`) || null;
+    job = null;
   }
-
 
   if (!job) {
     return (
@@ -47,11 +44,11 @@ export default async function JobDetailsPage({ params }: PageProps) {
         </div>
         <h1 className="text-2xl font-bold text-on-surface mb-2">Job Not Found</h1>
         <p className="text-sm text-on-surface-variant max-w-md mb-6">
-          The job listing you are looking for may have expired, been filled, or is temporarily unavailable.
+          The job listing you are looking for may have expired, been filled, or does not exist.
         </p>
         <Link href="/jobs">
           <Button variant="primary" size="md">
-            Browse Other Jobs
+            Browse All Jobs
           </Button>
         </Link>
       </div>

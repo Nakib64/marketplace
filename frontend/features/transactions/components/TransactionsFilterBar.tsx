@@ -31,33 +31,23 @@ export const TransactionsFilterBar: React.FC<TransactionsFilterBarProps> = ({
           type="text"
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="Search by Tx Hash, Escrow ID, Contract Address, or ENS..."
-          className="w-full pl-9 pr-3 py-1.5 bg-surface-container text-on-surface placeholder:text-on-surface-variant/60 rounded-lg font-mono focus:outline-none border border-outline-variant/30"
+          placeholder="Search by transaction ID, project, or recipient..."
+          className="w-full pl-9 pr-3 py-1.5 bg-surface-container text-on-surface placeholder:text-on-surface-variant/60 rounded-lg  focus:outline-none border border-outline-variant/30"
         />
       </div>
 
       {/* Dropdown Selectors */}
       <div className="flex flex-wrap items-center gap-2">
         <select
-          value={selectedNetwork}
-          onChange={(e) => onNetworkChange(e.target.value)}
-          className="bg-surface-container text-on-surface px-2.5 py-1.5 rounded-lg border border-outline-variant/30 focus:outline-none"
-        >
-          <option value="Arbitrum One">Arbitrum One</option>
-          <option value="Optimism">Optimism</option>
-          <option value="Ethereum">Ethereum L1</option>
-        </select>
-
-        <select
           value={selectedType}
           onChange={(e) => onTypeChange(e.target.value as TxType)}
           className="bg-surface-container text-on-surface px-2.5 py-1.5 rounded-lg border border-outline-variant/30 focus:outline-none"
         >
           <option value="ALL">All Types</option>
-          <option value="MILESTONE_RELEASE">Milestone Release</option>
-          <option value="ESCROW_DEPOSIT">Escrow Deposit</option>
-          <option value="YIELD_HARVEST">Yield Harvest</option>
-          <option value="SETTLEMENT_COMPLETE">Settlement Complete</option>
+          <option value="MILESTONE_RELEASE">Milestone Payment</option>
+          <option value="ESCROW_DEPOSIT">Protected Deposit</option>
+          <option value="YIELD_HARVEST">Balance Reward</option>
+          <option value="SETTLEMENT_COMPLETE">Project Completed</option>
           <option value="INITIAL_FUNDING">Initial Funding</option>
         </select>
 

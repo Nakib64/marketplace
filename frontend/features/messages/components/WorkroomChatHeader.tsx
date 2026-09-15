@@ -11,64 +11,39 @@ interface WorkroomChatHeaderProps {
 
 export const WorkroomChatHeader: React.FC<WorkroomChatHeaderProps> = ({ channel }) => {
   return (
-    <div className="flex flex-col shrink-0 border-b border-outline-variant/30">
-      <div className="px-4 py-3 bg-surface-container-lowest flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="w-9 h-9 rounded-xl bg-surface-container flex items-center justify-center font-bold text-sm text-primary shrink-0 border border-outline-variant/30">
-            {channel.avatarText}
-          </div>
-          <div className="flex flex-col min-w-0">
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="text-sm font-bold text-on-surface truncate">{channel.contactName}</span>
-              <span className="material-symbols-outlined text-primary text-[16px]">verified</span>
-              <span className="px-1.5 py-0.5 rounded bg-surface-container font-mono text-[10px] text-primary">
-                {channel.contactEns}
-              </span>
-              <span className="hidden sm:inline text-xs text-on-surface-variant">• {channel.contactRole}</span>
-            </div>
-            <div className="flex items-center gap-2 text-xs text-on-surface-variant flex-wrap mt-0.5">
-              <span className="truncate">{channel.title}</span>
-              <span>•</span>
-              <span className="font-mono text-on-surface font-semibold">${channel.totalVault.toLocaleString()} {channel.currency} Vault</span>
-              <span className="px-1.5 py-0.5 rounded bg-surface-container font-mono text-[10px] text-primary">
-                {channel.activeMilestone}
-              </span>
-            </div>
-          </div>
+    <div className="px-5 py-3.5 bg-surface-container-lowest border-b border-outline-variant/30 flex items-center justify-between gap-4 shrink-0 shadow-sm">
+      <div className="flex items-center gap-3 min-w-0">
+        <div className="relative w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center font-bold text-sm text-primary shrink-0 border border-outline-variant/30">
+          {channel.avatarText}
+          {channel.isOnline && (
+            <span className="w-2.5 h-2.5 rounded-full bg-primary ring-2 ring-surface-container-lowest absolute bottom-0 right-0" />
+          )}
         </div>
-
-        <div className="flex items-center gap-1.5 shrink-0 text-xs">
-          <Link
-            href={`/contracts/${channel.id}`}
-            className="px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors flex items-center gap-1 border border-outline-variant/20 font-medium"
-          >
-            <span className="material-symbols-outlined text-[15px] text-primary">account_balance_wallet</span>
-            <span className="hidden md:inline">Inspect Escrow</span>
-          </Link>
-          <button
-            type="button"
-            onClick={() => toast.info('Launching WebRTC peer-to-peer encrypted huddle...')}
-            className="px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors flex items-center gap-1 border border-outline-variant/20 font-medium"
-          >
-            <span className="material-symbols-outlined text-[15px]">videocam</span>
-            <span className="hidden md:inline">Huddle</span>
-          </button>
+        <div className="flex flex-col min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-sm font-bold text-on-surface truncate">
+              {channel.contactName}
+            </span>
+            <span className="text-[11px] text-on-surface-variant font-medium">
+              • {channel.contactRole || 'Freelancer'}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-primary font-medium truncate">
+            <span className="truncate">{channel.title}</span>
+          </div>
         </div>
       </div>
 
-      <div className="px-4 py-1.5 bg-surface-container-low flex items-center justify-between gap-2 text-[11px] font-mono text-on-surface-variant">
-        <div className="flex items-center gap-1.5 truncate">
-          <span className="material-symbols-outlined text-primary text-[14px] shrink-0">lock</span>
-          <span className="truncate">XMTP End-to-End Encrypted via Ethereum Keypair (EIP-1271). Counterparties only.</span>
-        </div>
-        <button
-          type="button"
-          onClick={() => toast.success('Handshake verified cryptographically on Arbitrum')}
-          className="text-primary hover:underline shrink-0 flex items-center gap-0.5"
+      <div className="flex items-center gap-2 shrink-0">
+        <Link
+          href={`/contracts/${channel.id}`}
+          className="px-3.5 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold transition-colors flex items-center gap-1.5 border border-outline-variant/30 shadow-sm"
         >
-          <span>Verify</span>
-          <span className="material-symbols-outlined text-[12px]">arrow_outward</span>
-        </button>
+          <span className="material-symbols-outlined text-[16px] text-primary">
+            description
+          </span>
+          <span className="hidden sm:inline">View Contract</span>
+        </Link>
       </div>
     </div>
   );

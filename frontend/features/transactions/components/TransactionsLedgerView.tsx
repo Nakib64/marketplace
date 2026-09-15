@@ -4,7 +4,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { toast } from 'sonner';
 import { LedgerTransaction, TransactionsMetrics, TxType } from '../types/transactionTypes';
 import { transactionsApi } from '../api/transactionsApi';
-import { INITIAL_TRANSACTIONS, INITIAL_TX_METRICS } from '../data/mockTransactionsData';
 import { TransactionsHeader } from './TransactionsHeader';
 import { TransactionsKpiGrid } from './TransactionsKpiGrid';
 import { TransactionsFilterBar } from './TransactionsFilterBar';
@@ -13,8 +12,18 @@ import { ZkStateCommitmentBanner } from './ZkStateCommitmentBanner';
 import { TransactionReceiptModal } from './TransactionReceiptModal';
 
 export const TransactionsLedgerView: React.FC = () => {
-  const [metrics, setMetrics] = useState<TransactionsMetrics>(INITIAL_TX_METRICS);
-  const [transactions, setTransactions] = useState<LedgerTransaction[]>(INITIAL_TRANSACTIONS);
+  const [metrics, setMetrics] = useState<TransactionsMetrics>({
+    totalSettledUsdc: 0,
+    settledCount: 0,
+    disputesCount: 0,
+    gasSavedUsd: 0,
+    gaslessRelayCount: 0,
+    pendingMempoolCount: 0,
+    pendingBlockNumber: 0,
+    ipfsPinnedPct: 100,
+    totalPinnedCount: 0,
+  });
+  const [transactions, setTransactions] = useState<LedgerTransaction[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNetwork, setSelectedNetwork] = useState('Arbitrum One');
   const [selectedType, setSelectedType] = useState<TxType>('ALL');
@@ -22,9 +31,7 @@ export const TransactionsLedgerView: React.FC = () => {
 
   useEffect(() => {
     transactionsApi.getMetrics().then(setMetrics);
-    transactionsApi.getTransactions().then((data) => {
-      if (data && data.length > 0) setTransactions(data);
-    });
+    transactionsApi.getTransactions().then(setTransactions);
   }, []);
 
   const filteredTransactions = useMemo(() => {
@@ -48,7 +55,7 @@ export const TransactionsLedgerView: React.FC = () => {
         <TransactionsHeader
           onExportIrs={() => transactionsApi.exportIrsCsv()}
           onExportQuickbooks={() => toast.info('QuickBooks Online accounting sync initiated.')}
-          onVerifyMerkle={() => toast.success('Batch Merkle proof 0x7c9f... valid on Sepolia L1.')}
+          onVerifyMerkle={() => toast.success('Batch cryptographic proof verified.')}
         />
 
         <TransactionsKpiGrid metrics={metrics} />

@@ -62,14 +62,14 @@ export function JobClientCard({ client }: JobClientCardProps) {
         </div>
 
         <div className="p-3 rounded-xl bg-surface-container border border-outline-variant/20 flex flex-col">
-          <span className="text-sm font-bold text-on-surface font-mono">
+          <span className="text-sm font-bold text-on-surface ">
             {formatCurrency(totalSpent)}
           </span>
           <span className="text-[11px] text-on-surface-variant mt-0.5">Total spent</span>
         </div>
 
         <div className="p-3 rounded-xl bg-surface-container border border-outline-variant/20 flex flex-col">
-          <span className="text-sm font-bold text-on-surface font-mono">
+          <span className="text-sm font-bold text-on-surface ">
             {totalJobs} jobs
           </span>
           <span className="text-[11px] text-on-surface-variant mt-0.5">Posted on platform</span>

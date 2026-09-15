@@ -2,10 +2,10 @@ import { Metadata } from 'next';
 import { ProfileEditView } from '@/features/freelancer/components/ProfileEditView';
 
 export const metadata: Metadata = {
-  title: 'Identity & Verifiable Credentials Management | Banglance',
+  title: 'Edit Freelancer Profile & Credentials | Banglance',
   description:
-    'Manage decentralized identity, ENS domains, Soulbound Tokens (SBTs), EAS attestations, and escrow work parameters.',
-  keywords: ['verifiable credentials', 'soulbound token', 'decentralized identity', 'ENS resolution', 'zk-KYC'],
+    'Manage your freelancer profile, verified skills, payment settings, and availability on Banglance.',
+  keywords: ['freelancer profile', 'verified skills', 'developer portfolio', 'marketplace profile'],
 };
 
 export default function FreelancerProfileEditPage() {

@@ -42,7 +42,7 @@ export function TalentCredentialsSection() {
               </div>
               <div className="min-w-0">
                 <p className="text-xs font-bold text-on-surface truncate">{cred.title}</p>
-                <p className="text-[11px] font-mono text-on-surface-variant truncate">{cred.subtitle}</p>
+                <p className="text-[11px]  text-on-surface-variant truncate">{cred.subtitle}</p>
               </div>
             </div>
           );

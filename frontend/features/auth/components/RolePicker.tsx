@@ -85,7 +85,7 @@ export function RolePicker({ selectedRole, onSelectRole }: RolePickerProps) {
               <div className="flex items-center gap-2 mb-1">
                 <h3 className="text-base font-bold text-on-surface">{item.title}</h3>
                 {item.popular && (
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-primary/10 text-primary font-semibold">
+                  <span className="text-[10px]  px-1.5 py-0.5 rounded bg-primary/10 text-primary font-semibold">
                     POPULAR
                   </span>
                 )}
@@ -104,7 +104,7 @@ export function RolePicker({ selectedRole, onSelectRole }: RolePickerProps) {
             </div>
 
             {/* Footer Tag */}
-            <div className="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between text-[11px] font-mono">
+            <div className="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between text-[11px] ">
               <span className={isSelected ? 'text-primary font-semibold' : 'text-on-surface-variant'}>
                 {item.typeLabel}
               </span>

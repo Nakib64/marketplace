@@ -36,7 +36,7 @@ export function JobFilterSidebar({ currentParams, onUpdate, onClear }: JobFilter
         </div>
         <button
           onClick={onClear}
-          className="text-xs font-mono text-primary hover:underline flex items-center gap-1 cursor-pointer"
+          className="text-xs  text-primary hover:underline flex items-center gap-1 cursor-pointer"
         >
           <RotateCcw className="w-3 h-3" />
           <span>Clear All</span>
@@ -45,7 +45,7 @@ export function JobFilterSidebar({ currentParams, onUpdate, onClear }: JobFilter
 
       {/* Categories */}
       <div className="flex flex-col gap-2.5">
-        <span className="text-[11px] font-mono uppercase tracking-wider text-outline font-semibold">
+        <span className="text-[11px]  uppercase tracking-wider text-outline font-semibold">
           Category &amp; Domain
         </span>
         <div className="flex flex-col gap-2 text-xs">
@@ -68,7 +68,7 @@ export function JobFilterSidebar({ currentParams, onUpdate, onClear }: JobFilter
                     {cat.label}
                   </span>
                 </div>
-                <span className="text-[11px] font-mono text-outline">{cat.count}</span>
+                <span className="text-[11px]  text-outline">{cat.count}</span>
               </label>
             );
           })}
@@ -77,31 +77,31 @@ export function JobFilterSidebar({ currentParams, onUpdate, onClear }: JobFilter
 
       {/* Budget Range */}
       <div className="flex flex-col gap-2.5 pt-2 border-t border-outline-variant/30">
-        <div className="flex items-center justify-between text-xs font-mono">
+        <div className="flex items-center justify-between text-xs ">
           <span className="uppercase text-[11px] text-outline font-semibold">Budget Range</span>
           <span className="text-primary font-semibold">USD ($)</span>
         </div>
         <div className="grid grid-cols-2 gap-2">
           <div className="flex items-center bg-surface-container-low px-2.5 py-1.5 rounded-lg border border-outline-variant/40">
-            <span className="text-xs text-outline font-mono mr-1">$</span>
+            <span className="text-xs text-outline  mr-1">$</span>
             <input
               type="number"
               placeholder="Min"
               value={minBudget}
               onChange={(e) => setMinBudget(e.target.value)}
               onBlur={() => onUpdate({ minBudget: minBudget ? Number(minBudget) : undefined })}
-              className="bg-transparent text-xs font-mono text-on-surface w-full focus:outline-none"
+              className="bg-transparent text-xs  text-on-surface w-full focus:outline-none"
             />
           </div>
           <div className="flex items-center bg-surface-container-low px-2.5 py-1.5 rounded-lg border border-outline-variant/40">
-            <span className="text-xs text-outline font-mono mr-1">$</span>
+            <span className="text-xs text-outline  mr-1">$</span>
             <input
               type="number"
               placeholder="Max"
               value={maxBudget}
               onChange={(e) => setMaxBudget(e.target.value)}
               onBlur={() => onUpdate({ maxBudget: maxBudget ? Number(maxBudget) : undefined })}
-              className="bg-transparent text-xs font-mono text-on-surface w-full focus:outline-none"
+              className="bg-transparent text-xs  text-on-surface w-full focus:outline-none"
             />
           </div>
         </div>
@@ -118,7 +118,7 @@ export function JobFilterSidebar({ currentParams, onUpdate, onClear }: JobFilter
               key={b.label}
               type="button"
               onClick={() => applyBudget(b.min, b.max)}
-              className="text-[11px] font-mono px-2.5 py-1 bg-surface-container-low hover:bg-surface-container-high rounded-lg text-on-surface-variant hover:text-primary transition-colors border border-outline-variant/30 cursor-pointer"
+              className="text-[11px]  px-2.5 py-1 bg-surface-container-low hover:bg-surface-container-high rounded-lg text-on-surface-variant hover:text-primary transition-colors border border-outline-variant/30 cursor-pointer"
             >
               {b.label}
             </button>

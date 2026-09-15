@@ -14,8 +14,8 @@ interface ReportJobModalProps {
 }
 
 const COMMON_REASONS = [
-  'Fraud, scam or phising attempt',
-  'Requesting off-platform payment (crypto, bKash outside escrow)',
+  'Fraud, scam or phishing attempt',
+  'Requesting off-platform payment outside platform protection',
   'Misleading scope or deceptive budget',
   'Inappropriate, offensive, or infringing content',
   'Other violation',
@@ -55,7 +55,7 @@ export function ReportJobModal({ jobId, isOpen, onClose }: ReportJobModalProps) 
       isOpen={isOpen}
       onClose={onClose}
       title="Report Job Posting"
-      description="Help us keep Banglance safe, compliant, and escrow-verified."
+      description="Help us keep Banglance safe, compliant, and verified."
     >
       <form onSubmit={handleSubmit} className="space-y-4 pt-2">
         <div>

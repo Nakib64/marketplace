@@ -19,7 +19,7 @@ export const ClientJobCard: React.FC<ClientJobCardProps> = ({ job }) => {
             <span className="px-2 py-0.5 rounded bg-surface-container text-primary text-xs font-medium">
               {job.category?.name || job.categoryName || 'Web3 Engineering'}
             </span>
-            <span className="text-on-surface-variant text-xs font-mono">
+            <span className="text-on-surface-variant text-xs ">
               {new Date(job.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
             </span>
           </div>

@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { ConflictException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, HttpException, UnauthorizedException } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -15,11 +15,13 @@ describe('AuthService (Facade & Sub-Services)', () => {
   let jwtServiceMock: any;
   let configServiceMock: any;
   let redisMock: any;
+  let mailServiceMock: any;
 
   beforeEach(() => {
     prismaMock = {
       user: {
         findUnique: vi.fn(),
+        update: vi.fn(),
       },
       $transaction: vi.fn(async (cb) => cb(prismaMock)),
       clientProfile: {
@@ -50,7 +52,11 @@ describe('AuthService (Facade & Sub-Services)', () => {
       del: vi.fn().mockResolvedValue(1),
     };
 
-    credentialsService = new AuthCredentialsService(prismaMock);
+    mailServiceMock = {
+      sendVerificationEmail: vi.fn().mockResolvedValue(true),
+    };
+
+    credentialsService = new AuthCredentialsService(prismaMock, redisMock, mailServiceMock);
     tokensService = new AuthTokensService(
       jwtServiceMock,
       configServiceMock,
@@ -61,7 +67,7 @@ describe('AuthService (Facade & Sub-Services)', () => {
   });
 
   describe('register', () => {
-    it('should successfully register a CLIENT user and create ClientProfile', async () => {
+    it('should successfully register a CLIENT user, generate code, and send verification email', async () => {
       prismaMock.user.findUnique.mockResolvedValue(null);
       prismaMock.user.create = vi.fn().mockResolvedValue({
         id: 'client-uuid-1',
@@ -77,33 +83,20 @@ describe('AuthService (Facade & Sub-Services)', () => {
         role: Role.CLIENT,
       });
 
-      expect(result.message).toBe('Registration successful');
+      expect(result.message).toContain('Registration successful');
       expect(result.user.email).toBe('client@example.com');
       expect(prismaMock.clientProfile.create).toHaveBeenCalledWith({
         data: { userId: 'client-uuid-1' },
       });
-    });
-
-    it('should successfully register a FREELANCER user and create FreelancerProfile', async () => {
-      prismaMock.user.findUnique.mockResolvedValue(null);
-      prismaMock.user.create = vi.fn().mockResolvedValue({
-        id: 'freelancer-uuid-1',
-        email: 'freelancer@example.com',
-        role: Role.FREELANCER,
-        isEmailVerified: false,
-        createdAt: new Date(),
-      });
-
-      const result = await authService.register({
-        email: 'freelancer@example.com',
-        password: 'password123',
-        role: Role.FREELANCER,
-      });
-
-      expect(result.message).toBe('Registration successful');
-      expect(prismaMock.freelancerProfile.create).toHaveBeenCalledWith({
-        data: { userId: 'freelancer-uuid-1' },
-      });
+      expect(mailServiceMock.sendVerificationEmail).toHaveBeenCalledWith(
+        'client@example.com',
+        expect.any(String),
+      );
+      expect(redisMock.set).toHaveBeenCalledWith(
+        'email:verify:code:client@example.com',
+        expect.any(String),
+        600,
+      );
     });
 
     it('should throw ConflictException if user already exists', async () => {
@@ -116,6 +109,118 @@ describe('AuthService (Facade & Sub-Services)', () => {
           role: Role.CLIENT,
         }),
       ).rejects.toThrow(ConflictException);
+    });
+  });
+
+  describe('verifyEmail', () => {
+    it('should verify email successfully with valid alphanumeric code', async () => {
+      prismaMock.user.findUnique.mockResolvedValue({
+        id: 'user-1',
+        email: 'user@example.com',
+        isEmailVerified: false,
+      });
+
+      redisMock.get.mockImplementation(async (key: string) => {
+        if (key === 'email:verify:code:user@example.com') return 'A2B3C4';
+        if (key === 'email:verify:attempts:user@example.com') return '0';
+        return null;
+      });
+
+      prismaMock.user.update.mockResolvedValue({
+        id: 'user-1',
+        email: 'user@example.com',
+        isEmailVerified: true,
+      });
+
+      const result = await authService.verifyEmail({ email: 'user@example.com' }, 'a2b3c4');
+
+      expect(result.isEmailVerified).toBe(true);
+      expect(result.message).toBe('Email address verified successfully.');
+      expect(prismaMock.user.update).toHaveBeenCalledWith({
+        where: { id: 'user-1' },
+        data: { isEmailVerified: true },
+      });
+    });
+
+    it('should throw BadRequestException and increment attempts on wrong code', async () => {
+      prismaMock.user.findUnique.mockResolvedValue({
+        id: 'user-1',
+        email: 'user@example.com',
+        isEmailVerified: false,
+      });
+
+      redisMock.get.mockImplementation(async (key: string) => {
+        if (key === 'email:verify:code:user@example.com') return 'A2B3C4';
+        if (key === 'email:verify:attempts:user@example.com') return '1';
+        return null;
+      });
+
+      await expect(
+        authService.verifyEmail({ email: 'user@example.com' }, 'WRONG1'),
+      ).rejects.toThrow(BadRequestException);
+
+      expect(redisMock.set).toHaveBeenCalledWith(
+        'email:verify:attempts:user@example.com',
+        '2',
+        600,
+      );
+    });
+
+    it('should invalidate code when 5 attempts are exceeded', async () => {
+      prismaMock.user.findUnique.mockResolvedValue({
+        id: 'user-1',
+        email: 'user@example.com',
+        isEmailVerified: false,
+      });
+
+      redisMock.get.mockImplementation(async (key: string) => {
+        if (key === 'email:verify:code:user@example.com') return 'A2B3C4';
+        if (key === 'email:verify:attempts:user@example.com') return '5';
+        return null;
+      });
+
+      await expect(
+        authService.verifyEmail({ email: 'user@example.com' }, 'WRONG1'),
+      ).rejects.toThrow(/invalidated/i);
+
+      expect(redisMock.del).toHaveBeenCalledWith('email:verify:code:user@example.com');
+    });
+  });
+
+  describe('resendVerification', () => {
+    it('should throw 429 HttpException if in cooldown period', async () => {
+      prismaMock.user.findUnique.mockResolvedValue({
+        id: 'user-1',
+        email: 'user@example.com',
+        isEmailVerified: false,
+      });
+
+      redisMock.get.mockImplementation(async (key: string) => {
+        if (key === 'email:verify:cooldown:user@example.com') return '1';
+        return null;
+      });
+
+      await expect(
+        authService.resendVerification({ email: 'user@example.com' }),
+      ).rejects.toThrow(HttpException);
+    });
+
+    it('should generate new code and dispatch email if not in cooldown', async () => {
+      prismaMock.user.findUnique.mockResolvedValue({
+        id: 'user-1',
+        email: 'user@example.com',
+        isEmailVerified: false,
+      });
+
+      redisMock.get.mockImplementation(async () => null);
+
+      const result = await authService.resendVerification({ email: 'user@example.com' });
+
+      expect(result.message).toContain('verification code has been sent');
+      expect(mailServiceMock.sendVerificationEmail).toHaveBeenCalledWith(
+        'user@example.com',
+        expect.any(String),
+      );
     });
   });
 

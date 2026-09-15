@@ -7,9 +7,9 @@ import { Testimonials } from '@/features/home/components/Testimonials';
 import { BottomCTA } from '@/features/home/components/BottomCTA';
 
 export const metadata: Metadata = {
-  title: 'Banglance | Hire Top Talent & Find Freelance Work with Escrow Protection',
+  title: 'Banglance | Hire Top Talent & Find Freelance Work with Payment Protection',
   description:
-    'Join Banglance, the premier freelance marketplace with 100% financial escrow protection, SSLCommerz gateway, and automated local mobile payouts via bKash and Nagad.',
+    'Join Banglance, the premier freelance marketplace with 100% financial payment protection, SSLCommerz gateway, and automated local mobile payouts via bKash and Nagad.',
 };
 
 export default function HomePage() {

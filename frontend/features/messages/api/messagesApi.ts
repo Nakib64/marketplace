@@ -8,7 +8,6 @@ import {
   mapBackendConversation,
   mapBackendMessage,
 } from '../types/messageTypes';
-import { INITIAL_CHANNELS, INITIAL_MESSAGES } from '../data/mockMessagesData';
 
 export const messagesApi = {
   /**
@@ -17,12 +16,12 @@ export const messagesApi = {
   async getConversations(): Promise<WorkroomChannel[]> {
     try {
       const { data } = await apiClient.get<BackendConversationsResponse>('/chat/conversations');
-      if (data?.conversations && data.conversations.length > 0) {
+      if (data?.conversations && Array.isArray(data.conversations)) {
         return data.conversations.map(mapBackendConversation);
       }
-      return INITIAL_CHANNELS;
+      return [];
     } catch {
-      return INITIAL_CHANNELS;
+      return [];
     }
   },
 
@@ -30,14 +29,15 @@ export const messagesApi = {
    * Fetch message history for a conversation
    */
   async getMessages(conversationId: string, currentUserId?: string): Promise<WorkroomMessage[]> {
+    if (!conversationId) return [];
     try {
       const { data } = await apiClient.get<BackendMessagesResponse>(`/chat/conversations/${conversationId}/messages`);
-      if (data?.messages && data.messages.length > 0) {
+      if (data?.messages && Array.isArray(data.messages)) {
         return data.messages.map((m) => mapBackendMessage(m, currentUserId));
       }
-      return INITIAL_MESSAGES;
+      return [];
     } catch {
-      return INITIAL_MESSAGES;
+      return [];
     }
   },
 
@@ -45,30 +45,17 @@ export const messagesApi = {
    * Send a message to the active workroom
    */
   async sendMessage(conversationId: string, text: string, currentUserId?: string): Promise<WorkroomMessage> {
-    try {
-      const { data } = await apiClient.post<BackendMessageItem>(`/chat/conversations/${conversationId}/messages`, {
-        content: text,
-      });
-      return mapBackendMessage(data, currentUserId);
-    } catch {
-      return {
-        id: `msg-${Date.now()}`,
-        senderId: currentUserId || 'me',
-        senderName: 'You',
-        senderAvatar: 'ME',
-        timestamp: 'Just now',
-        isHirer: true,
-        text,
-        signerAddress: '0x3C49...81B7',
-        multisigStatus: 'EIP-1271 Signed',
-      };
-    }
+    const { data } = await apiClient.post<BackendMessageItem>(`/chat/conversations/${conversationId}/messages`, {
+      content: text,
+    });
+    return mapBackendMessage(data, currentUserId);
   },
 
   /**
    * Mark conversation messages as read
    */
   async markAsRead(conversationId: string): Promise<void> {
+    if (!conversationId) return;
     try {
       await apiClient.patch(`/chat/conversations/${conversationId}/read`);
     } catch {
@@ -76,4 +63,3 @@ export const messagesApi = {
     }
   },
 };
-

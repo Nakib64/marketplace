@@ -42,9 +42,9 @@ export function JobMilestonesCard({ job }: JobMilestonesCardProps) {
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-on-surface flex items-center gap-2">
           <GitFork className="w-5 h-5 text-primary" />
-          Escrow Milestones Roadmap
+          Project Milestones
         </h2>
-        <span className="text-xs font-mono text-on-surface-variant flex items-center gap-1">
+        <span className="text-xs  text-on-surface-variant flex items-center gap-1">
           <ShieldCheck className="w-3.5 h-3.5 text-primary" />
           3 Milestones Protected
         </span>
@@ -57,7 +57,7 @@ export function JobMilestonesCard({ job }: JobMilestonesCardProps) {
             className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-surface-container border border-outline-variant/20 gap-3"
           >
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center font-mono text-xs text-on-surface font-semibold shrink-0">
+              <div className="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center  text-xs text-on-surface font-semibold shrink-0">
                 {m.num}
               </div>
               <div>
@@ -66,7 +66,7 @@ export function JobMilestonesCard({ job }: JobMilestonesCardProps) {
               </div>
             </div>
             <div className="flex items-center sm:flex-col sm:items-end justify-between shrink-0 pl-11 sm:pl-0">
-              <span className="text-sm font-bold text-on-surface font-mono">
+              <span className="text-sm font-bold text-on-surface ">
                 {formatCurrency(m.amount)}
               </span>
               <span className="text-xs text-on-surface-variant">{m.duration}</span>

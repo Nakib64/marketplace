@@ -60,7 +60,7 @@ export function LoginForm() {
             <label className="text-xs font-semibold text-on-surface-variant" htmlFor="login-password">
               Password
             </label>
-            <span className="text-[10px] font-mono text-outline">Min. 8 chars</span>
+            <span className="text-[10px]  text-outline">Min. 8 chars</span>
           </div>
           <div className="relative flex items-center">
             <Lock className="absolute left-3 w-4 h-4 text-outline pointer-events-none" />
@@ -107,13 +107,13 @@ export function LoginForm() {
         </Button>
       </form>
 
-      {/* Security & Rate-Limit Notice */}
+      {/* Security & Protection Notice */}
       <div className="mt-6 p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/40 flex items-start gap-3">
         <ShieldCheck className="w-5 h-5 text-primary shrink-0 mt-0.5" />
         <div className="flex flex-col text-xs">
-          <span className="font-semibold text-on-surface">Dual-Actor JWT &amp; Escrow Security</span>
-          <span className="text-[11px] text-on-surface-variant font-mono mt-0.5">
-            Distributed sliding-window rate limit active to protect against brute-force attacks.
+          <span className="font-semibold text-on-surface">Secure &amp; Protected Account</span>
+          <span className="text-[11px] text-on-surface-variant mt-0.5">
+            Your login and account information are encrypted and safeguarded.
           </span>
         </div>
       </div>

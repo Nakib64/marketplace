@@ -32,41 +32,40 @@ export const ContractWorkSubmissionForm: React.FC<ContractWorkSubmissionFormProp
           <span className="material-symbols-outlined text-primary text-[20px]">upload_file</span>
           <h4 className="text-base font-bold text-on-surface">Deliverable Work Submission</h4>
         </div>
-        <span className="text-xs text-on-surface-variant font-mono">IPFS Pinning Enabled</span>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-semibold text-on-surface">GitHub Pull Request / Commit Hash *</label>
+          <label className="text-xs font-semibold text-on-surface">Deliverable URL / Pull Request *</label>
           <div className="flex items-center bg-surface-container border border-outline-variant/30 px-3 py-2 rounded-lg">
-            <span className="material-symbols-outlined text-on-surface-variant text-[16px] mr-2">code</span>
+            <span className="material-symbols-outlined text-on-surface-variant text-[16px] mr-2">link</span>
             <input
               type="url"
               required
               value={githubUrl}
               onChange={(e) => setGithubUrl(e.target.value)}
-              className="w-full bg-transparent text-xs text-on-surface font-mono focus:outline-none"
+              className="w-full bg-transparent text-xs text-on-surface  focus:outline-none"
             />
           </div>
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-semibold text-on-surface">Audit Artifacts IPFS CID</label>
+          <label className="text-xs font-semibold text-on-surface">Additional Deliverables / File Link (Optional)</label>
           <div className="flex items-center bg-surface-container border border-outline-variant/30 px-3 py-2 rounded-lg">
-            <span className="material-symbols-outlined text-on-surface-variant text-[16px] mr-2">fingerprint</span>
+            <span className="material-symbols-outlined text-on-surface-variant text-[16px] mr-2">attach_file</span>
             <input
               type="text"
               value={ipfsCid}
               onChange={(e) => setIpfsCid(e.target.value)}
-              className="w-full bg-transparent text-xs text-on-surface font-mono focus:outline-none"
+              className="w-full bg-transparent text-xs text-on-surface  focus:outline-none"
             />
           </div>
         </div>
 
         <div className="flex flex-col gap-1">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-semibold text-on-surface">Deliverable Summary &amp; Verification Notes</label>
-            <div className="flex items-center bg-surface-container rounded-lg p-0.5 text-xs font-mono">
+            <label className="text-xs font-semibold text-on-surface">Deliverable Summary &amp; Notes</label>
+            <div className="flex items-center bg-surface-container rounded-lg p-0.5 text-xs ">
               <button type="button" onClick={() => setActiveTab('write')} className={`px-2 py-0.5 rounded ${activeTab === 'write' ? 'bg-surface-container-high text-on-surface' : 'text-on-surface-variant'}`}>Write</button>
               <button type="button" onClick={() => setActiveTab('preview')} className={`px-2 py-0.5 rounded ${activeTab === 'preview' ? 'bg-surface-container-high text-on-surface' : 'text-on-surface-variant'}`}>Preview</button>
             </div>
@@ -76,10 +75,10 @@ export const ContractWorkSubmissionForm: React.FC<ContractWorkSubmissionFormProp
               rows={4}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-surface-container border border-outline-variant/30 p-3 rounded-lg text-xs font-mono text-on-surface focus:outline-none resize-y leading-relaxed"
+              className="w-full bg-surface-container border border-outline-variant/30 p-3 rounded-lg text-xs  text-on-surface focus:outline-none resize-y leading-relaxed"
             />
           ) : (
-            <div className="bg-surface-container border border-outline-variant/30 p-3 rounded-lg text-xs text-on-surface font-mono whitespace-pre-line leading-relaxed min-h-[96px]">
+            <div className="bg-surface-container border border-outline-variant/30 p-3 rounded-lg text-xs text-on-surface  whitespace-pre-line leading-relaxed min-h-[96px]">
               {notes}
             </div>
           )}
@@ -88,18 +87,18 @@ export const ContractWorkSubmissionForm: React.FC<ContractWorkSubmissionFormProp
         {isDone && (
           <div className="p-3 bg-surface-container border border-primary/40 rounded-lg flex items-center gap-2 text-xs">
             <span className="material-symbols-outlined text-primary text-[18px]">check_circle</span>
-            <span className="text-on-surface">Deliverable submitted to smart contract. 48-hour review timer initiated.</span>
+            <span className="text-on-surface">Deliverable submitted successfully. Client notified for review.</span>
           </div>
         )}
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2.5 pt-1">
           <button type="button" onClick={onRequestExtension} className="px-3.5 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 border border-outline-variant/30">
             <span className="material-symbols-outlined text-[16px]">schedule</span>
-            <span>Request Milestone Extension</span>
+            <span>Request Extension</span>
           </button>
           <button type="submit" disabled={isSubmitting} className="px-4 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md">
-            <span className="material-symbols-outlined text-[16px]">lock</span>
-            <span>{isSubmitting ? 'Transacting On-Chain...' : 'Submit Deliverable for Review'}</span>
+            <span className="material-symbols-outlined text-[16px]">send</span>
+            <span>{isSubmitting ? 'Submitting...' : 'Submit Deliverable for Review'}</span>
           </button>
         </div>
       </form>

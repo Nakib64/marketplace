@@ -1,20 +1,13 @@
 export interface WorkroomChannel {
   id: string;
   title: string;
-  rfpNumber: string;
-  contractAddress: string;
   contactName: string;
-  contactEns: string;
-  contactRole: string;
+  contactRole?: string;
   avatarText: string;
   lastMessage: string;
   timestamp: string;
   unreadCount?: number;
-  totalVault: number;
-  currency: string;
-  activeMilestone: string;
   isOnline?: boolean;
-  xmtpVerified?: boolean;
 }
 
 export interface WorkroomMessage {
@@ -23,18 +16,11 @@ export interface WorkroomMessage {
   senderName: string;
   senderAvatar: string;
   timestamp: string;
-  isHirer: boolean;
+  isMe: boolean;
   text: string;
-  eip712Signed?: boolean;
-  signerAddress?: string;
-  multisigStatus?: string;
   isMilestoneDeliverable?: boolean;
   deliverableTitle?: string;
-  coveragePct?: string;
-  commitRef?: string;
-  ipfsCid?: string;
-  codeSnippet?: string;
-  txHash?: string;
+  deliverableNote?: string;
 }
 
 export interface WorkroomEscrowContext {
@@ -44,10 +30,7 @@ export interface WorkroomEscrowContext {
   releasedAmount: number;
   remainingAmount: number;
   slaGraceRemaining: string;
-  multisigSigned: number;
-  multisigTotal: number;
-  signers: { address: string; role: string; signed: boolean }[];
-  artifacts: { title: string; type: 'ipfs' | 'pr' | 'report'; ref: string; url?: string }[];
+  artifacts: { title: string; type: string; ref: string; url?: string }[];
 }
 
 export interface BackendConversationItem {
@@ -117,31 +100,23 @@ export function mapBackendConversation(c: BackendConversationItem): WorkroomChan
     c.counterpart?.profile?.companyName ||
     c.counterpart?.profile?.fullName ||
     c.counterpart?.email?.split('@')[0] ||
-    'Counterpart';
+    'Contact';
   const avatarText = contactName.slice(0, 2).toUpperCase();
-  const contactRole = c.counterpart?.profile?.title || 'Contract Participant';
-  const contactEns = `${c.counterpart?.email?.split('@')[0] || 'user'}.eth`;
+  const contactRole = c.counterpart?.profile?.title || 'Member';
   const time = c.lastMessageAt
     ? new Date(c.lastMessageAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     : 'Recently';
 
   return {
     id: c.id,
-    title: c.jobTitle || 'Freelance Workroom',
-    rfpNumber: `RFP-${c.id.slice(0, 4).toUpperCase()}`,
-    contractAddress: `0x${c.id.replace(/-/g, '').slice(0, 4)}...${c.id.replace(/-/g, '').slice(-4)}`,
+    title: c.jobTitle || 'Project Conversation',
     contactName,
-    contactEns,
     contactRole,
     avatarText,
-    lastMessage: c.lastMessageText || 'Conversation thread opened',
+    lastMessage: c.lastMessageText || 'Conversation started',
     timestamp: time,
     unreadCount: c.unreadCount || 0,
-    totalVault: 5000,
-    currency: 'BDT',
-    activeMilestone: 'Active Phase',
     isOnline: true,
-    xmtpVerified: true,
   };
 }
 
@@ -159,10 +134,8 @@ export function mapBackendMessage(m: BackendMessageItem, currentUserId?: string)
     senderName,
     senderAvatar,
     timestamp: time,
-    isHirer: isMe,
+    isMe,
     text: m.content || '',
-    signerAddress: `0x${(m.senderId || '').replace(/-/g, '').slice(0, 4)}...${(m.senderId || '').replace(/-/g, '').slice(-4)}`,
-    multisigStatus: 'Verified (Socket.io)',
     isMilestoneDeliverable: false,
   };
 }

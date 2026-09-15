@@ -17,49 +17,49 @@ export const WorkroomTelemetrySidebar: React.FC<WorkroomTelemetrySidebarProps> =
   return (
     <aside className="w-full md:w-[280px] lg:w-[300px] shrink-0 bg-surface-container-lowest border-l border-outline-variant/30 flex flex-col justify-between overflow-y-auto">
       <div className="p-3.5 flex flex-col gap-4 text-xs">
-        {/* Escrow Telemetry */}
+        {/* Project Funds & Status */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-on-surface">Escrow Telemetry</span>
-            <span className="px-1.5 py-0.2 rounded bg-surface-container text-primary font-mono text-[10px]">Active</span>
+            <span className="text-xs font-bold text-on-surface">Project Funds</span>
+            <span className="px-1.5 py-0.2 rounded bg-surface-container text-primary  text-[10px]">Protected</span>
           </div>
           <div className="p-3 rounded-xl bg-surface-container flex flex-col gap-2 border border-outline-variant/20">
             <span className="text-[11px] text-on-surface-variant font-medium">{context.milestoneTitle}</span>
             <div className="flex items-baseline justify-between">
-              <span className="text-lg font-bold font-mono text-on-surface">${context.lockedAmount.toLocaleString()}</span>
-              <span className="text-[11px] font-mono text-on-surface-variant">{context.currency} Locked</span>
+              <span className="text-lg font-bold  text-on-surface">${context.lockedAmount.toLocaleString()}</span>
+              <span className="text-[11px]  text-on-surface-variant">{context.currency} In Protection</span>
             </div>
             <div className="w-full h-1.5 bg-surface-container-low rounded-full overflow-hidden">
               <div className="h-full bg-primary rounded-full w-1/2" />
             </div>
-            <div className="flex items-center justify-between text-on-surface-variant font-mono text-[10px]">
-              <span>Released: ${context.releasedAmount.toLocaleString()}</span>
-              <span>Rem: ${context.remainingAmount.toLocaleString()}</span>
+            <div className="flex items-center justify-between text-on-surface-variant  text-[10px]">
+              <span>Paid: ${context.releasedAmount.toLocaleString()}</span>
+              <span>Remaining: ${context.remainingAmount.toLocaleString()}</span>
             </div>
           </div>
         </div>
 
-        {/* SLA Grace Timer */}
+        {/* Review Period */}
         <div className="p-3 rounded-xl bg-surface-container flex flex-col gap-1 border border-outline-variant/20">
           <div className="flex items-center justify-between">
-            <span className="text-on-surface-variant text-[11px]">SLA Grace Timer</span>
+            <span className="text-on-surface-variant text-[11px]">Review Window</span>
             <span className="material-symbols-outlined text-primary text-[15px]">timer</span>
           </div>
-          <span className="text-base font-bold font-mono text-on-surface">{context.slaGraceRemaining}</span>
+          <span className="text-base font-bold  text-on-surface">{context.slaGraceRemaining}</span>
           <p className="text-[10px] text-on-surface-variant leading-tight mt-0.5">
-            Auto-releases at expiration unless a dispute challenge is staked on Kleros.
+            Auto-approved when review window ends unless changes are requested.
           </p>
         </div>
 
         {/* Contract Actions */}
         <div className="flex flex-col gap-1.5">
-          <span className="font-semibold text-on-surface text-[11px]">Contract Actions</span>
+          <span className="font-semibold text-on-surface text-[11px]">Actions</span>
           <Link
             href={`/contracts/${contractId}/review`}
             className="w-full py-2 px-3 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm"
           >
             <span className="material-symbols-outlined text-[15px]">verified</span>
-            <span>Approve &amp; Sign ($3,500)</span>
+            <span>Review &amp; Approve ($3,500)</span>
           </Link>
           <Link
             href={`/contracts/${contractId}`}
@@ -70,22 +70,22 @@ export const WorkroomTelemetrySidebar: React.FC<WorkroomTelemetrySidebarProps> =
           </Link>
         </div>
 
-        {/* Verified Artifacts */}
+        {/* Deliverable Files */}
         <div className="flex flex-col gap-1.5 pt-1 border-t border-outline-variant/20">
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-on-surface text-[11px]">Verified Artifacts</span>
-            <span className="font-mono text-on-surface-variant text-[10px]">{context.artifacts.length} Total</span>
+            <span className="font-semibold text-on-surface text-[11px]">Submitted Deliverables</span>
+            <span className=" text-on-surface-variant text-[10px]">{context.artifacts.length} Files</span>
           </div>
           <div className="flex flex-col gap-1">
             {context.artifacts.map((art, idx) => (
               <div
                 key={idx}
-                onClick={() => toast.info(`Viewing verifiable artifact: ${art.title}`)}
-                className="p-1.5 rounded bg-surface-container hover:bg-surface-container-high cursor-pointer flex items-center justify-between font-mono text-[11px] text-on-surface transition-colors border border-outline-variant/10"
+                onClick={() => toast.info(`Opening deliverable: ${art.title}`)}
+                className="p-1.5 rounded bg-surface-container hover:bg-surface-container-high cursor-pointer flex items-center justify-between  text-[11px] text-on-surface transition-colors border border-outline-variant/10"
               >
                 <div className="flex items-center gap-1.5 truncate">
                   <span className="material-symbols-outlined text-primary text-[14px]">
-                    {art.type === 'ipfs' ? 'folder_zip' : 'merge'}
+                    {art.type === 'ipfs' ? 'folder_zip' : 'file_present'}
                   </span>
                   <span className="truncate">{art.title}</span>
                 </div>
@@ -96,9 +96,12 @@ export const WorkroomTelemetrySidebar: React.FC<WorkroomTelemetrySidebarProps> =
         </div>
       </div>
 
-      <div className="p-3 bg-surface-container-low border-t border-outline-variant/20 flex items-center justify-between text-on-surface-variant font-mono text-[11px]">
-        <span>Kleros Arb #1488</span>
-        <span className="text-primary font-medium">Synced</span>
+      <div className="p-3 bg-surface-container-low border-t border-outline-variant/20 flex items-center justify-between text-on-surface-variant text-xs">
+        <span className="text-on-surface font-medium">Payment Protection</span>
+        <span className="text-primary font-semibold flex items-center gap-1">
+          <span className="material-symbols-outlined text-[14px]">verified_user</span>
+          Active
+        </span>
       </div>
     </aside>
   );

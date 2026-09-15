@@ -21,6 +21,7 @@ import { WalletModule } from './wallet/wallet.module.js';
 import { ChatModule } from './chat/chat.module.js';
 import { RedisModule } from './redis/redis.module.js';
 import { QueuesModule } from './queues/queues.module.js';
+import { MailModule } from './mail/mail.module.js';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { QueuesModule } from './queues/queues.module.js';
     PrismaModule,
     RedisModule,
     QueuesModule,
+    MailModule,
     AuthModule,
     UsersModule,
     JobsModule,

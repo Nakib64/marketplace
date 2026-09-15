@@ -11,14 +11,14 @@ export function BottomCTA() {
         <div className="absolute -left-20 -top-20 w-72 h-72 bg-secondary/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
-          <span className="text-xs font-mono text-primary uppercase tracking-widest block mb-2 font-semibold">
+          <span className="text-xs  text-primary uppercase tracking-widest block mb-2 font-semibold">
             SECURE. FAIR. GUARANTEED.
           </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-on-surface tracking-tight mb-3">
             Ready to Experience True Freelance Security?
           </h2>
           <p className="text-xs sm:text-sm md:text-base text-on-surface-variant mb-8 leading-relaxed">
-            Join thousands of verified software engineers, designers, and clients building projects with instantaneous, escrow-protected settlements.
+            Join thousands of software engineers, designers, and clients building projects with 100% payment protection.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
@@ -36,7 +36,7 @@ export function BottomCTA() {
             </Link>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-6 mt-8 text-xs font-mono text-outline">
+          <div className="flex flex-wrap items-center justify-center gap-6 mt-8 text-xs  text-outline">
             <span className="flex items-center gap-1.5">
               <CheckCircle2 className="w-4 h-4 text-primary" /> Free Registration
             </span>
@@ -44,7 +44,7 @@ export function BottomCTA() {
               <CheckCircle2 className="w-4 h-4 text-primary" /> 0% Chargebacks
             </span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-primary" /> Escrow Protected
+              <CheckCircle2 className="w-4 h-4 text-primary" /> Protected Payments
             </span>
           </div>
         </div>

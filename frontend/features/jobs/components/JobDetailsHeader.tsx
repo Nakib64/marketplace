@@ -16,12 +16,12 @@ export function JobDetailsHeader({ job }: JobDetailsHeaderProps) {
       {/* Verification & Category Badges */}
       <div className="flex flex-wrap items-center gap-2 mb-4">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high text-xs font-semibold text-on-surface">
-          <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-          100% Escrow Funded
+          <span className="w-2 h-2 rounded-full bg-primary" />
+          Payment Protected
         </span>
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high text-xs font-semibold text-on-surface-variant">
           <ShieldCheck className="w-3.5 h-3.5 text-primary" />
-          KYC Verified Client
+          Verified Client
         </span>
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high text-xs font-semibold text-secondary">
           {categoryLabel}
@@ -67,7 +67,7 @@ export function JobDetailsHeader({ job }: JobDetailsHeaderProps) {
         </div>
         <div className="flex flex-col">
           <span className="text-xs text-on-surface-variant font-medium">Client Activity</span>
-          <span className="text-xs font-mono text-primary flex items-center gap-1 mt-1.5 font-medium">
+          <span className="text-xs  text-primary flex items-center gap-1 mt-1.5 font-medium">
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-ping" />
             Active Recently
           </span>

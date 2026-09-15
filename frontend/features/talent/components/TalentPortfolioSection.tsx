@@ -37,26 +37,23 @@ const DEFAULT_PORTFOLIO = [
 export function TalentPortfolioSection({ profile }: TalentPortfolioSectionProps) {
   const items = profile.portfolioItems?.length
     ? profile.portfolioItems.map((pi, idx) => ({
-        id: pi.id,
-        title: pi.title,
-        network: 'Verified Escrow Deployment',
-        amount: 8500 + idx * 4000,
-        desc: pi.description || 'Verified smart contract architecture and implementation.',
-        highlight: '100% Test Coverage',
-      }))
+      id: pi.id,
+      title: pi.title,
+      network: 'Verified Project',
+      amount: 8500 + idx * 4000,
+      desc: pi.description || 'Verified smart contract architecture and implementation.',
+      highlight: '100% Test Coverage',
+    }))
     : DEFAULT_PORTFOLIO;
 
   return (
     <section className="bg-surface-container rounded-2xl p-6 sm:p-8 border border-outline-variant/30 shadow-sm flex flex-col gap-5">
       <div className="flex items-center justify-between pb-2 border-b border-outline-variant/20">
         <div>
-          <h2 className="text-xl font-bold text-on-surface">Verified Deployments</h2>
-          <p className="text-xs text-on-surface-variant mt-0.5">
-            Cryptographically settled contracts tied to verified developer identity
-          </p>
+          <h2 className="text-xl font-bold text-on-surface">Verified Work &amp; Projects</h2>
         </div>
-        <span className="text-xs font-mono text-primary bg-surface-container-high px-2.5 py-1 rounded-full border border-primary/20">
-          {items.length} Production Audits
+        <span className="text-xs  text-primary bg-surface-container-high px-2.5 py-1 rounded-full border border-primary/20">
+          {items.length} Projects
         </span>
       </div>
 
@@ -73,15 +70,15 @@ export function TalentPortfolioSection({ profile }: TalentPortfolioSectionProps)
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-on-surface">{item.title}</h3>
-                  <span className="text-xs font-mono text-on-surface-variant">{item.network}</span>
+                  <span className="text-xs  text-on-surface-variant">{item.network}</span>
                 </div>
               </div>
 
               <div className="flex items-center gap-2.5">
-                <span className="text-xs font-bold font-mono text-on-surface bg-surface-container px-2.5 py-1 rounded-lg">
+                <span className="text-xs font-bold  text-on-surface bg-surface-container px-2.5 py-1 rounded-lg">
                   {formatCurrency(item.amount)}
                 </span>
-                <span className="text-xs font-mono text-primary flex items-center gap-1 font-semibold">
+                <span className="text-xs  text-primary flex items-center gap-1 font-semibold">
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   Settled
                 </span>
@@ -91,7 +88,7 @@ export function TalentPortfolioSection({ profile }: TalentPortfolioSectionProps)
             <p className="text-sm text-on-surface-variant leading-relaxed">{item.desc}</p>
 
             <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-outline-variant/10 text-xs">
-              <div className="flex items-center gap-3 font-mono text-on-surface-variant">
+              <div className="flex items-center gap-3  text-on-surface-variant">
                 <span className="flex items-center gap-1 hover:text-on-surface cursor-pointer">
                   <GitBranch className="w-3.5 h-3.5" />
                   Repo Verified
@@ -101,7 +98,7 @@ export function TalentPortfolioSection({ profile }: TalentPortfolioSectionProps)
                   Explorer
                 </span>
               </div>
-              <span className="text-[11px] font-mono text-secondary">{item.highlight}</span>
+              <span className="text-[11px]  text-secondary">{item.highlight}</span>
             </div>
           </article>
         ))}

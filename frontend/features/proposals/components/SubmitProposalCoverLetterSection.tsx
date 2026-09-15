@@ -15,7 +15,7 @@ export const SubmitProposalCoverLetterSection: React.FC<SubmitProposalCoverLette
     <div className="bg-surface-container-low border border-outline-variant/30 rounded-xl p-5 shadow-sm">
       <div className="flex items-center justify-between mb-4 pb-2 border-b border-outline-variant/20">
         <div className="flex items-center gap-2.5">
-          <span className="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center font-mono text-primary font-bold text-xs">
+          <span className="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center  text-primary font-bold text-xs">
             02
           </span>
           <div>
@@ -23,7 +23,7 @@ export const SubmitProposalCoverLetterSection: React.FC<SubmitProposalCoverLette
             <p className="text-xs text-on-surface-variant">Detailed architectural rationale, testing invariants, and repository verification methodology.</p>
           </div>
         </div>
-        <span className="text-on-surface-variant font-mono text-xs flex items-center gap-1">
+        <span className="text-on-surface-variant  text-xs flex items-center gap-1">
           <span className="material-symbols-outlined text-[14px]">markdown</span>
           <span>Markdown</span>
         </span>
@@ -31,7 +31,7 @@ export const SubmitProposalCoverLetterSection: React.FC<SubmitProposalCoverLette
 
       {/* Editor Box */}
       <div className="rounded-xl bg-surface-container border border-outline-variant/30 overflow-hidden shadow-inner">
-        <div className="flex items-center justify-between px-3 py-1.5 bg-surface-container-high text-on-surface-variant text-xs font-mono">
+        <div className="flex items-center justify-between px-3 py-1.5 bg-surface-container-high text-on-surface-variant text-xs ">
           <div className="flex items-center gap-2">
             <span className="font-bold px-1.5 py-0.5 rounded hover:bg-surface-container cursor-pointer">B</span>
             <span className="italic px-1.5 py-0.5 rounded hover:bg-surface-container cursor-pointer">I</span>
@@ -48,7 +48,7 @@ export const SubmitProposalCoverLetterSection: React.FC<SubmitProposalCoverLette
           onChange={(e) => onChange(e.target.value)}
           rows={8}
           placeholder="Detail your engineering architecture, math invariants, and test coverage strategies..."
-          className="w-full bg-transparent p-3 text-on-surface font-mono text-xs leading-relaxed focus:outline-none resize-y"
+          className="w-full bg-transparent p-3 text-on-surface  text-xs leading-relaxed focus:outline-none resize-y"
         />
       </div>
 
@@ -60,11 +60,11 @@ export const SubmitProposalCoverLetterSection: React.FC<SubmitProposalCoverLette
           <p className="text-xs font-semibold text-on-surface mb-0.5">Drop technical whitepapers, architecture SVGs, or test runners</p>
           <p className="text-[11px] text-on-surface-variant mb-2">Files are pinned to IPFS and signed with your connected wallet address.</p>
           <div className="flex flex-wrap gap-2 justify-center">
-            <span className="flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded-lg text-on-surface font-mono text-[11px]">
+            <span className="flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded-lg text-on-surface  text-[11px]">
               <span className="material-symbols-outlined text-primary text-[13px]">link</span>
               github.com/alexr-dev/amm-arbitrum-invariants
             </span>
-            <span className="flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded-lg text-on-surface font-mono text-[11px]">
+            <span className="flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded-lg text-on-surface  text-[11px]">
               <span className="material-symbols-outlined text-secondary text-[13px]">picture_as_pdf</span>
               amm-formal-spec-v1.4.pdf (2.4 MB)
             </span>

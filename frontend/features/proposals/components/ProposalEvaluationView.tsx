@@ -71,7 +71,7 @@ const DEMO_PROPOSALS: ProposalItem[] = [
     milestones: [
       { step: 'M1', title: 'Rust Stylus Architecture & Memory Safety Spec', durationDays: 7, amount: 4000, currency: 'USDC' },
       { step: 'M2', title: 'Integration Test Harness & Benchmark Analysis', durationDays: 10, amount: 6000, currency: 'USDC' },
-      { step: 'M3', title: 'Production Multi-Sig Escrow Deployment', durationDays: 7, amount: 5000, currency: 'USDC' },
+      { step: 'M3', title: 'Production Deployment & Acceptance', durationDays: 7, amount: 5000, currency: 'USDC' },
     ],
     createdAt: new Date().toISOString(),
     status: 'SHORTLISTED',
@@ -109,7 +109,7 @@ function mapBackendProposal(raw: RawProposal): ProposalItem {
     freelancerAvatar: DEMO_PROPOSALS[0].freelancerAvatar,
     freelancerRole: profile?.title || 'Verified Specialist',
     sbtId: `SBT #${raw.freelancerId.slice(0, 4)}`,
-    bio: profile?.description || 'Experienced developer with verified escrow track record.',
+    bio: profile?.description || 'Experienced specialist with verified track record.',
     fitScore: profile?.rating ? Math.round(profile.rating * 20) : 95,
     bidAmount: amount,
     currency: 'USDC',
@@ -151,10 +151,10 @@ export const ProposalEvaluationView: React.FC<{ jobId: string }> = ({ jobId }) =
     try {
       const res = await proposalsApi.acceptProposal(proposalId);
       if (res.paymentRequired && res.gatewayUrl) {
-        toast.info('Redirecting to SSLCommerz Escrow Gateway...');
+        toast.info('Redirecting to SSLCommerz Secure Payment Gateway...');
         window.location.href = res.gatewayUrl;
       } else if (res.contract) {
-        toast.success('Proposal accepted! Escrow funded from wallet balance.');
+        toast.success('Proposal accepted! Protected payment funded from wallet balance.');
         router.push(`/contracts/${res.contract.id}`);
       } else {
         toast.success('Proposal accepted successfully!');

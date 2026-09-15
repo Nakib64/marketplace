@@ -14,8 +14,8 @@ export const DisputeCaseDossierCard: React.FC<DisputeCaseDossierCardProps> = ({ 
             <span className="material-symbols-outlined text-primary text-[22px]">balance</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold">Docket Identifier</span>
-            <span className="font-mono text-xs text-on-surface font-semibold">{caseDetail.docketId} • Case {caseDetail.caseNumber}</span>
+            <span className="text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold">Case Reference</span>
+            <span className=" text-xs text-on-surface font-semibold">{caseDetail.docketId} • Case {caseDetail.caseNumber}</span>
           </div>
         </div>
         <div className="flex items-center gap-2 self-start sm:self-center">
@@ -27,7 +27,7 @@ export const DisputeCaseDossierCard: React.FC<DisputeCaseDossierCardProps> = ({ 
       </div>
 
       <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-bold text-on-surface tracking-tight font-mono">{caseDetail.title}</h2>
+        <h2 className="text-lg font-bold text-on-surface tracking-tight">{caseDetail.title}</h2>
         <p className="text-xs text-on-surface-variant leading-relaxed">{caseDetail.description}</p>
       </div>
 
@@ -35,26 +35,23 @@ export const DisputeCaseDossierCard: React.FC<DisputeCaseDossierCardProps> = ({ 
         <div className="bg-surface-container-low rounded-lg p-3 flex flex-col gap-1 border border-outline-variant/20">
           <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-semibold">Contract Title</span>
           <span className="text-xs font-semibold text-on-surface truncate">{caseDetail.contractTitle}</span>
-          <span className="font-mono text-[11px] text-on-surface-variant">{caseDetail.auditPhase}</span>
+          <span className="text-[11px] text-on-surface-variant">{caseDetail.auditPhase}</span>
         </div>
 
         <div className="bg-surface-container-low rounded-lg p-3 flex flex-col gap-1 border border-outline-variant/20">
-          <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-semibold">Litigating Parties</span>
+          <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-semibold">Parties Involved</span>
           <div className="flex items-center gap-1.5 text-xs truncate">
             <span className="text-on-surface font-medium truncate">{caseDetail.hirerName}</span>
-            <span className="text-on-surface-variant text-[10px]">vs</span>
-            <span className="font-mono text-primary truncate font-semibold">{caseDetail.contractorName}</span>
+            <span className="text-on-surface-variant text-[10px]">and</span>
+            <span className="text-primary truncate font-semibold">{caseDetail.contractorName}</span>
           </div>
-          <span className="font-mono text-[10px] text-on-surface-variant truncate">
-            {caseDetail.hirerAddress} vs {caseDetail.contractorAddress}
-          </span>
         </div>
 
         <div className="bg-surface-container-low rounded-lg p-3 flex flex-col gap-1 border border-outline-variant/20">
-          <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-semibold">Claimed Escrow Value</span>
-          <span className="text-base font-bold font-mono text-on-surface">${caseDetail.claimedValue.toLocaleString()} {caseDetail.currency}</span>
-          <span className="font-mono text-[11px] text-primary flex items-center gap-1">
-            <span className="material-symbols-outlined text-[13px]">lock</span> Immutable Lock
+          <span className="text-[10px] uppercase tracking-wider text-on-surface-variant font-semibold">Disputed Amount</span>
+          <span className="text-base font-bold  text-on-surface">${caseDetail.claimedValue.toLocaleString()} {caseDetail.currency}</span>
+          <span className="text-[11px] text-primary flex items-center gap-1 font-medium">
+            <span className="material-symbols-outlined text-[13px]">lock</span> Held in Protection
           </span>
         </div>
       </div>

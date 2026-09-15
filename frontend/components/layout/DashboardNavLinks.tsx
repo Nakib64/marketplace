@@ -31,31 +31,31 @@ export const DashboardNavLinks: React.FC<DashboardNavLinksProps> = ({
 
   const mainNavItems = [
     {
-      label: isClient ? 'Hirer Dashboard' : 'Builder Dashboard',
+      label: 'Dashboard',
       href: isClient ? '/client/jobs' : '/freelancer/dashboard',
       icon: LayoutDashboard,
       active: isClient ? pathname === '/client/jobs' : pathname === '/freelancer/dashboard',
     },
     {
-      label: isClient ? 'Post a Job' : 'Explore Gigs',
+      label: isClient ? 'Post a Job' : 'Find Work',
       href: isClient ? '/client/jobs/new' : '/jobs',
       icon: isClient ? PlusCircle : Briefcase,
       active: isClient ? pathname === '/client/jobs/new' : pathname === '/jobs',
     },
     {
-      label: isClient ? 'Find Talent' : 'Talent Directory',
+      label: isClient ? 'Find Talent' : 'Browse Talent',
       href: '/freelancers',
       icon: Users,
       active: pathname.startsWith('/freelancers'),
     },
     {
-      label: 'Smart Contracts',
+      label: 'Contracts',
       href: '/contracts',
       icon: FileCheck2,
       active: pathname.startsWith('/contracts'),
     },
     {
-      label: 'Workrooms & Chat',
+      label: 'Messages',
       href: '/messages',
       icon: MessageSquare,
       active: pathname.startsWith('/messages'),
@@ -64,19 +64,19 @@ export const DashboardNavLinks: React.FC<DashboardNavLinksProps> = ({
 
   const financialItems = [
     {
-      label: 'Escrow Vaults',
+      label: 'Wallet & Funds',
       href: '/wallet',
       icon: Wallet,
       active: pathname.startsWith('/wallet'),
     },
     {
-      label: 'Settlement Ledger',
+      label: 'Transactions',
       href: '/transactions',
       icon: Receipt,
       active: pathname.startsWith('/transactions'),
     },
     {
-      label: 'Dispute Court',
+      label: 'Help & Resolutions',
       href: '/disputes',
       icon: ShieldAlert,
       active: pathname.startsWith('/disputes'),
@@ -85,10 +85,10 @@ export const DashboardNavLinks: React.FC<DashboardNavLinksProps> = ({
 
   const accountItems = [
     {
-      label: isClient ? 'Client Profile' : 'Verifiable Identity',
-      href: isClient ? '/client/jobs' : '/freelancer/profile/edit',
+      label: isClient ? 'Company Settings' : 'Profile Settings',
+      href: isClient ? '/client/settings' : '/freelancer/profile/edit',
       icon: UserCheck,
-      active: isClient ? false : pathname === '/freelancer/profile/edit',
+      active: isClient ? pathname === '/client/settings' : pathname === '/freelancer/profile/edit',
     },
   ];
 
@@ -96,7 +96,7 @@ export const DashboardNavLinks: React.FC<DashboardNavLinksProps> = ({
     <div className="flex flex-col gap-6 py-2 px-3 overflow-y-auto">
       {/* Primary Workspace */}
       <div className="flex flex-col gap-1">
-        <span className="px-3 text-[11px] font-mono uppercase tracking-wider text-outline">
+        <span className="px-3 text-[11px]  uppercase tracking-wider text-outline">
           Workspace
         </span>
         {mainNavItems.map((item) => {
@@ -127,8 +127,8 @@ export const DashboardNavLinks: React.FC<DashboardNavLinksProps> = ({
 
       {/* Escrow & Finance */}
       <div className="flex flex-col gap-1">
-        <span className="px-3 text-[11px] font-mono uppercase tracking-wider text-outline">
-          Escrow &amp; Settlements
+        <span className="px-3 text-[11px]  uppercase tracking-wider text-outline">
+          Payments &amp; Activity
         </span>
         {financialItems.map((item) => {
           const Icon = item.icon;
@@ -158,7 +158,7 @@ export const DashboardNavLinks: React.FC<DashboardNavLinksProps> = ({
 
       {/* Account & Identity */}
       <div className="flex flex-col gap-1">
-        <span className="px-3 text-[11px] font-mono uppercase tracking-wider text-outline">
+        <span className="px-3 text-[11px]  uppercase tracking-wider text-outline">
           Account
         </span>
         {accountItems.map((item) => {

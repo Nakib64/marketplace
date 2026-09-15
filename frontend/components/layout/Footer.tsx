@@ -43,7 +43,7 @@ export function Footer() {
           <div className="space-y-2 text-xs">
             <h4 className="font-semibold text-on-surface text-sm mb-3">Trust & Security</h4>
             <div className="p-3 rounded-xl bg-surface-container border border-outline-variant/50 space-y-1.5">
-              <span className="text-[10px] font-mono text-primary uppercase font-bold tracking-wider block">
+              <span className="text-[10px]  text-primary uppercase font-bold tracking-wider block">
                 ESCROW PROTECTION
               </span>
               <p className="text-[11px] text-on-surface-variant leading-relaxed">
@@ -54,7 +54,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-6 border-t border-outline-variant/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-outline">
+        <div className="pt-6 border-t border-outline-variant/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs  text-outline">
           <p>© {new Date().getFullYear()} Banglance. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <span className="text-primary font-semibold">SSLCommerz Secured</span>

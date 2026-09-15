@@ -6,11 +6,11 @@ interface SubmitProposalJobSnapshotProps {
 }
 
 export const SubmitProposalJobSnapshot: React.FC<SubmitProposalJobSnapshotProps> = ({ job }) => {
-  const title = job?.title || 'Arbitrum AMM Architecture Spec & Invariant Testing';
-  const clientName = job?.client?.clientProfile?.companyName || job?.client?.email?.split('@')[0] || 'Kroma Labs (DAO)';
+  const title = job?.title || 'Full-Stack Web Application Development';
+  const clientName = job?.client?.clientProfile?.companyName || job?.client?.email?.split('@')[0] || 'Kroma Labs';
   const budget = job?.budget ? Number(job.budget) : 8500;
-  const description = job?.description || 'Architect, rigorously fuzz-test, and deploy stateful AMM mathematical invariants on an Arbitrum L3 orbit testnet. Scope requires custom concentrated liquidity bounds, automated differential testing with Foundry, and a fully reproducible Slither static validation runner.';
-  const skills = job?.skills?.length ? job.skills : ['Arbitrum Nitro', 'Foundry / Forge', 'Slither Static Analysis', 'Yul Gas Stacking', 'ERC-6909'];
+  const description = job?.description || 'Build and deploy a responsive web application with clean API integrations, authentication, and automated testing.';
+  const skills = job?.skills?.length ? job.skills : ['React', 'Next.js', 'TypeScript', 'Node.js', 'PostgreSQL'];
 
   return (
     <div className="bg-surface-container-low border border-outline-variant/30 rounded-xl p-5 shadow-sm relative overflow-hidden">
@@ -29,14 +29,14 @@ export const SubmitProposalJobSnapshot: React.FC<SubmitProposalJobSnapshotProps>
               <span>•</span>
               <span>Posted recently</span>
               <span>•</span>
-              <span className="text-primary font-mono">Non-custodial Pool</span>
+              <span className="text-primary font-medium">Payment Protected</span>
             </div>
           </div>
         </div>
         <div className="flex items-baseline gap-1.5 self-start sm:self-auto bg-surface-container px-3 py-1.5 rounded-lg border border-outline-variant/20">
-          <span className="text-xs text-on-surface-variant">Target Pool:</span>
-          <span className="text-base font-bold text-on-surface font-mono">${budget.toLocaleString()}</span>
-          <span className="font-mono text-xs text-on-surface-variant">USDC</span>
+          <span className="text-xs text-on-surface-variant">Target Budget:</span>
+          <span className="text-base font-bold text-on-surface ">${budget.toLocaleString()}</span>
+          <span className=" text-xs text-on-surface-variant">USDC</span>
         </div>
       </div>
 
@@ -44,7 +44,7 @@ export const SubmitProposalJobSnapshot: React.FC<SubmitProposalJobSnapshotProps>
 
       <div className="flex flex-wrap items-center gap-1.5 mt-4 pt-3 border-t border-outline-variant/20">
         {skills.map((skill) => (
-          <span key={skill} className="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-mono text-[11px] border border-outline-variant/20">
+          <span key={skill} className="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant  text-[11px] border border-outline-variant/20">
             {skill}
           </span>
         ))}

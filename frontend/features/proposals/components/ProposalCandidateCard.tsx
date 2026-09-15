@@ -30,13 +30,12 @@ export const ProposalCandidateCard: React.FC<ProposalCandidateCardProps> = ({ pr
           <div className="min-w-0">
             <div className="flex items-center flex-wrap gap-2">
               <h3 className="text-base font-bold text-on-surface">{proposal.freelancerName}</h3>
-              <span className="font-mono text-xs text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded">
+              <span className=" text-xs text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded">
                 {proposal.freelancerHandle}
               </span>
               <span className="px-2 py-0.5 rounded bg-surface-container-high text-on-surface text-xs font-medium">
                 {proposal.freelancerRole}
               </span>
-              <span className="font-mono text-xs text-on-surface-variant">{proposal.sbtId}</span>
             </div>
             <p className="text-xs text-on-surface-variant mt-1 line-clamp-1">{proposal.bio}</p>
           </div>
@@ -45,11 +44,11 @@ export const ProposalCandidateCard: React.FC<ProposalCandidateCardProps> = ({ pr
         {/* Fit score badge with circular gauge */}
         <div className="flex items-center gap-2.5 shrink-0 self-start bg-surface-container-low border border-outline-variant/30 px-3 py-1.5 rounded-xl">
           <div className="text-right">
-            <div className="flex items-center gap-1 justify-end font-mono text-xs text-primary font-bold">
+            <div className="flex items-center gap-1 justify-end  text-xs text-primary font-bold">
               <span>{proposal.fitScore}%</span>
               <span className="material-symbols-outlined text-[15px]">verified</span>
             </div>
-            <div className="text-[11px] text-on-surface-variant">Algorithmic Fit</div>
+            <div className="text-[11px] text-on-surface-variant">Match Score</div>
           </div>
           <svg className="w-8 h-8 -rotate-90" viewBox="0 0 36 36">
             <path className="text-surface-container-high" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3.5" />
@@ -62,23 +61,23 @@ export const ProposalCandidateCard: React.FC<ProposalCandidateCardProps> = ({ pr
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-surface-container-low p-3 rounded-xl border border-outline-variant/20">
         <div>
           <div className="text-xs text-on-surface-variant">Total Bid</div>
-          <div className="text-base font-bold text-on-surface mt-0.5 font-mono">${proposal.bidAmount.toLocaleString()} USDC</div>
-          <div className="font-mono text-[11px] text-primary mt-0.5">{proposal.budgetComparison}</div>
+          <div className="text-base font-bold text-on-surface mt-0.5 ">${proposal.bidAmount.toLocaleString()} USDC</div>
+          <div className=" text-[11px] text-primary mt-0.5">{proposal.budgetComparison}</div>
         </div>
         <div>
           <div className="text-xs text-on-surface-variant">Estimated Delivery</div>
-          <div className="text-base font-bold text-on-surface mt-0.5 font-mono">{proposal.durationWeeks} Weeks</div>
-          <div className="font-mono text-[11px] text-on-surface-variant mt-0.5">{proposal.deliveryDate}</div>
+          <div className="text-base font-bold text-on-surface mt-0.5 ">{proposal.durationWeeks} Weeks</div>
+          <div className=" text-[11px] text-on-surface-variant mt-0.5">{proposal.deliveryDate}</div>
         </div>
         <div>
           <div className="text-xs text-on-surface-variant">Milestones</div>
-          <div className="text-base font-bold text-on-surface mt-0.5 font-mono">{proposal.milestoneCount} Phases</div>
-          <div className="font-mono text-[11px] text-on-surface-variant mt-0.5">100% Escrow Backed</div>
+          <div className="text-base font-bold text-on-surface mt-0.5 ">{proposal.milestoneCount} Phases</div>
+          <div className="text-xs text-primary font-medium mt-0.5">Protected</div>
         </div>
         <div>
-          <div className="text-xs text-on-surface-variant">Arbitration Clause</div>
-          <div className="text-base font-bold text-on-surface mt-0.5 font-mono">{proposal.arbitration}</div>
-          <div className="font-mono text-[11px] text-secondary mt-0.5">Court {proposal.courtId}</div>
+          <div className="text-xs text-on-surface-variant">Protection</div>
+          <div className="text-base font-bold text-on-surface mt-0.5">Guaranteed</div>
+          <div className="text-[11px] text-on-surface-variant mt-0.5">Payment Protection</div>
         </div>
       </div>
 
@@ -97,9 +96,9 @@ export const ProposalCandidateCard: React.FC<ProposalCandidateCardProps> = ({ pr
       {/* Action Strip */}
       <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-outline-variant/30">
         <div className="flex items-center gap-2">
-          <button type="button" onClick={() => toast.info(`Starting encrypted workroom with ${proposal.freelancerHandle}...`)} className="px-3.5 py-1.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-colors text-xs font-semibold flex items-center gap-1.5">
+          <button type="button" onClick={() => toast.info(`Starting conversation with ${proposal.freelancerHandle}...`)} className="px-3.5 py-1.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-colors text-xs font-semibold flex items-center gap-1.5">
             <span className="material-symbols-outlined text-[16px]">chat</span>
-            <span>Message &amp; Schedule</span>
+            <span>Message</span>
           </button>
           <button type="button" onClick={() => setShortlisted(!shortlisted)} className="px-3 py-1.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-colors text-xs font-semibold flex items-center gap-1.5">
             <span className={`material-symbols-outlined text-[16px] ${shortlisted ? 'text-primary' : 'text-on-surface-variant'}`}>bookmark</span>
@@ -108,8 +107,8 @@ export const ProposalCandidateCard: React.FC<ProposalCandidateCardProps> = ({ pr
         </div>
         <div className="flex items-center gap-2">
           <button type="button" onClick={() => onAccept(proposal.id)} className="px-4 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary transition-all text-xs font-bold flex items-center gap-1.5 shadow-md">
-            <span className="material-symbols-outlined text-[16px]">account_balance</span>
-            <span>Accept Bid &amp; Fund Escrow</span>
+            <span className="material-symbols-outlined text-[16px]">check_circle</span>
+            <span>Accept Bid &amp; Pay Safely</span>
           </button>
         </div>
       </div>

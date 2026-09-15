@@ -17,12 +17,12 @@ export function JobDetailsBottomBar({ job }: JobDetailsBottomBarProps) {
       <div className="max-w-md mx-auto flex items-center justify-between gap-4">
         <div className="flex flex-col">
           <div className="flex items-baseline gap-1">
-            <span className="text-xl font-bold text-on-surface font-mono">
+            <span className="text-xl font-bold text-on-surface ">
               {formatCurrency(budgetNum)}
             </span>
           </div>
           <span className="text-[11px] text-on-surface-variant leading-tight">
-            Fixed Price • Escrow Protected
+            Fixed Price • Payment Protected
           </span>
         </div>
 

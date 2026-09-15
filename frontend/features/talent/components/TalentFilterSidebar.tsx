@@ -63,11 +63,10 @@ export function TalentFilterSidebar({
               <button
                 key={spec}
                 onClick={() => onFilterChange({ skills: isSelected ? undefined : spec })}
-                className={`w-full text-left px-3 py-2 rounded-xl text-xs font-medium transition-colors flex items-center justify-between cursor-pointer ${
-                  isSelected
+                className={`w-full text-left px-3 py-2 rounded-xl text-xs font-medium transition-colors flex items-center justify-between cursor-pointer ${isSelected
                     ? 'bg-primary-container text-on-primary-container font-semibold'
                     : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
-                }`}
+                  }`}
               >
                 <span>{spec}</span>
               </button>
@@ -82,7 +81,7 @@ export function TalentFilterSidebar({
           <label className="text-xs font-bold text-on-surface uppercase tracking-wider">
             Hourly Rate
           </label>
-          <span className="text-xs font-mono text-primary font-semibold">
+          <span className="text-xs  text-primary font-semibold">
             {currentMin || currentMax
               ? `$${currentMin || 0} - $${currentMax || 250}+`
               : 'Any rate'}
@@ -101,11 +100,10 @@ export function TalentFilterSidebar({
                     maxRate: isMatch ? undefined : bracket.max,
                   })
                 }
-                className={`py-2 px-2.5 rounded-xl border text-xs font-mono text-center transition-colors cursor-pointer ${
-                  isMatch
+                className={`py-2 px-2.5 rounded-xl border text-xs  text-center transition-colors cursor-pointer ${isMatch
                     ? 'bg-primary-container border-primary text-on-primary-container font-bold'
                     : 'bg-surface-container-low border-outline-variant/30 text-on-surface-variant hover:border-primary/40 hover:text-on-surface'
-                }`}
+                  }`}
               >
                 {bracket.label}
               </button>
@@ -117,7 +115,7 @@ export function TalentFilterSidebar({
       {/* Trust & Verification */}
       <div className="flex flex-col gap-3 pt-3 border-t border-outline-variant/20">
         <label className="text-xs font-bold text-on-surface uppercase tracking-wider">
-          Trust &amp; Escrow
+          Trust &amp; Reliability
         </label>
         <div className="space-y-2 text-xs text-on-surface-variant">
           <label className="flex items-center gap-2 cursor-pointer hover:text-on-surface">
@@ -126,7 +124,7 @@ export function TalentFilterSidebar({
           </label>
           <label className="flex items-center gap-2 cursor-pointer hover:text-on-surface">
             <input type="checkbox" defaultChecked className="accent-primary rounded" />
-            <span>100% Escrow Completion</span>
+            <span>100% Job Completion</span>
           </label>
         </div>
       </div>

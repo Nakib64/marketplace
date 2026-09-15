@@ -32,7 +32,7 @@ export function TalentFeedList({
           <h2 className="text-base font-bold text-on-surface">
             Explore {total} Verified Freelancers
           </h2>
-          <span className="text-xs font-mono text-primary flex items-center gap-1 font-medium">
+          <span className="text-xs  text-primary flex items-center gap-1 font-medium">
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
             Live
           </span>
@@ -78,7 +78,7 @@ export function TalentFeedList({
             Previous
           </Button>
 
-          <span className="text-xs font-mono text-on-surface-variant font-medium">
+          <span className="text-xs  text-on-surface-variant font-medium">
             Page {page} of {totalPages}
           </span>
 

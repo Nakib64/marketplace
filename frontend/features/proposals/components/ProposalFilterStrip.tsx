@@ -31,7 +31,7 @@ export const ProposalFilterStrip: React.FC<ProposalFilterStripProps> = ({
           <input
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full bg-surface-container-low pl-10 pr-4 py-2 text-on-surface placeholder:text-on-surface-variant rounded-lg text-xs font-mono border border-outline-variant/30 focus:outline-none focus:border-primary transition-colors"
+            className="w-full bg-surface-container-low pl-10 pr-4 py-2 text-on-surface placeholder:text-on-surface-variant rounded-lg text-xs  border border-outline-variant/30 focus:outline-none focus:border-primary transition-colors"
             placeholder="Search candidate by ENS, address, or SBT ID..."
             type="text"
           />
@@ -48,11 +48,10 @@ export const ProposalFilterStrip: React.FC<ProposalFilterStripProps> = ({
               key={item.id}
               type="button"
               onClick={() => onSeniorityChange(item.id)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                seniority === item.id
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${seniority === item.id
                   ? 'bg-surface-container-high text-on-surface'
                   : 'text-on-surface-variant hover:text-on-surface'
-              }`}
+                }`}
             >
               {item.label}
             </button>

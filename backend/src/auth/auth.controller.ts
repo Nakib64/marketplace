@@ -115,6 +115,7 @@ export class AuthController {
   }
 
   @Public()
+  @RateLimit({ limit: 5, ttlSeconds: 60 })
   @Post('verify-email')
   @HttpCode(HttpStatus.OK)
   async verifyEmail(
@@ -128,6 +129,7 @@ export class AuthController {
   }
 
   @Public()
+  @RateLimit({ limit: 3, ttlSeconds: 60 })
   @Post('resend-verification')
   @HttpCode(HttpStatus.OK)
   async resendVerification(

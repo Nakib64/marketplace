@@ -21,12 +21,12 @@ export const ZkStateCommitmentBanner: React.FC<ZkStateCommitmentBannerProps> = (
         <div className="flex flex-col gap-1 text-xs">
           <div className="flex items-center gap-2">
             <span className="text-sm font-bold text-on-surface">Zero-Knowledge State Commitment</span>
-            <span className="px-2 py-0.5 rounded bg-surface-container-high text-primary font-mono text-[10px] font-semibold">
+            <span className="px-2 py-0.5 rounded bg-surface-container-high text-primary  text-[10px] font-semibold">
               Sepolia L1 Anchored
             </span>
           </div>
           <p className="text-on-surface-variant leading-relaxed">
-            Current Merkle Root: <span className="font-mono text-on-surface font-semibold bg-surface-container px-1.5 py-0.5 rounded select-all border border-outline-variant/20">{merkleRoot}</span>. Batch proofs guarantee cryptographic immutability across all historical accounting logs.
+            Current Merkle Root: <span className=" text-on-surface font-semibold bg-surface-container px-1.5 py-0.5 rounded select-all border border-outline-variant/20">{merkleRoot}</span>. Batch proofs guarantee cryptographic immutability across all historical accounting logs.
           </p>
         </div>
       </div>

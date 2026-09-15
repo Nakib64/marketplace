@@ -8,8 +8,8 @@ interface MilestoneReviewPageProps {
 export async function generateMetadata({ params }: MilestoneReviewPageProps): Promise<Metadata> {
   const { id } = await params;
   return {
-    title: `Review Milestone • Contract #${id} | Banglance Escrow`,
-    description: 'Cryptographic milestone review, automated fuzz test auditing, and multisig escrow release authorization.',
+    title: `Review Milestone • Contract #${id} | Banglance`,
+    description: 'Review submitted work deliverables and authorize milestone payment release.',
   };
 }
 

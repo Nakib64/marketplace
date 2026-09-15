@@ -16,7 +16,7 @@ export const ContractMilestoneTimeline: React.FC<ContractMilestoneTimelineProps>
           <span className="material-symbols-outlined text-primary text-[20px]">alt_route</span>
           <h2 className="text-base font-bold text-on-surface">Execution Milestones</h2>
         </div>
-        <span className="font-mono text-xs text-on-surface-variant bg-surface-container px-2.5 py-0.5 rounded border border-outline-variant/20">
+        <span className=" text-xs text-on-surface-variant bg-surface-container px-2.5 py-0.5 rounded border border-outline-variant/20">
           Stage {activeCount} of {totalCount} Active
         </span>
       </div>
@@ -36,16 +36,12 @@ export const ContractMilestoneTimeline: React.FC<ContractMilestoneTimelineProps>
                       <h3 className="text-xs font-bold text-on-surface">{m.title}</h3>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 self-start sm:self-center font-mono">
+                  <div className="flex items-center gap-2 self-start sm:self-center ">
                     <span className="text-xs text-on-surface font-semibold">${m.amount.toLocaleString()} {m.currency}</span>
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-primary text-[10px]">
                       <span className="material-symbols-outlined text-[12px]">check_circle</span> Paid
                     </span>
                   </div>
-                </div>
-                <div className="flex items-center justify-between text-xs text-on-surface-variant pt-1 border-t border-outline-variant/10">
-                  <span className="text-[11px]">Completed &amp; validated on-chain via smart release.</span>
-                  {m.txHash && <span className="font-mono text-[11px] text-primary">Tx: {m.txHash}</span>}
                 </div>
               </div>
             );
@@ -61,29 +57,25 @@ export const ContractMilestoneTimeline: React.FC<ContractMilestoneTimelineProps>
                     </div>
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <span className="text-primary font-mono font-bold text-[11px] uppercase tracking-wider">Milestone {m.step || idx + 1} • Active</span>
-                        <span className="bg-surface-container-high text-on-surface-variant px-1.5 py-0.5 rounded font-mono text-[10px]">{m.dueDate || 'Due soon'}</span>
+                        <span className="text-primary  font-bold text-[11px] uppercase tracking-wider">Milestone {m.step || idx + 1} • Active</span>
+                        <span className="bg-surface-container-high text-on-surface-variant px-1.5 py-0.5 rounded  text-[10px]">{m.dueDate || 'Due soon'}</span>
                       </div>
                       <h3 className="text-sm font-bold text-on-surface mt-0.5">{m.title}</h3>
                     </div>
                   </div>
-                  <div className="flex flex-col sm:items-end font-mono">
+                  <div className="flex flex-col sm:items-end ">
                     <span className="text-sm font-bold text-on-surface">${m.amount.toLocaleString()} {m.currency}</span>
-                    <span className="text-[10px] text-on-surface-variant">Locked in Smart Vault</span>
+                    <span className="text-[10px] text-on-surface-variant">Held Securely</span>
                   </div>
                 </div>
 
                 <div className="flex flex-col gap-1 bg-surface-container-low p-2.5 rounded-lg border border-outline-variant/20">
                   <div className="flex justify-between items-center text-xs">
                     <span className="text-on-surface-variant">Deliverable Readiness</span>
-                    <span className="font-mono text-primary font-bold">{m.progressPct || 75}% Complete</span>
+                    <span className=" text-primary font-bold">{m.progressPct || 75}% Complete</span>
                   </div>
                   <div className="w-full h-1.5 rounded-full bg-surface-container-high overflow-hidden">
                     <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${m.progressPct || 75}%` }} />
-                  </div>
-                  <div className="flex items-center justify-between text-[11px] text-on-surface-variant pt-0.5 font-mono">
-                    <span>{m.deliverableNotes || '3 of 4 unit test suites passing fuzz invariants'}</span>
-                    <span>Target: Invariant Quorum</span>
                   </div>
                 </div>
               </div>
@@ -102,7 +94,7 @@ export const ContractMilestoneTimeline: React.FC<ContractMilestoneTimelineProps>
                     <h3 className="text-xs font-bold text-on-surface">{m.title}</h3>
                   </div>
                 </div>
-                <span className="font-mono text-xs text-on-surface-variant">${m.amount.toLocaleString()} {m.currency}</span>
+                <span className=" text-xs text-on-surface-variant">${m.amount.toLocaleString()} {m.currency}</span>
               </div>
             </div>
           );

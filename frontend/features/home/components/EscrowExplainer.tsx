@@ -12,8 +12,8 @@ export function EscrowExplainer() {
     },
     {
       step: 'STEP 02',
-      title: 'Fund Safe Escrow',
-      description: 'Funds locked securely in escrow via SSLCommerz gateway. Freelancer sees guaranteed funds before work starts.',
+      title: 'Deposit Protected Funds',
+      description: 'Funds are held securely via SSLCommerz gateway. Freelancer sees guaranteed funds before work starts.',
       tag: '100% Funds Guaranteed',
       icon: ShieldCheck,
       highlight: true,
@@ -38,18 +38,18 @@ export function EscrowExplainer() {
     <section className="w-full bg-surface-container-lowest py-16 px-4 md:px-8 border-y border-outline-variant/30">
       <div className="max-w-[1280px] mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs font-mono text-primary uppercase tracking-widest block mb-1.5 font-semibold">
+          <span className="text-xs  text-primary uppercase tracking-widest block mb-1.5 font-semibold">
             FINANCIAL PROTECTION
           </span>
           <h2 className="text-2xl md:text-3xl font-bold text-on-surface tracking-tight mb-2">
-            How Smart Escrow Protects You
+            How Safe Payment Protects You
           </h2>
           <p className="text-xs md:text-sm text-on-surface-variant leading-relaxed">
-            Funds are held securely in escrow holding vaults. Clients only pay for approved deliverables, and freelancers are 100% guaranteed to get paid.
+            Funds are held securely until you approve deliverables. Clients only pay for approved work, and freelancers are guaranteed payment.
           </p>
         </div>
 
-        {/* 4-Step Escrow Pipeline */}
+        {/* 4-Step Pipeline */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           {steps.map((item) => {
             const Icon = item.icon;
@@ -59,24 +59,30 @@ export function EscrowExplainer() {
                 className="p-6 rounded-2xl bg-surface-container border border-outline-variant/40 shadow-xs flex flex-col justify-between"
               >
                 <div>
-                  <div className="text-xs font-mono text-primary font-bold mb-4 flex items-center justify-between">
-                    <span>{item.step}</span>
-                    <Icon className="w-5 h-5 text-outline" />
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-[11px]  font-bold text-outline">
+                      {item.step}
+                    </span>
+                    <div className="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-primary">
+                      <Icon className="w-5 h-5" />
+                    </div>
                   </div>
-                  <h3 className="text-base font-bold text-on-surface mb-2">{item.title}</h3>
+                  <h3 className="text-base font-bold text-on-surface mb-2">
+                    {item.title}
+                  </h3>
                   <p className="text-xs text-on-surface-variant leading-relaxed mb-6">
                     {item.description}
                   </p>
                 </div>
-                <div className="pt-3 border-t border-outline-variant/30 text-[11px] font-mono font-semibold text-primary">
+                <span className="inline-flex items-center text-[11px]  text-primary font-medium">
                   {item.tag}
-                </div>
+                </span>
               </div>
             );
           })}
         </div>
 
-        {/* Trust Callout Banner */}
+        {/* Highlight Guarantee Banner */}
         <div className="p-6 rounded-2xl bg-surface-container border border-outline-variant/50 shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
@@ -87,11 +93,11 @@ export function EscrowExplainer() {
                 Zero Chargeback Fraud &amp; Double-Blind Review System
               </h4>
               <p className="text-xs text-on-surface-variant mt-0.5 leading-relaxed">
-                Client payments are securely locked in escrow. Reviews remain strictly concealed until both parties submit, preventing retaliatory ratings.
+                Client payments are securely protected until approval. Reviews remain strictly concealed until both parties submit, preventing retaliatory ratings.
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2 shrink-0 font-mono text-xs">
+          <div className="flex items-center gap-2 shrink-0  text-xs">
             <span className="px-3 py-1.5 rounded-full bg-surface-container-high border border-outline-variant/40 text-primary">
               SSLCommerz Secure
             </span>

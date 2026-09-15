@@ -29,8 +29,8 @@ export const VaultFilterStrip: React.FC<VaultFilterStripProps> = ({
           type="text"
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="Search vault by 0x Address, Contributor ENS, or RFP ID..."
-          className="w-full pl-9 pr-3 py-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface placeholder:text-on-surface-variant/60 text-xs font-mono focus:outline-none focus:border-primary"
+          placeholder="Search projects, freelancers, or contracts..."
+          className="w-full pl-9 pr-3 py-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface placeholder:text-on-surface-variant/60 text-xs focus:outline-none focus:border-primary"
         />
       </div>
 
@@ -41,43 +41,44 @@ export const VaultFilterStrip: React.FC<VaultFilterStripProps> = ({
           onClick={() => onStatusChange('ALL')}
           className={`px-3 py-1 rounded-full font-medium transition-all ${statusFilter === 'ALL' ? 'bg-primary/20 text-primary border border-primary/40' : 'bg-surface-container text-on-surface-variant hover:text-on-surface'}`}
         >
-          All Vaults
+          All Projects
         </button>
         <button
           type="button"
           onClick={() => onStatusChange('PENDING_RELEASE')}
           className={`px-3 py-1 rounded-full font-medium transition-all ${statusFilter === 'PENDING_RELEASE' ? 'bg-primary/20 text-primary border border-primary/40' : 'bg-surface-container text-on-surface-variant hover:text-on-surface'}`}
         >
-          Pending Release
+          Pending Review
         </button>
         <button
           type="button"
           onClick={() => onStatusChange('ACTIVE')}
           className={`px-3 py-1 rounded-full font-medium transition-all ${statusFilter === 'ACTIVE' ? 'bg-primary/20 text-primary border border-primary/40' : 'bg-surface-container text-on-surface-variant hover:text-on-surface'}`}
         >
-          Active Sprints
+          Active
         </button>
         <button
           type="button"
           onClick={() => onStatusChange('SETTLED')}
           className={`px-3 py-1 rounded-full font-medium transition-all ${statusFilter === 'SETTLED' ? 'bg-primary/20 text-primary border border-primary/40' : 'bg-surface-container text-on-surface-variant hover:text-on-surface'}`}
         >
-          Settled
+          Completed
         </button>
 
         <div className="h-4 w-px bg-outline-variant/40 mx-1 hidden sm:block" />
 
-        {/* Chain selector */}
+        {/* Currency selector */}
         <select
           value={selectedChain}
           onChange={(e) => onChainChange(e.target.value)}
           className="bg-surface-container text-on-surface px-2.5 py-1 rounded-lg border border-outline-variant/30 text-xs focus:outline-none"
         >
-          <option value="Arbitrum One">Arbitrum One</option>
-          <option value="Optimism">Optimism Mainnet</option>
-          <option value="Ethereum">Ethereum L1</option>
+          <option value="Arbitrum One">All Currencies</option>
+          <option value="USDC">USDC</option>
+          <option value="BDT">BDT (৳)</option>
         </select>
       </div>
     </div>
   );
 };
+

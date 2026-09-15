@@ -65,7 +65,7 @@ export function CategoryGrid() {
       <div className="max-w-[1280px] mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
           <div>
-            <span className="text-xs font-mono text-primary uppercase tracking-widest block mb-1.5 font-semibold">
+            <span className="text-xs  text-primary uppercase tracking-widest block mb-1.5 font-semibold">
               ECOSYSTEM DOMAINS
             </span>
             <h2 className="text-2xl md:text-3xl font-bold text-on-surface tracking-tight">
@@ -103,11 +103,11 @@ export function CategoryGrid() {
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between text-xs py-2 bg-surface-container-lowest/70 rounded-lg px-3 mb-3 border border-outline-variant/30 font-mono">
+                  <div className="flex items-center justify-between text-xs py-2 bg-surface-container-lowest/70 rounded-lg px-3 mb-3 border border-outline-variant/30 ">
                     <span className="text-primary font-semibold">{cat.jobs}</span>
                     <span className="text-on-surface-variant">{cat.rates}</span>
                   </div>
-                  <div className="flex flex-wrap gap-1.5 text-[11px] font-mono text-outline">
+                  <div className="flex flex-wrap gap-1.5 text-[11px]  text-outline">
                     {cat.tags.map((tag) => (
                       <span key={tag} className="px-2 py-0.5 rounded bg-surface-container-highest">
                         {tag}

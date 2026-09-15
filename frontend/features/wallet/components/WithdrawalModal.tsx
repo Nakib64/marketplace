@@ -80,7 +80,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
 
         <div className="p-3 rounded-xl bg-surface-container flex items-center justify-between border border-outline-variant/20">
           <span className="text-on-surface-variant font-medium">Available Balance:</span>
-          <span className="font-mono text-base font-bold text-primary">
+          <span className=" text-base font-bold text-primary">
             ৳{walletBalance.toLocaleString()} BDT
           </span>
         </div>
@@ -94,22 +94,20 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               <button
                 type="button"
                 onClick={() => setMethod('BKASH')}
-                className={`py-2 px-3 rounded-lg font-bold text-xs border transition-all flex items-center justify-center gap-2 ${
-                  method === 'BKASH'
+                className={`py-2 px-3 rounded-lg font-bold text-xs border transition-all flex items-center justify-center gap-2 ${method === 'BKASH'
                     ? 'bg-pink-600/10 border-pink-500 text-pink-500 shadow-sm'
                     : 'bg-surface-container border-outline-variant/20 text-on-surface-variant'
-                }`}
+                  }`}
               >
                 <span>bKash</span>
               </button>
               <button
                 type="button"
                 onClick={() => setMethod('NAGAD')}
-                className={`py-2 px-3 rounded-lg font-bold text-xs border transition-all flex items-center justify-center gap-2 ${
-                  method === 'NAGAD'
+                className={`py-2 px-3 rounded-lg font-bold text-xs border transition-all flex items-center justify-center gap-2 ${method === 'NAGAD'
                     ? 'bg-orange-600/10 border-orange-500 text-orange-500 shadow-sm'
                     : 'bg-surface-container border-outline-variant/20 text-on-surface-variant'
-                }`}
+                  }`}
               >
                 <span>Nagad</span>
               </button>
@@ -127,7 +125,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               value={accountNumber}
               onChange={(e) => setAccountNumber(e.target.value.replace(/\D/g, ''))}
               placeholder="017XXXXXXXX"
-              className="bg-surface-container border border-outline-variant/30 p-2.5 rounded-lg font-mono text-on-surface focus:outline-none focus:border-primary"
+              className="bg-surface-container border border-outline-variant/30 p-2.5 rounded-lg  text-on-surface focus:outline-none focus:border-primary"
             />
           </div>
 
@@ -142,7 +140,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               max={walletBalance}
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="bg-surface-container border border-outline-variant/30 p-2.5 rounded-lg font-mono text-on-surface focus:outline-none focus:border-primary"
+              className="bg-surface-container border border-outline-variant/30 p-2.5 rounded-lg  text-on-surface focus:outline-none focus:border-primary"
             />
           </div>
 

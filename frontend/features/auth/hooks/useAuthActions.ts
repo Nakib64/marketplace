@@ -49,7 +49,14 @@ export function useAuthActions() {
     onSuccess: (res) => {
       updateUser({ isEmailVerified: true });
       toast.success(res.message || 'Email verified successfully!');
-      router.push('/');
+      const currentRole = useAuthStore.getState().user?.role;
+      if (currentRole === 'CLIENT') {
+        router.push('/client/jobs');
+      } else if (currentRole === 'FREELANCER') {
+        router.push('/jobs');
+      } else {
+        router.push('/');
+      }
     },
     onError: (error: AxiosError<{ message?: string | string[] }>) => {
       const msg = error.response?.data?.message;

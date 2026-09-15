@@ -53,7 +53,7 @@ export function JobFeedList({
   return (
     <div className="flex-1 flex flex-col gap-4">
       {/* Feed Control Header */}
-      <div className="flex items-center justify-between bg-surface-container rounded-xl px-5 py-3 border border-outline-variant/40 text-xs font-mono">
+      <div className="flex items-center justify-between bg-surface-container rounded-xl px-5 py-3 border border-outline-variant/40 text-xs ">
         <div className="flex items-center gap-2">
           <span className="font-bold text-on-surface text-sm">{total} Projects Found</span>
           <span className="text-outline">•</span>
@@ -81,7 +81,7 @@ export function JobFeedList({
             Previous
           </Button>
 
-          <span className="px-4 text-xs font-mono text-on-surface-variant">
+          <span className="px-4 text-xs  text-on-surface-variant">
             {page} / {totalPages}
           </span>
 

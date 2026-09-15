@@ -79,7 +79,7 @@ export function RegisterForm({ selectedRole }: RegisterFormProps) {
           <label className="text-xs font-semibold text-on-surface" htmlFor="reg-password">
             Account Password
           </label>
-          <span className="text-[10px] font-mono text-outline">Min. 8 characters</span>
+          <span className="text-[10px]  text-outline">Min. 8 characters</span>
         </div>
         <div className="relative flex items-center">
           <Lock className="absolute left-3 w-4 h-4 text-outline pointer-events-none" />
@@ -105,9 +105,8 @@ export function RegisterForm({ selectedRole }: RegisterFormProps) {
           {[1, 2, 3, 4].map((bar) => (
             <div
               key={bar}
-              className={`h-1 rounded-full transition-all ${
-                strength >= bar ? 'bg-primary' : 'bg-surface-container-highest'
-              }`}
+              className={`h-1 rounded-full transition-all ${strength >= bar ? 'bg-primary' : 'bg-surface-container-highest'
+                }`}
             />
           ))}
         </div>
@@ -122,7 +121,7 @@ export function RegisterForm({ selectedRole }: RegisterFormProps) {
             {...register('terms')}
           />
           <span className="text-xs text-on-surface-variant leading-relaxed">
-            I agree to the platform terms, escrow protection guarantee, and double-blind review system.
+            I agree to the platform terms of service, payment protection policy, and privacy policy.
           </span>
         </label>
         {errors.terms && <p className="text-xs text-error mt-1">{errors.terms.message}</p>}

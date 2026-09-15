@@ -10,21 +10,21 @@ interface PostJobSkillsStepProps {
 }
 
 const SUGGESTED_SKILLS = [
-  'Rust',
-  'Solidity',
-  'Foundry',
-  'Arbitrum',
-  'Uniswap v3',
-  'Yul',
-  'Slither',
-  'TypeScript',
+  'React',
   'Next.js',
+  'TypeScript',
+  'Node.js',
+  'Python',
+  'PostgreSQL',
+  'Tailwind CSS',
+  'Figma',
+  'REST APIs',
 ];
 
 const SENIORITY_LEVELS = [
-  { level: 'Junior / Entry', range: '$2k - $5k', desc: 'Unit tests, scripts, bug fixes' },
-  { level: 'Mid-Level', range: '$5k - $12k', desc: 'Full module implementation & integrations' },
-  { level: 'Senior Specialist', range: '$12k - $35k+', desc: 'Complex architecture & formal verification' },
+  { level: 'Entry Level', range: '$500 - $2,000', desc: 'Basic features, bug fixes, scripts' },
+  { level: 'Intermediate', range: '$2,000 - $6,000', desc: 'Full features, API integrations, testing' },
+  { level: 'Expert / Senior', range: '$6,000 - $20,000+', desc: 'Complex systems, architecture, leadership' },
 ];
 
 export function PostJobSkillsStep({ form }: PostJobSkillsStepProps) {
@@ -56,7 +56,7 @@ export function PostJobSkillsStep({ form }: PostJobSkillsStepProps) {
           <span className="w-2 h-2 rounded-full bg-primary" />
           <h2 className="text-lg font-bold text-on-surface">2. Skills &amp; Seniority</h2>
         </div>
-        <span className="text-xs font-mono text-on-surface-variant">Step 02 / 03</span>
+        <span className="text-xs  text-on-surface-variant">Step 02 / 03</span>
       </div>
 
       {/* Required Skills Chips */}
@@ -68,7 +68,7 @@ export function PostJobSkillsStep({ form }: PostJobSkillsStepProps) {
           {currentSkills.map((s) => (
             <span
               key={s}
-              className="px-3 py-1 rounded-lg bg-surface-container-high text-on-surface font-mono text-xs flex items-center gap-1.5 border border-outline-variant/30"
+              className="px-3 py-1 rounded-lg bg-surface-container-high text-on-surface  text-xs flex items-center gap-1.5 border border-outline-variant/30"
             >
               {s}
               <button
@@ -111,7 +111,7 @@ export function PostJobSkillsStep({ form }: PostJobSkillsStepProps) {
 
         {/* Suggested Quick Tags */}
         <div className="flex flex-wrap items-center gap-1.5 pt-1">
-          <span className="text-[11px] font-mono text-on-surface-variant flex items-center gap-1 mr-1">
+          <span className="text-[11px]  text-on-surface-variant flex items-center gap-1 mr-1">
             <Sparkles className="w-3 h-3 text-secondary" /> Suggestions:
           </span>
           {SUGGESTED_SKILLS.filter((s) => !currentSkills.includes(s)).slice(0, 6).map((s) => (
@@ -119,7 +119,7 @@ export function PostJobSkillsStep({ form }: PostJobSkillsStepProps) {
               key={s}
               type="button"
               onClick={() => handleAddSkill(s)}
-              className="px-2.5 py-1 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface text-xs font-mono border border-outline-variant/20 transition-colors cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface text-xs  border border-outline-variant/20 transition-colors cursor-pointer"
             >
               + {s}
             </button>
@@ -140,14 +140,13 @@ export function PostJobSkillsStep({ form }: PostJobSkillsStepProps) {
                 key={item.level}
                 type="button"
                 onClick={() => setSelectedSeniority(item.level)}
-                className={`p-4 rounded-xl text-left flex flex-col gap-1 transition-all cursor-pointer ${
-                  isSelected
+                className={`p-4 rounded-xl text-left flex flex-col gap-1 transition-all cursor-pointer ${isSelected
                     ? 'bg-surface-container-high border-2 border-primary shadow-sm'
                     : 'bg-surface-container-low hover:bg-surface-container-high/60 border border-outline-variant/30'
-                }`}
+                  }`}
               >
                 <span className="text-xs font-bold text-on-surface">{item.level}</span>
-                <span className="text-xs font-mono text-primary font-semibold">{item.range}</span>
+                <span className="text-xs  text-primary font-semibold">{item.range}</span>
                 <p className="text-[11px] text-on-surface-variant mt-1 leading-normal">{item.desc}</p>
               </button>
             );

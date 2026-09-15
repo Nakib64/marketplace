@@ -43,7 +43,7 @@ export const DashboardTopHeader: React.FC<DashboardTopHeaderProps> = ({ onOpenMo
         >
           <Search className="w-4 h-4 text-primary" />
           <span className="flex-1 text-outline">Search marketplace jobs, skills, builders...</span>
-          <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high text-outline text-[10px] font-mono">
+          <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high text-outline text-[10px] ">
             ⌘K
           </kbd>
         </Link>
@@ -51,12 +51,6 @@ export const DashboardTopHeader: React.FC<DashboardTopHeaderProps> = ({ onOpenMo
 
       {/* Right Quick Actions */}
       <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-        {/* Network / Protocol Badge */}
-        <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/30 text-[11px] font-mono text-on-surface-variant">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-          <span>Arbitrum Escrow Active</span>
-        </div>
-
         {/* Primary CTA */}
         {isClient ? (
           <Link
@@ -72,14 +66,14 @@ export const DashboardTopHeader: React.FC<DashboardTopHeaderProps> = ({ onOpenMo
             className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface text-xs font-medium transition-colors"
           >
             <Briefcase className="w-3.5 h-3.5 text-primary" />
-            <span>Find Gigs</span>
+            <span>Find Work</span>
           </Link>
         )}
 
         {/* Messages */}
         <Link
           href="/messages"
-          title="Workrooms"
+          title="Messages"
           className="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors relative"
         >
           <MessageSquare className="w-4 h-4 text-primary" />
@@ -89,11 +83,11 @@ export const DashboardTopHeader: React.FC<DashboardTopHeaderProps> = ({ onOpenMo
         {/* Wallet */}
         <Link
           href="/wallet"
-          title="Escrow Vaults"
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-surface-container border border-outline-variant/30 hover:border-primary/40 text-xs font-mono text-on-surface transition-colors"
+          title="Wallet"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-surface-container border border-outline-variant/30 hover:border-primary/40 text-xs  text-on-surface transition-colors"
         >
           <Wallet className="w-3.5 h-3.5 text-primary" />
-          <span className="hidden sm:inline text-[11px]">Vaults</span>
+          <span className="hidden sm:inline text-[11px]">Wallet</span>
         </Link>
       </div>
     </header>

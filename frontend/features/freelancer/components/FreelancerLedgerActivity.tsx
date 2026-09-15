@@ -5,23 +5,23 @@ const EVENTS = [
     id: 'evt-1',
     title: 'Milestone 1 Approved',
     amount: '+$4,250',
-    subtitle: 'Kroma Labs • Tx: 0x9f...39ac',
+    subtitle: 'Acme Corp • Milestone payment released',
     icon: 'check_circle',
     isPositive: true,
   },
   {
     id: 'evt-2',
-    title: 'Escrow Funded',
+    title: 'Project Funded',
     amount: '$14,200',
-    subtitle: 'Stader Labs (Vault Contract)',
+    subtitle: 'Stader Group • Funds secured in project',
     icon: 'lock',
     isPositive: false,
   },
   {
     id: 'evt-3',
-    title: 'SBT Attestation Minted',
-    amount: 'On-Chain',
-    subtitle: 'CertiK Verified Smart Contract Auditor',
+    title: 'Talent Badge Awarded',
+    amount: 'Verified',
+    subtitle: 'Full Stack & Security Assessment',
     icon: 'workspace_premium',
     isPositive: true,
   },
@@ -31,8 +31,8 @@ export const FreelancerLedgerActivity: React.FC = () => {
   return (
     <div className="bg-surface-container-low border border-outline-variant/30 rounded-xl p-5 shadow-sm flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <span className="text-base font-bold text-on-surface">Ledger Activity</span>
-        <span className="font-mono text-[11px] text-on-surface-variant">Last 24h</span>
+        <span className="text-base font-bold text-on-surface">Recent Activity</span>
+        <span className="text-xs text-on-surface-variant">Last 24h</span>
       </div>
 
       <div className="flex flex-col gap-3">
@@ -46,7 +46,7 @@ export const FreelancerLedgerActivity: React.FC = () => {
             <div className="flex flex-col flex-1 min-w-0">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-on-surface truncate">{evt.title}</span>
-                <span className={`font-mono text-xs font-bold shrink-0 ${evt.isPositive ? 'text-primary' : 'text-on-surface-variant'}`}>
+                <span className={` text-xs font-bold shrink-0 ${evt.isPositive ? 'text-primary' : 'text-on-surface-variant'}`}>
                   {evt.amount}
                 </span>
               </div>
@@ -58,3 +58,4 @@ export const FreelancerLedgerActivity: React.FC = () => {
     </div>
   );
 };
+

@@ -21,7 +21,7 @@ export const WorkroomTopNav: React.FC<WorkroomTopNavProps> = ({ activeTitle }) =
         </span>
       </nav>
 
-      <div className="hidden sm:flex items-center gap-3 font-mono text-[11px]">
+      <div className="hidden sm:flex items-center gap-3  text-[11px]">
         <div className="flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant border border-outline-variant/20">
           <span className="text-primary font-semibold">XMTP:</span> EIP-1271 Keybound
         </div>

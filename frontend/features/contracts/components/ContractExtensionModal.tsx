@@ -43,7 +43,7 @@ export const ContractExtensionModal: React.FC<ContractExtensionModalProps> = ({
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 text-xs">
           <p className="text-on-surface-variant leading-relaxed">
-            Submit an on-chain extension proposal to the hirer. Upon multisig approval, the milestone deadline will update automatically.
+            Request additional time from the client. When approved, the milestone deadline will update automatically.
           </p>
 
           <div className="flex flex-col gap-1.5">
@@ -54,11 +54,10 @@ export const ContractExtensionModal: React.FC<ContractExtensionModalProps> = ({
                   key={d}
                   type="button"
                   onClick={() => setDays(d)}
-                  className={`py-2 rounded-lg font-mono font-semibold border transition-all ${
-                    days === d
+                  className={`py-2 rounded-lg  font-semibold border transition-all ${days === d
                       ? 'bg-primary text-on-primary border-primary shadow-sm'
                       : 'bg-surface-container text-on-surface border-outline-variant/30 hover:bg-surface-container-high'
-                  }`}
+                    }`}
                 >
                   +{d} Days
                 </button>
@@ -73,8 +72,8 @@ export const ContractExtensionModal: React.FC<ContractExtensionModalProps> = ({
               rows={3}
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              placeholder="Detail reasons such as edge-case invariant testing or extra audits..."
-              className="w-full bg-surface-container border border-outline-variant/30 p-2.5 rounded-lg font-mono text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary"
+              placeholder="Explain why additional time is needed for this milestone..."
+              className="w-full bg-surface-container border border-outline-variant/30 p-2.5 rounded-lg text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary"
             />
           </div>
 

@@ -37,7 +37,7 @@ export function JobScopeCard({ job }: JobScopeCardProps) {
             {job.skills.map((skill) => (
               <span
                 key={skill}
-                className="px-3 py-1.5 rounded-lg bg-surface-container-high text-on-surface text-xs font-mono border border-outline-variant/30 hover:border-primary/50 transition-colors"
+                className="px-3 py-1.5 rounded-lg bg-surface-container-high text-on-surface text-xs  border border-outline-variant/30 hover:border-primary/50 transition-colors"
               >
                 {skill}
               </span>
@@ -63,7 +63,7 @@ export function JobScopeCard({ job }: JobScopeCardProps) {
           </li>
           <li className="flex items-start gap-2.5">
             <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-            <span>All code repositories, digital assets, and IP transfer upon escrow milestone release.</span>
+            <span>All code repositories, digital assets, and IP transfer upon milestone approval.</span>
           </li>
         </ul>
       </div>

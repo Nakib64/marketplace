@@ -64,7 +64,7 @@ export const SubmitEvidenceModal: React.FC<SubmitEvidenceModalProps> = ({
               value={ipfsCid}
               onChange={(e) => setIpfsCid(e.target.value)}
               placeholder="bafybeic..."
-              className="bg-surface-container-low border border-outline-variant/30 p-2.5 rounded-lg font-mono text-on-surface focus:outline-none focus:border-primary"
+              className="bg-surface-container-low border border-outline-variant/30 p-2.5 rounded-lg  text-on-surface focus:outline-none focus:border-primary"
             />
           </div>
 

@@ -12,7 +12,7 @@ export function RegisterView() {
   return (
     <div className="w-full max-w-2xl relative z-10 flex flex-col items-center">
       {/* Stage Badge */}
-      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant/40 text-[11px] font-mono text-on-surface-variant mb-4">
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant/40 text-[11px]  text-on-surface-variant mb-4">
         <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
         <span>STAGE 01 // ROLE PROVISIONING</span>
       </div>
@@ -32,7 +32,7 @@ export function RegisterView() {
 
       {/* Form Container */}
       <div className="w-full bg-surface-container rounded-2xl border border-outline-variant/50 p-6 md:p-8 shadow-xl">
-        <h2 className="text-sm font-bold text-on-surface uppercase tracking-wider mb-4 font-mono">
+        <h2 className="text-sm font-bold text-on-surface uppercase tracking-wider mb-4 ">
           Account Credentials
         </h2>
         <RegisterForm selectedRole={selectedRole} />

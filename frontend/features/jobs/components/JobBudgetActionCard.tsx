@@ -25,19 +25,19 @@ export function JobBudgetActionCard({
         <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
           Fixed Price Budget
         </span>
-        <span className="px-2 py-0.5 rounded bg-surface-container-high font-mono text-xs text-secondary font-medium">
-          Verified Escrow
+        <span className="px-2 py-0.5 rounded bg-surface-container-high text-xs text-primary font-medium">
+          Payment Protected
         </span>
       </div>
 
       {/* Budget Display */}
       <div className="mt-3 mb-1">
-        <span className="text-3xl sm:text-4xl font-bold text-on-surface font-mono tracking-tight">
+        <span className="text-3xl sm:text-4xl font-bold text-on-surface  tracking-tight">
           {formatCurrency(budgetNum)}
         </span>
       </div>
       <p className="text-xs text-on-surface-variant mb-6">
-        Protected by Banglance Escrow. Released upon client milestone approval.
+        Protected by Banglance. Released upon client milestone approval.
       </p>
 
       {/* Action Buttons */}
@@ -79,7 +79,7 @@ export function JobBudgetActionCard({
           <Zap className="w-3.5 h-3.5 text-primary" />
           Requires 2 Bidding Credits
         </span>
-        <span className="font-mono text-on-surface font-semibold">Available</span>
+        <span className=" text-on-surface font-semibold">Available</span>
       </div>
     </section>
   );

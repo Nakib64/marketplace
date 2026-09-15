@@ -98,7 +98,7 @@ export const DoubleBlindReviewModal: React.FC<DoubleBlindReviewModalProps> = ({
                 );
               })}
             </div>
-            <span className="text-xs font-mono font-bold text-on-surface mt-0.5">
+            <span className="text-xs  font-bold text-on-surface mt-0.5">
               {rating === 5 ? '5.0 — Outstanding Work' : `${rating}.0 / 5.0`}
             </span>
           </div>
@@ -113,7 +113,7 @@ export const DoubleBlindReviewModal: React.FC<DoubleBlindReviewModalProps> = ({
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
               placeholder="Detail communication speed, quality of code/specifications, deliverable precision, and professional collaboration..."
-              className="w-full bg-surface-container border border-outline-variant/30 p-3 rounded-lg font-mono text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary resize-y"
+              className="w-full bg-surface-container border border-outline-variant/30 p-3 rounded-lg  text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary resize-y"
             />
           </div>
 

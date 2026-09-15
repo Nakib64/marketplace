@@ -10,9 +10,9 @@ export function Testimonials() {
       role: 'Co-Founder, Synthetix Hub',
       badge: 'Verified Client',
       quote:
-        'Hired two NestJS and React developers for our platform within 48 hours. Escrow locking gave both parties complete peace of mind, and the transparent fee is unbeatable compared to legacy platforms.',
+        'Hired two NestJS and React developers for our platform within 48 hours. Payment protection gave both parties complete peace of mind, and the transparent fee is unbeatable compared to legacy platforms.',
       stat: '$210K',
-      statLabel: 'Spent in Escrow',
+      statLabel: 'Paid Securely',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80',
     },
     {
@@ -30,7 +30,7 @@ export function Testimonials() {
       role: 'Lead Project Director, Apex Tech',
       badge: 'Enterprise Client',
       quote:
-        'Our engineering team manages multiple ongoing contractor workstreams solely through Banglance milestone escrow contracts. Zero payment disputes, automatic delivery tracking, and honest feedback ratings.',
+        'Our engineering team manages multiple ongoing contractor workstreams solely through Banglance milestone contracts. Zero payment disputes, automatic delivery tracking, and honest feedback ratings.',
       stat: '$380K',
       statLabel: 'Total Volume',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&h=120&q=80',
@@ -44,7 +44,7 @@ export function Testimonials() {
 
       {/* Header */}
       <div className="text-center max-w-xl mx-auto mb-10">
-        <span className="text-xs font-mono text-primary uppercase tracking-widest block mb-1.5 font-semibold">
+        <span className="text-xs  text-primary uppercase tracking-widest block mb-1.5 font-semibold">
           PEER ENDORSEMENTS
         </span>
         <h2 className="text-2xl md:text-3xl font-bold text-on-surface tracking-tight">
@@ -66,7 +66,7 @@ export function Testimonials() {
                     <Star key={i} className="w-4 h-4 fill-primary text-primary" />
                   ))}
                 </div>
-                <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold">
+                <span className="text-[11px]  px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold">
                   {r.badge}
                 </span>
               </div>
@@ -90,7 +90,7 @@ export function Testimonials() {
                   <p className="text-[11px] text-on-surface-variant truncate">{r.role}</p>
                 </div>
               </div>
-              <div className="text-right shrink-0 font-mono">
+              <div className="text-right shrink-0 ">
                 <span className="text-xs font-bold text-primary block">{r.stat}</span>
                 <span className="text-[10px] text-outline">{r.statLabel}</span>
               </div>

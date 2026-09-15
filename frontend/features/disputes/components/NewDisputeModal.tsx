@@ -51,7 +51,7 @@ export const NewDisputeModal: React.FC<NewDisputeModalProps> = ({
               required
               value={contractAddress}
               onChange={(e) => setContractAddress(e.target.value)}
-              className="bg-surface-container-low border border-outline-variant/30 p-2.5 rounded-lg font-mono text-on-surface focus:outline-none focus:border-primary"
+              className="bg-surface-container-low border border-outline-variant/30 p-2.5 rounded-lg  text-on-surface focus:outline-none focus:border-primary"
             />
           </div>
 
@@ -67,7 +67,7 @@ export const NewDisputeModal: React.FC<NewDisputeModalProps> = ({
             />
           </div>
 
-          <div className="p-2.5 rounded bg-surface-container-low border border-outline-variant/20 font-mono text-[11px] text-on-surface-variant">
+          <div className="p-2.5 rounded bg-surface-container-low border border-outline-variant/20  text-[11px] text-on-surface-variant">
             <span>Arbitration Surcharge: </span>
             <strong className="text-primary font-bold">50.00 USDC</strong> (Refunded to winning party)
           </div>

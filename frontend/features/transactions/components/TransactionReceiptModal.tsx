@@ -17,7 +17,7 @@ export const TransactionReceiptModal: React.FC<TransactionReceiptModalProps> = (
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="bg-surface-container max-w-lg w-full rounded-xl p-5 border border-outline-variant/40 shadow-2xl flex flex-col gap-4 text-xs font-mono">
+      <div className="bg-surface-container max-w-lg w-full rounded-xl p-5 border border-outline-variant/40 shadow-2xl flex flex-col gap-4 text-xs ">
         <div className="flex items-center justify-between pb-2 border-b border-outline-variant/20">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-primary text-[20px]">receipt_long</span>

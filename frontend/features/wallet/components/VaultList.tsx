@@ -11,7 +11,7 @@ export const VaultList: React.FC<VaultListProps> = ({ vaults }) => {
     return (
       <div className="p-8 rounded-xl bg-surface-container-low border border-outline-variant/30 text-center flex flex-col items-center justify-center gap-2">
         <span className="material-symbols-outlined text-3xl text-on-surface-variant">account_balance_wallet</span>
-        <h3 className="text-sm font-bold text-on-surface">No Escrow Vaults Found</h3>
+        <h3 className="text-sm font-bold text-on-surface">No Protected Projects Found</h3>
         <p className="text-xs text-on-surface-variant">Try adjusting your filter or search query.</p>
       </div>
     );

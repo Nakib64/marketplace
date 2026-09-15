@@ -16,14 +16,14 @@ export function TalentSidebarOffer({ profile }: TalentSidebarOfferProps) {
     <section className="bg-surface-container rounded-2xl p-6 sm:p-7 border border-outline-variant/30 shadow-sm flex flex-col gap-5">
       {/* Rate Header */}
       <div className="flex items-baseline justify-between">
-        <span className="text-xs font-mono text-on-surface-variant uppercase tracking-wider">
+        <span className="text-xs  text-on-surface-variant uppercase tracking-wider">
           Hourly Rate
         </span>
         <div className="flex items-baseline gap-1">
-          <span className="text-3xl font-bold text-on-surface font-mono tracking-tight">
+          <span className="text-3xl font-bold text-on-surface  tracking-tight">
             {formatCurrency(hourlyRate)}
           </span>
-          <span className="text-xs font-mono text-on-surface-variant">/ hr</span>
+          <span className="text-xs  text-on-surface-variant">/ hr</span>
         </div>
       </div>
 
@@ -46,11 +46,11 @@ export function TalentSidebarOffer({ profile }: TalentSidebarOfferProps) {
         </div>
       </div>
 
-      {/* Escrow Assurance Banner */}
+      {/* Payment Protection Banner */}
       <div className="bg-surface-container-low rounded-xl p-3.5 border border-outline-variant/20 flex items-start gap-2.5">
         <ShieldCheck className="w-4 h-4 text-primary shrink-0 mt-0.5" />
         <p className="text-xs text-on-surface-variant leading-relaxed">
-          <strong className="text-on-surface font-semibold">Banglance Escrow:</strong> Funds are locked securely before work starts. Released only upon milestone signoff.
+          <strong className="text-on-surface font-semibold">Payment Protection:</strong> Funds are held securely before work starts and released only when you approve milestones.
         </p>
       </div>
 

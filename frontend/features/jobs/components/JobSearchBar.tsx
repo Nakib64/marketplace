@@ -63,12 +63,12 @@ export function JobSearchBar({ currentParams, onSearch }: JobSearchBarProps) {
       </form>
 
       {/* Quick Filters & Sort Bar */}
-      <div className="flex items-center justify-between gap-3 text-xs font-mono">
+      <div className="flex items-center justify-between gap-3 text-xs ">
         <div className="flex items-center gap-2 overflow-x-auto pb-1">
           <span className="text-outline uppercase text-[11px] font-semibold pl-1">QUICK:</span>
           <span className="px-3 py-1 rounded-full bg-surface-container-high text-primary font-semibold border border-primary/20 flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-            100% Escrow Funded
+            Payment Protected
           </span>
           <span className="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant border border-outline-variant/30">
             Payment Verified

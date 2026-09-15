@@ -13,9 +13,9 @@ export const WorkroomMessageComposer: React.FC<WorkroomMessageComposerProps> = (
   const [text, setText] = useState('');
   const [isSending, setIsSending] = useState(false);
 
-  const handleSend = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!text.trim()) return;
+  const handleSend = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!text.trim() || isSending) return;
     setIsSending(true);
     try {
       await onSendMessage(text);
@@ -25,58 +25,45 @@ export const WorkroomMessageComposer: React.FC<WorkroomMessageComposerProps> = (
     }
   };
 
-  return (
-    <div className="p-3.5 bg-surface-container-lowest border-t border-outline-variant/30 flex flex-col gap-2 shrink-0">
-      {/* Markdown & IPFS Actions Bar */}
-      <div className="flex items-center justify-between text-on-surface-variant text-xs">
-        <div className="flex items-center gap-1">
-          <button type="button" onClick={() => setText(prev => prev + '**bold**')} className="p-1 rounded hover:bg-surface-container hover:text-on-surface" title="Bold">
-            <span className="material-symbols-outlined text-[16px]">format_bold</span>
-          </button>
-          <button type="button" onClick={() => setText(prev => prev + '`code`')} className="p-1 rounded hover:bg-surface-container hover:text-on-surface" title="Code Block">
-            <span className="material-symbols-outlined text-[16px]">code</span>
-          </button>
-          <div className="w-[1px] h-3.5 bg-surface-container-high mx-1" />
-          <button type="button" onClick={() => toast.info('IPFS pinning pipeline ready for deliverable upload')} className="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center gap-1 font-mono text-[11px]">
-            <span className="material-symbols-outlined text-[14px] text-primary">cloud_upload</span>
-            <span>Pin IPFS</span>
-          </button>
-          <button type="button" onClick={() => toast.info('Attach verified GitHub PR payload to workroom')} className="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center gap-1 font-mono text-[11px]">
-            <span className="material-symbols-outlined text-[14px]">data_object</span>
-            <span>Attach PR</span>
-          </button>
-        </div>
-        <div className="flex items-center gap-1 text-on-surface-variant font-mono text-[10px]">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-          <span>E2EE Active</span>
-        </div>
-      </div>
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
 
-      {/* Textarea Form */}
-      <form onSubmit={handleSend} className="flex flex-col rounded-xl bg-surface-container p-2 border border-outline-variant/30 focus-within:border-primary/50 transition-colors">
+  return (
+    <div className="p-4 bg-surface-container-lowest border-t border-outline-variant/30 shrink-0">
+      <form
+        onSubmit={handleSend}
+        className="flex items-end gap-2 p-2 rounded-2xl bg-surface-container border border-outline-variant/30 focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/20 transition-all"
+      >
+        <button
+          type="button"
+          onClick={() => toast.info('File attachment dialog opened')}
+          className="p-2 rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors shrink-0"
+          title="Attach file"
+        >
+          <span className="material-symbols-outlined text-[20px]">attach_file</span>
+        </button>
+
         <textarea
-          rows={2}
+          rows={1}
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Compose secure encrypted dispatch or paste contract payload hash..."
-          className="w-full bg-transparent text-on-surface placeholder:text-on-surface-variant text-xs resize-none focus:outline-none p-1 font-mono"
+          onKeyDown={handleKeyDown}
+          placeholder="Type a message... (Press Enter to send)"
+          className="w-full bg-transparent text-on-surface placeholder:text-on-surface-variant text-xs sm:text-sm resize-none focus:outline-none py-2 px-1 max-h-32 min-h-[38px] leading-relaxed"
         />
 
-        <div className="flex items-center justify-between pt-2 border-t border-outline-variant/10 text-xs">
-          <div className="flex items-center gap-1.5 text-on-surface-variant font-mono text-[11px]">
-            <span className="material-symbols-outlined text-[14px]">fingerprint</span>
-            <span>Signed: 0x3C49...81B7</span>
-          </div>
-
-          <button
-            type="submit"
-            disabled={isSending || !text.trim()}
-            className="px-3 py-1.5 rounded-lg bg-primary hover:bg-primary-container disabled:opacity-50 text-on-primary font-bold text-xs flex items-center gap-1.5 transition-all shadow-sm"
-          >
-            <span className="material-symbols-outlined text-[16px]">enhanced_encryption</span>
-            <span>{isSending ? 'Encrypting...' : 'Send Message'}</span>
-          </button>
-        </div>
+        <button
+          type="submit"
+          disabled={isSending || !text.trim()}
+          className="p-2.5 rounded-xl bg-primary hover:bg-primary-container disabled:opacity-40 text-on-primary font-bold transition-all shrink-0 flex items-center justify-center shadow-sm"
+          title="Send"
+        >
+          <span className="material-symbols-outlined text-[18px]">send</span>
+        </button>
       </form>
     </div>
   );

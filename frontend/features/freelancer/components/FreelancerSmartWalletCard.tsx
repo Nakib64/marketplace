@@ -20,63 +20,45 @@ export const FreelancerSmartWalletCard: React.FC = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="material-symbols-outlined text-primary text-[20px]">account_balance_wallet</span>
-          <span className="text-base font-bold text-on-surface">Smart Wallet</span>
+          <span className="text-base font-bold text-on-surface">Your Wallet</span>
         </div>
-        <div className="flex items-center gap-1 font-mono text-[11px] text-primary bg-surface-container px-2 py-0.5 rounded border border-outline-variant/20">
+        <span className="text-xs text-primary font-medium flex items-center gap-1">
           <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-          Arbitrum One
-        </div>
+          Active
+        </span>
       </div>
 
-      <div className="bg-surface-container p-2.5 rounded-lg border border-outline-variant/20 flex items-center justify-between">
-        <span className="font-mono text-xs text-on-surface">0x8F92...0XA</span>
-        <button
-          type="button"
-          onClick={() => toast.success('Smart wallet address copied to clipboard')}
-          className="text-on-surface-variant hover:text-on-surface transition-colors"
-        >
-          <span className="material-symbols-outlined text-[16px]">content_copy</span>
-        </button>
-      </div>
-
-      {/* Token Breakdown */}
+      {/* Balance Breakdown */}
       <div className="flex flex-col divide-y divide-outline-variant/10 text-xs">
-        <div className="flex items-center justify-between py-2">
+        <div className="flex items-center justify-between py-2.5">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center font-mono text-[11px] font-bold text-primary">
+            <div className="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center font-bold text-primary">
               ৳
             </div>
-            <span className="font-semibold text-on-surface">BDT Balance</span>
+            <div>
+              <div className="font-semibold text-on-surface">BDT Balance</div>
+              <div className="text-[11px] text-on-surface-variant">Local payout currency</div>
+            </div>
           </div>
-          <div className="text-right font-mono">
-            <div className="font-bold text-on-surface">৳{walletBalance.toLocaleString()}</div>
-            <div className="text-[10px] text-primary">Available for Payout</div>
+          <div className="text-right ">
+            <div className="font-bold text-on-surface text-sm">৳{walletBalance.toLocaleString()}</div>
+            <div className="text-[10px] text-primary">Available</div>
           </div>
         </div>
 
-        <div className="flex items-center justify-between py-2">
+        <div className="flex items-center justify-between py-2.5">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center font-mono text-[11px] font-bold text-secondary">
-              Ξ
+            <div className="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center font-bold text-secondary">
+              $
             </div>
-            <span className="font-semibold text-on-surface">ETH Gas Reserve</span>
-          </div>
-          <div className="text-right font-mono">
-            <div className="font-bold text-on-surface">0.085</div>
-            <div className="text-[10px] text-on-surface-variant">Paymaster Funded</div>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between py-2">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center font-mono text-[11px] font-bold text-primary">
-              ⬡
+            <div>
+              <div className="font-semibold text-on-surface">USD Balance</div>
+              <div className="text-[11px] text-on-surface-variant">Global contract earnings</div>
             </div>
-            <span className="font-semibold text-on-surface">$BANGLANCE</span>
           </div>
-          <div className="text-right font-mono">
-            <div className="font-bold text-on-surface">14,500</div>
-            <div className="text-[10px] text-primary">Staked Tier 2</div>
+          <div className="text-right ">
+            <div className="font-bold text-on-surface text-sm">$6,200.00</div>
+            <div className="text-[10px] text-primary">Available</div>
           </div>
         </div>
       </div>
@@ -85,11 +67,11 @@ export const FreelancerSmartWalletCard: React.FC = () => {
       <div className="grid grid-cols-2 gap-2 pt-1">
         <button
           type="button"
-          onClick={() => toast.info('Displaying deposit QR code & Arbitrum One address...')}
+          onClick={() => toast.info('Deposit options: Bank Transfer, bKash, or Card.')}
           className="py-2 bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-1.5 border border-outline-variant/30"
         >
-          <span className="material-symbols-outlined text-[16px] text-on-surface-variant">north_east</span>
-          <span>Deposit</span>
+          <span className="material-symbols-outlined text-[16px] text-on-surface-variant">add</span>
+          <span>Add Funds</span>
         </button>
         <button
           type="button"
@@ -114,4 +96,5 @@ export const FreelancerSmartWalletCard: React.FC = () => {
     </div>
   );
 };
+
 

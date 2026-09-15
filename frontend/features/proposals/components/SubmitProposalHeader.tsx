@@ -26,14 +26,10 @@ export const SubmitProposalHeader: React.FC<SubmitProposalHeaderProps> = ({
             {jobTitle}
           </Link>
           <span className="text-surface-container-highest">/</span>
-          <span className="text-on-surface font-semibold">Submit Proposal &amp; Escrow Terms</span>
+          <span className="text-on-surface font-semibold">Submit Proposal</span>
         </div>
         <div className="flex items-center gap-3 mt-1 flex-wrap">
-          <h1 className="text-2xl lg:text-3xl font-bold text-on-surface tracking-tight">Contract Proposal Spec</h1>
-          <span className="px-3 py-0.5 rounded-full bg-surface-container-high text-primary font-mono text-xs flex items-center gap-1.5 border border-outline-variant/30">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-            Live Vault Deployment
-          </span>
+          <h1 className="text-2xl lg:text-3xl font-bold text-on-surface tracking-tight">Contract Proposal</h1>
         </div>
       </div>
 
@@ -41,15 +37,8 @@ export const SubmitProposalHeader: React.FC<SubmitProposalHeaderProps> = ({
         <div className="flex items-center gap-2 bg-surface-container-low border border-outline-variant/30 px-3 py-1.5 rounded-xl shadow-sm">
           <span className="material-symbols-outlined text-primary text-[18px]">verified_user</span>
           <div className="flex flex-col">
-            <span className="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider leading-none">Security SLA</span>
-            <span className="text-xs text-on-surface font-medium leading-tight">Non-Custodial Escrow Protected</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-2 bg-surface-container-low border border-outline-variant/30 px-3 py-1.5 rounded-xl shadow-sm">
-          <span className="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
-          <div className="flex flex-col">
-            <span className="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider leading-none">Consensus Layer</span>
-            <span className="font-mono text-xs text-on-surface font-medium leading-tight">Arbitrum One • Mainnet Synced</span>
+            <span className=" text-[10px] text-on-surface-variant uppercase tracking-wider leading-none">Protection</span>
+            <span className="text-xs text-on-surface font-medium leading-tight">Payment Protected</span>
           </div>
         </div>
       </div>

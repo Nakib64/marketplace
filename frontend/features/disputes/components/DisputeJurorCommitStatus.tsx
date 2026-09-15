@@ -13,7 +13,7 @@ export const DisputeJurorCommitStatus: React.FC<DisputeJurorCommitStatusProps> =
           <h3 className="text-sm font-bold text-on-surface">Juror Commit-Reveal Protocol Status</h3>
           <p className="text-[11px] text-on-surface-variant">Non-collusive Schelling point voting prevents pre-vote coordination</p>
         </div>
-        <span className="font-mono text-xs text-primary">Round 1 (3 Jurors Drawn)</span>
+        <span className=" text-xs text-primary">Round 1 (3 Jurors Drawn)</span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -23,12 +23,11 @@ export const DisputeJurorCommitStatus: React.FC<DisputeJurorCommitStatusProps> =
             className="bg-surface-container-low rounded-xl p-3 flex flex-col gap-2 border border-outline-variant/20 text-xs"
           >
             <div className="flex items-center justify-between">
-              <span className="font-semibold text-on-surface font-mono">Juror #{juror.jurorNumber}</span>
-              <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono flex items-center gap-1 ${
-                juror.status === 'COMMITTED'
+              <span className="font-semibold text-on-surface ">Juror #{juror.jurorNumber}</span>
+              <span className={`px-2 py-0.5 rounded-full text-[10px]  flex items-center gap-1 ${juror.status === 'COMMITTED'
                   ? 'bg-surface-container-high text-primary'
                   : 'bg-surface-container-high text-outline'
-              }`}>
+                }`}>
                 <span className="material-symbols-outlined text-[12px]">
                   {juror.status === 'COMMITTED' ? 'lock' : 'hourglass_empty'}
                 </span>
@@ -36,13 +35,12 @@ export const DisputeJurorCommitStatus: React.FC<DisputeJurorCommitStatusProps> =
               </span>
             </div>
 
-            <div className={`p-2 rounded bg-surface-container-lowest font-mono text-[11px] truncate ${
-              juror.status === 'COMMITTED' ? 'text-on-surface-variant' : 'text-outline italic'
-            }`}>
+            <div className={`p-2 rounded bg-surface-container-lowest  text-[11px] truncate ${juror.status === 'COMMITTED' ? 'text-on-surface-variant' : 'text-outline italic'
+              }`}>
               {juror.hash || 'Pending commit window'}
             </div>
 
-            <div className="flex items-center justify-between font-mono text-[11px] text-outline pt-0.5">
+            <div className="flex items-center justify-between  text-[11px] text-outline pt-0.5">
               <span>Stake: {juror.stakePnk} PNK</span>
               {juror.status === 'COMMITTED' ? (
                 <span className="text-primary flex items-center gap-0.5">

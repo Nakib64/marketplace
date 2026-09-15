@@ -51,11 +51,11 @@ export const DisputeEvidenceVault: React.FC<DisputeEvidenceVaultProps> = ({
               <div className="flex flex-col min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-xs font-semibold text-on-surface truncate">{ev.title}</span>
-                  <span className="px-1.5 py-0.2 rounded bg-surface-container-high text-primary font-mono text-[10px]">
+                  <span className="px-1.5 py-0.2 rounded bg-surface-container-high text-primary  text-[10px]">
                     Evidence #{ev.evidenceNumber}
                   </span>
                 </div>
-                <div className="flex items-center gap-2 text-on-surface-variant font-mono text-[10px] mt-1 flex-wrap">
+                <div className="flex items-center gap-2 text-on-surface-variant  text-[10px] mt-1 flex-wrap">
                   <span>CID: <strong className="text-on-surface">{ev.ipfsCid}</strong></span>
                   <span>•</span>
                   <span>By: {ev.pinnedBy}</span>

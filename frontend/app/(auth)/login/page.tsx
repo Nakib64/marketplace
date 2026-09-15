@@ -14,7 +14,7 @@ export default function LoginPage() {
 
       <div className="w-full max-w-md relative z-10">
         {/* Security Badge */}
-        <div className="flex items-center justify-between px-3.5 py-1.5 mb-4 bg-surface-container-low border border-outline-variant/40 rounded-lg text-xs font-mono text-on-surface-variant">
+        <div className="flex items-center justify-between px-3.5 py-1.5 mb-4 bg-surface-container-low border border-outline-variant/40 rounded-lg text-xs  text-on-surface-variant">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
             <span>SSLCommerz Escrow Gateway</span>

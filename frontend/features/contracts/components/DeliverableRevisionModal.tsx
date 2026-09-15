@@ -37,21 +37,21 @@ export const DeliverableRevisionModal: React.FC<DeliverableRevisionModalProps> =
         </div>
 
         <p className="text-xs text-on-surface-variant leading-relaxed">
-          Submitting a revision request pauses the 48-hour auto-release clock and creates an immutable change request log on-chain.
+          Explain the revisions or adjustments needed from the freelancer before payment release.
         </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 text-xs">
           <div className="flex flex-col gap-1.5">
             <label className="font-semibold text-on-surface uppercase tracking-wider text-[10px]">
-              Scope Discrepancies or Required Patches
+              Required Adjustments
             </label>
             <textarea
               required
               rows={4}
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
-              placeholder="Specify failing test cases, missing invariant edge cases, or gas benchmark requirements..."
-              className="w-full bg-surface-container-low border border-outline-variant/30 p-2.5 rounded-lg font-mono text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary resize-y leading-relaxed"
+              placeholder="Specify the requested changes or improvements needed..."
+              className="w-full bg-surface-container-low border border-outline-variant/30 p-2.5 rounded-lg  text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary resize-y leading-relaxed"
             />
           </div>
 
@@ -67,7 +67,7 @@ export const DeliverableRevisionModal: React.FC<DeliverableRevisionModalProps> =
               type="submit"
               className="px-4 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-bold shadow-md"
             >
-              Confirm Revision Dispatch
+              Submit Request
             </button>
           </div>
         </form>

@@ -16,9 +16,9 @@ export function Navbar() {
   const navLinks = [
     { label: 'Find Work', href: '/jobs' },
     { label: 'Find Talent', href: '/freelancers' },
-    { label: 'Vaults', href: '/wallet' },
-    { label: 'Ledger', href: '/transactions' },
-    { label: 'Disputes', href: '/disputes' },
+    { label: 'Payments', href: '/wallet' },
+    { label: 'Activity', href: '/transactions' },
+    { label: 'Resolutions', href: '/disputes' },
     { label: 'Messages', href: '/messages', authRequired: true },
   ];
 
@@ -35,10 +35,6 @@ export function Navbar() {
               Bang<span className="text-primary">lance</span>
             </span>
           </Link>
-          <div className="hidden xl:flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant/50 text-xs text-on-surface-variant font-mono">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span>ESCROW GUARANTEE</span>
-          </div>
         </div>
 
         {/* Navigation Links */}
@@ -71,7 +67,7 @@ export function Navbar() {
           >
             <Search className="w-4 h-4 text-primary" />
             <span className="text-outline pr-4">Search jobs, talent...</span>
-            <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high text-outline text-[10px] font-mono">
+            <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high text-outline text-[10px] ">
               ⌘K
             </kbd>
           </Link>
@@ -116,11 +112,11 @@ export function Navbar() {
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container border border-outline-variant/50 text-xs text-on-surface hover:border-primary/50 transition-colors"
               >
                 <Wallet className="w-3.5 h-3.5 text-primary" />
-                <span className="font-mono text-xs font-medium">Wallet</span>
+                <span className=" text-xs font-medium">Wallet</span>
               </Link>
 
               <Link
-                href="/settings"
+                href={isClient ? '/client/settings' : '/freelancer/profile/edit'}
                 title={user?.name || 'Profile'}
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-surface-container text-xs text-on-surface hover:bg-surface-container-high transition-colors"
               >

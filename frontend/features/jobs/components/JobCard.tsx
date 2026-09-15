@@ -15,15 +15,15 @@ export function JobCard({ job }: JobCardProps) {
   return (
     <article className="bg-surface-container rounded-2xl p-5 md:p-6 border border-outline-variant/40 hover:bg-surface-container-high hover:border-primary/40 transition-all duration-200 shadow-xs flex flex-col gap-4">
       {/* Header Badges & Posted Time */}
-      <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+      <div className="flex flex-wrap items-center justify-between gap-2 text-xs ">
         <div className="flex flex-wrap items-center gap-2">
           <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">
             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-            100% Escrow Funded
+            Payment Protected
           </span>
           <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-highest text-secondary">
             <CheckCircle2 className="w-3.5 h-3.5" />
-            KYC Verified
+            Verified Client
           </span>
         </div>
         <span className="text-outline flex items-center gap-1 text-[11px]">
@@ -46,12 +46,12 @@ export function JobCard({ job }: JobCardProps) {
               {companyName}
             </span>
             <span>•</span>
-            <span className="text-on-surface-variant font-mono">{job.categoryName || job.category?.name || 'General'}</span>
+            <span className="text-on-surface-variant ">{job.categoryName || job.category?.name || 'General'}</span>
           </div>
         </div>
 
         {/* Budget Pill */}
-        <div className="text-left md:text-right font-mono shrink-0">
+        <div className="text-left md:text-right  shrink-0">
           <span className="text-lg md:text-xl font-bold text-primary block">
             {formatCurrency(job.budget)}
           </span>
@@ -66,7 +66,7 @@ export function JobCard({ job }: JobCardProps) {
 
       {/* Skills & Apply Action */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-3 border-t border-outline-variant/30">
-        <div className="flex flex-wrap items-center gap-1.5 text-xs font-mono">
+        <div className="flex flex-wrap items-center gap-1.5 text-xs ">
           {job.skills?.slice(0, 4).map((skill) => (
             <span
               key={skill}

@@ -40,7 +40,7 @@ export function TalentCard({ profile }: TalentCardProps) {
               >
                 {displayName.replace('.', ' ')}
               </Link>
-              <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-[11px] font-mono text-primary border border-outline-variant/30">
+              <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-[11px]  text-primary border border-outline-variant/30">
                 <ShieldCheck className="w-3 h-3" />
                 KYC Verified
               </span>
@@ -64,11 +64,11 @@ export function TalentCard({ profile }: TalentCardProps) {
 
         {/* Rate & Availability */}
         <div className="flex sm:flex-col items-end justify-between sm:justify-start w-full sm:w-auto shrink-0">
-          <div className="text-xl font-bold text-on-surface font-mono">
+          <div className="text-xl font-bold text-on-surface ">
             {formatCurrency(hourlyRate)}{' '}
             <span className="text-xs text-on-surface-variant font-normal">/hr</span>
           </div>
-          <span className="text-xs font-mono text-primary flex items-center gap-1 mt-1 font-medium">
+          <span className="text-xs  text-primary flex items-center gap-1 mt-1 font-medium">
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
             Available Now
           </span>
@@ -83,16 +83,16 @@ export function TalentCard({ profile }: TalentCardProps) {
       {/* Metrics Tray */}
       <div className="grid grid-cols-3 gap-2 sm:gap-4 p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/20">
         <div className="flex flex-col">
-          <span className="text-[11px] text-on-surface-variant font-mono">Total Earned</span>
-          <span className="text-sm font-bold text-on-surface font-mono">{formatCurrency(earned)}</span>
+          <span className="text-[11px] text-on-surface-variant ">Total Earned</span>
+          <span className="text-sm font-bold text-on-surface ">{formatCurrency(earned)}</span>
         </div>
         <div className="flex flex-col">
-          <span className="text-[11px] text-on-surface-variant font-mono">Job Success</span>
-          <span className="text-sm font-bold text-primary font-mono">{success}%</span>
+          <span className="text-[11px] text-on-surface-variant ">Job Success</span>
+          <span className="text-sm font-bold text-primary ">{success}%</span>
         </div>
         <div className="flex flex-col">
-          <span className="text-[11px] text-on-surface-variant font-mono">Completed</span>
-          <span className="text-sm font-bold text-on-surface font-mono">{projects} Contracts</span>
+          <span className="text-[11px] text-on-surface-variant ">Completed</span>
+          <span className="text-sm font-bold text-on-surface ">{projects} Contracts</span>
         </div>
       </div>
 
@@ -102,7 +102,7 @@ export function TalentCard({ profile }: TalentCardProps) {
           {profile.skills.slice(0, 5).map((s) => (
             <span
               key={s}
-              className="px-2.5 py-1 rounded-lg bg-surface-container-high text-xs font-mono text-on-surface-variant border border-outline-variant/20"
+              className="px-2.5 py-1 rounded-lg bg-surface-container-high text-xs  text-on-surface-variant border border-outline-variant/20"
             >
               {s}
             </span>

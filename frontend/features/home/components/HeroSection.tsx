@@ -32,21 +32,21 @@ export function HeroSection() {
         {/* Status Badge */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface-container-high border border-outline-variant/40 shadow-sm mb-6">
           <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-          <span className="text-xs font-mono text-primary uppercase tracking-wider font-semibold">
+          <span className="text-xs  text-primary uppercase tracking-wider font-semibold">
             Marketplace Live
           </span>
           <span className="text-outline">/</span>
-          <span className="text-xs text-on-surface-variant">0% Chargeback Risk Escrow</span>
+          <span className="text-xs text-on-surface-variant">100% Payment Protection</span>
         </div>
 
         {/* Main Headline */}
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold max-w-4xl text-on-surface tracking-tight mb-4">
-          Where Top Talent Meets <span className="text-primary">Secured Trust</span> &amp; Instant Escrow
+          Where Top Talent Meets <span className="text-primary">Secured Trust</span> &amp; Safe Payments
         </h1>
 
         {/* Subtitle */}
         <p className="text-sm sm:text-base md:text-lg text-on-surface-variant max-w-2xl mb-8 leading-relaxed">
-          Hire verified software engineers, UI/UX designers, and specialists with 100% escrow payment protection and automated mobile payouts.
+          Hire verified software engineers, UI/UX designers, and specialists with 100% protected payments and automated mobile payouts.
         </p>
 
         {/* Pill Toggle: Find Talent / Find Work */}
@@ -54,22 +54,20 @@ export function HeroSection() {
           <button
             type="button"
             onClick={() => setSearchMode('talent')}
-            className={`px-6 py-2 rounded-full text-xs font-semibold transition-all ${
-              searchMode === 'talent'
+            className={`px-6 py-2 rounded-full text-xs font-semibold transition-all ${searchMode === 'talent'
                 ? 'bg-surface-container-high text-on-surface shadow-sm font-bold'
                 : 'text-on-surface-variant hover:text-on-surface'
-            }`}
+              }`}
           >
             Find Talent
           </button>
           <button
             type="button"
             onClick={() => setSearchMode('jobs')}
-            className={`px-6 py-2 rounded-full text-xs font-semibold transition-all ${
-              searchMode === 'jobs'
+            className={`px-6 py-2 rounded-full text-xs font-semibold transition-all ${searchMode === 'jobs'
                 ? 'bg-surface-container-high text-on-surface shadow-sm font-bold'
                 : 'text-on-surface-variant hover:text-on-surface'
-            }`}
+              }`}
           >
             Find Work
           </button>
@@ -121,10 +119,10 @@ export function HeroSection() {
         </form>
 
         {/* Quick Trust Pills */}
-        <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-on-surface-variant font-mono">
+        <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-on-surface-variant ">
           <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container border border-outline-variant/30">
             <ShieldCheck className="text-primary w-4 h-4" />
-            <span>SSLCommerz Escrow Vault</span>
+            <span>SSLCommerz Safe Payment</span>
           </div>
           <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container border border-outline-variant/30">
             <Zap className="text-primary w-4 h-4" />

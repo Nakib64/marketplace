@@ -16,45 +16,45 @@ export function FeaturedJobs() {
 
   const liveJobs = (data?.data && data.data.length > 0)
     ? data.data.map((j) => ({
-        id: j.id,
-        title: j.title,
-        description: j.description,
-        budget: `$${Number(j.budget).toLocaleString()}`,
+      id: j.id,
+      title: j.title,
+      description: j.description,
+      budget: `$${Number(j.budget).toLocaleString()}`,
+      budgetType: 'Fixed Price (Milestones)',
+      tags: j.skills || ['Fullstack', 'Web3'],
+      proposals: `${j._count?.proposals || 0} proposals received`,
+      posted: 'Recently posted',
+      verified: true,
+      category: 'development',
+    }))
+    : [
+      {
+        id: 'job-1',
+        title: 'Senior NestJS & Distributed Backend Architect',
+        description:
+          'Implement high-throughput Redis sliding-window rate limiters, BullMQ background moderation workers, and SSLCommerz payment webhook listeners with Prisma ORM.',
+        budget: '$8,500',
         budgetType: 'Fixed Price (Milestones)',
-        tags: j.skills || ['Fullstack', 'Web3'],
-        proposals: `${j._count?.proposals || 0} proposals received`,
-        posted: 'Recently posted',
+        tags: ['NestJS 12', 'PostgreSQL', 'Redis Queues', 'Docker'],
+        proposals: '12 proposals received',
+        posted: 'Posted 2 hours ago',
         verified: true,
         category: 'development',
-      }))
-    : [
-        {
-          id: 'job-1',
-          title: 'Senior NestJS & Distributed Backend Architect',
-          description:
-            'Implement high-throughput Redis sliding-window rate limiters, BullMQ background moderation workers, and SSLCommerz escrow webhook listeners with Prisma ORM.',
-          budget: '$8,500',
-          budgetType: 'Fixed Price (Milestones)',
-          tags: ['NestJS 12', 'PostgreSQL', 'Redis Queues', 'Docker'],
-          proposals: '12 proposals received',
-          posted: 'Posted 2 hours ago',
-          verified: true,
-          category: 'development',
-        },
-        {
-          id: 'job-2',
-          title: 'Lead UI/UX Product Designer (Fintech & Escrow)',
-          description:
-            'Revamp mobile and desktop dashboard workflows for dual-actor freelance marketplace. Create double-blind review system flows and bKash/Nagad withdrawal modals.',
-          budget: '$4,200',
-          budgetType: 'Fixed Price (Milestones)',
-          tags: ['Figma Systems', 'Dark Mode UX', 'Prototyping', 'Fintech'],
-          proposals: '8 proposals received',
-          posted: 'Posted 4 hours ago',
-          verified: true,
-          category: 'design',
-        },
-      ];
+      },
+      {
+        id: 'job-2',
+        title: 'Lead UI/UX Product Designer (Fintech & Payments)',
+        description:
+          'Revamp mobile and desktop dashboard workflows for dual-actor freelance marketplace. Create double-blind review system flows and bKash/Nagad withdrawal modals.',
+        budget: '$4,200',
+        budgetType: 'Fixed Price (Milestones)',
+        tags: ['Figma Systems', 'Dark Mode UX', 'Prototyping', 'Fintech'],
+        proposals: '8 proposals received',
+        posted: 'Posted 4 hours ago',
+        verified: true,
+        category: 'design',
+      },
+    ];
 
   const filteredJobs = filter === 'all' ? liveJobs : liveJobs.filter((j) => j.category === filter);
 
@@ -63,8 +63,8 @@ export function FeaturedJobs() {
     <section className="max-w-[1280px] mx-auto px-4 md:px-8 py-16 w-full">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <span className="text-xs font-mono text-primary uppercase tracking-widest block mb-1 font-semibold">
-            ACTIVE SMART ESCROWS
+          <span className="text-xs  text-primary uppercase tracking-widest block mb-1 font-semibold">
+            ACTIVE PROJECTS
           </span>
           <h2 className="text-2xl md:text-3xl font-bold text-on-surface tracking-tight">
             Featured Projects Ready for Bids
@@ -77,11 +77,10 @@ export function FeaturedJobs() {
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all cursor-pointer ${
-                filter === cat
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all cursor-pointer ${filter === cat
                   ? 'bg-surface-container-highest text-primary shadow-xs'
                   : 'text-on-surface-variant hover:text-on-surface'
-              }`}
+                }`}
             >
               {cat === 'all' ? 'All Projects' : cat}
             </button>
@@ -97,12 +96,12 @@ export function FeaturedJobs() {
           >
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div className="flex-1">
-                <div className="flex flex-wrap items-center gap-2 mb-2 text-xs font-mono">
+                <div className="flex flex-wrap items-center gap-2 mb-2 text-xs ">
                   <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">
-                    <CheckCircle2 className="w-3.5 h-3.5" /> KYC Verified
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Verified Client
                   </span>
                   <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-highest text-secondary">
-                    <Lock className="w-3.5 h-3.5" /> Escrow Funded
+                    <Lock className="w-3.5 h-3.5" /> Payment Protected
                   </span>
                   <span className="text-outline pl-1">{job.posted}</span>
                 </div>
@@ -117,7 +116,7 @@ export function FeaturedJobs() {
                   {job.description}
                 </p>
 
-                <div className="flex flex-wrap items-center gap-1.5 text-xs font-mono">
+                <div className="flex flex-wrap items-center gap-1.5 text-xs ">
                   {job.tags.map((tag) => (
                     <span key={tag} className="px-2.5 py-1 rounded-lg bg-surface-container-lowest text-on-surface-variant border border-outline-variant/30">
                       {tag}
@@ -128,7 +127,7 @@ export function FeaturedJobs() {
               </div>
 
               <div className="flex lg:flex-col items-center lg:items-end justify-between gap-4 pt-4 lg:pt-0 border-t lg:border-t-0 border-outline-variant/30">
-                <div className="text-left lg:text-right font-mono">
+                <div className="text-left lg:text-right ">
                   <span className="text-xl lg:text-2xl text-primary font-bold block">{job.budget}</span>
                   <span className="text-[10px] text-on-surface-variant uppercase">{job.budgetType}</span>
                 </div>

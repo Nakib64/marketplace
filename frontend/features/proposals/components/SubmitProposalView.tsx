@@ -15,7 +15,16 @@ import { SubmitProposalCoverLetterSection } from './SubmitProposalCoverLetterSec
 import { SubmitProposalMilestonesSection } from './SubmitProposalMilestonesSection';
 import { SubmitProposalSidebar } from './SubmitProposalSidebar';
 
-const DEFAULT_COVER = `### Architectural Implementation & Invariant Inoculation Plan\n\n**1. Mathematical Foundations & Liquidity Invariant Derivation**\nI will establish the virtual balance reserve invariants for concentrated pools under sudden liquidity tick oscillations.\n\n**2. Invariant Fuzz Testing (Foundry Forge Engine)**\n- Writing 14 stateful invariant test campaigns targeting edge-case token transfers with 100,000 runs per invariant.\n\n**3. Orbit L3 Testnet Sandbox Deployment**\n- Deterministic contract deployment script with multisig owner assignment and verified Arbiscan contracts.`;
+const DEFAULT_COVER = `### Project Approach & Execution Plan
+
+**1. Technical Architecture & Setup**
+I will design the core module structure, database schema, and configure clean API interfaces.
+
+**2. Feature Implementation & Automated Testing**
+- Implement complete business logic with comprehensive unit tests and automated CI checks.
+
+**3. Deployment & Final Quality Assurance**
+- Production-ready deployment, verified security standards, and documentation.`;
 
 export const SubmitProposalView: React.FC<{ jobId: string }> = ({ jobId }) => {
   const router = useRouter();
@@ -28,14 +37,14 @@ export const SubmitProposalView: React.FC<{ jobId: string }> = ({ jobId }) => {
   const [agreedToArbitration, setAgreedToArbitration] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [milestones, setMilestones] = useState<ProposalMilestone[]>([
-    { step: 'M1', title: 'Circuit & Mathematical Architecture Spec', durationDays: 5, amount: 2500, currency: 'USDC' },
-    { step: 'M2', title: 'Foundry Fuzz Testing Suite & Slither CI', durationDays: 9, amount: 3500, currency: 'USDC' },
-    { step: 'M3', title: 'L3 Testnet Deployment & Multisig Sign-off', durationDays: 7, amount: 2500, currency: 'USDC' },
+    { step: 'M1', title: 'Architecture Specification & Setup', durationDays: 5, amount: 2500, currency: 'USDC' },
+    { step: 'M2', title: 'Core Implementation & Test Suite', durationDays: 9, amount: 3500, currency: 'USDC' },
+    { step: 'M3', title: 'Production Deployment & Handoff', durationDays: 7, amount: 2500, currency: 'USDC' },
   ]);
 
   const handleSubmit = async () => {
     if (!agreedToArbitration) {
-      toast.error('Please agree to the decentralized arbitration and escrow terms.');
+      toast.error('Please agree to the marketplace terms and payment protection policy.');
       return;
     }
     if (coverLetter.length < 30) {
@@ -72,12 +81,11 @@ export const SubmitProposalView: React.FC<{ jobId: string }> = ({ jobId }) => {
             <SubmitProposalMilestonesSection milestones={milestones} onAddMilestone={() => setMilestones((prev) => [...prev, { step: `M${prev.length + 1}`, title: 'Additional Milestone Sprint', durationDays: 5, amount: 1000, currency: 'USDC' }])} onRemoveMilestone={(idx) => setMilestones((prev) => prev.filter((_, i) => i !== idx))} totalBid={bidAmount} />
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-xl bg-surface-container-low border border-outline-variant/30 shadow-sm">
               <div className="flex items-center gap-2 text-on-surface-variant text-xs">
-                <span className="material-symbols-outlined text-primary text-[18px]">history_edu</span>
-                <span>Signed by wallet: <strong className="text-on-surface font-mono">0x8F92...0XA</strong></span>
+                <span className="material-symbols-outlined text-primary text-[18px]">verified_user</span>
+                <span className="text-on-surface font-medium">Verified Freelancer Account</span>
               </div>
               <button type="button" disabled={isSubmitting} onClick={handleSubmit} className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-container text-on-primary text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-md">
-                <span className="w-2 h-2 rounded-full bg-surface-container-lowest animate-ping" />
-                <span>{isSubmitting ? 'Signing on Arbitrum...' : 'Sign & Submit Proposal'}</span>
+                <span>{isSubmitting ? 'Submitting...' : 'Submit Proposal'}</span>
                 <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
               </button>
             </div>
