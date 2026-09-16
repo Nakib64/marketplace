@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { CurrentUser } from '../../auth/decorators/current-user.decorator.js';
 import { Roles } from '../../auth/decorators/roles.decorator.js';
@@ -10,6 +10,14 @@ import { PortfolioService } from '../services/portfolio.service.js';
 @Controller('users/me/portfolio')
 export class PortfolioController {
   constructor(private readonly portfolioService: PortfolioService) {}
+
+  @Get(':id')
+  async getPortfolioItem(
+    @CurrentUser('id') userId: string,
+    @Param('id') portfolioItemId: string,
+  ) {
+    return this.portfolioService.getPortfolioItem(userId, portfolioItemId);
+  }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)

@@ -12,6 +12,26 @@ import { UpdatePortfolioItemDto } from '../dto/update-portfolio-item.dto.js';
 export class PortfolioService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getPortfolioItem(userId: string, portfolioItemId: string) {
+    const portfolioItem = await this.prisma.portfolioItem.findUnique({
+      where: { id: portfolioItemId },
+      include: {
+        freelancerProfile: true,
+        images: { orderBy: { order: 'asc' } },
+      },
+    });
+
+    if (!portfolioItem) {
+      throw new NotFoundException('Portfolio project not found.');
+    }
+
+    if (portfolioItem.freelancerProfile.userId !== userId) {
+      throw new ForbiddenException('You do not have permission to view this portfolio project.');
+    }
+
+    return portfolioItem;
+  }
+
   async addPortfolioItem(userId: string, dto: CreatePortfolioItemDto) {
     const freelancerProfile = await this.prisma.freelancerProfile.findUnique({
       where: { userId },

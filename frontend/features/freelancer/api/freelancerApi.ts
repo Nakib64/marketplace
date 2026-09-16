@@ -46,6 +46,11 @@ export const freelancerApi = {
   },
 
   // --- Portfolio Projects ---
+  async getPortfolioItem(id: string): Promise<PortfolioItem> {
+    const { data } = await apiClient.get(`/users/me/portfolio/${id}`);
+    return data;
+  },
+
   async addPortfolioItem(payload: {
     title: string;
     details: string;
