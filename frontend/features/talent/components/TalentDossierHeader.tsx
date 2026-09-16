@@ -62,7 +62,7 @@ export function TalentDossierHeader({ profile }: TalentDossierHeaderProps) {
           <div className="flex flex-wrap items-center gap-4 text-xs text-on-surface-variant pt-0.5">
             <span className="flex items-center gap-1">
               <MapPin className="w-3.5 h-3.5 text-primary" />
-              Remote / Global
+              {[profile.city, profile.country].filter(Boolean).join(', ') || 'Remote / Global'}
             </span>
             <span className="flex items-center gap-1">
               <Clock className="w-3.5 h-3.5" />

@@ -1,8 +1,11 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { Send, MessageSquare } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
+import { useAuthStore } from '@/stores/useAuthStore';
 import { FreelancerProfile } from '../types/talentTypes';
 
 interface TalentDossierMobileBarProps {
@@ -10,7 +13,9 @@ interface TalentDossierMobileBarProps {
 }
 
 export function TalentDossierMobileBar({ profile }: TalentDossierMobileBarProps) {
-  const hourlyRate = profile.hourlyRate ? Number(profile.hourlyRate) : 120;
+  const { user } = useAuthStore();
+  const isFreelancer = user?.role === 'FREELANCER';
+  const hourlyRate = profile.hourlyRate ? Number(profile.hourlyRate) : 500;
 
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface-container-lowest/95 backdrop-blur-md px-4 py-3 border-t border-outline-variant/30 shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
@@ -24,17 +29,20 @@ export function TalentDossierMobileBar({ profile }: TalentDossierMobileBarProps)
 
         <div className="flex items-center gap-2">
           <Link href={`/messages?user=${profile.userId}`}>
-            <Button variant="secondary" size="sm" className="px-3">
-              <MessageSquare className="w-4 h-4" />
+            <Button variant={isFreelancer ? 'primary' : 'secondary'} size="sm" className="px-3">
+              <MessageSquare className="w-4 h-4 mr-1.5" />
+              <span>Message</span>
             </Button>
           </Link>
 
-          <Link href={`/client/jobs/new?hire=${profile.id}`}>
-            <Button variant="primary" size="sm" className="px-4 font-semibold">
-              <Send className="w-3.5 h-3.5 mr-1.5" />
-              <span>Hire Talent</span>
-            </Button>
-          </Link>
+          {!isFreelancer && (
+            <Link href={`/client/jobs/new?hire=${profile.id}`}>
+              <Button variant="primary" size="sm" className="px-4 font-semibold">
+                <Send className="w-3.5 h-3.5 mr-1.5" />
+                <span>Hire</span>
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </div>

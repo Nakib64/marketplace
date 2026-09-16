@@ -63,44 +63,39 @@ export class FreelancersSearchService {
   async getPublicFreelancerProfile(identifier: string) {
     const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(identifier);
 
+    const includeQuery = {
+      user: {
+        select: {
+          id: true,
+          email: true,
+          createdAt: true,
+          workHistories: { orderBy: { startDate: 'desc' as const } },
+        },
+      },
+      portfolioItems: {
+        include: { images: { orderBy: { order: 'asc' as const } } },
+        orderBy: { createdAt: 'desc' as const },
+      },
+      certificates: {
+        orderBy: { issueDate: 'desc' as const },
+      },
+      educations: {
+        orderBy: { startDate: 'desc' as const },
+      },
+    };
+
     let profile = await this.prisma.freelancerProfile.findFirst({
       where: isUuid
         ? { OR: [{ id: identifier }, { userId: identifier }, { slug: identifier }] }
         : { slug: identifier },
-      include: {
-        user: {
-          select: {
-            id: true,
-            email: true,
-            createdAt: true,
-            workHistories: { orderBy: { startDate: 'desc' } },
-          },
-        },
-        portfolioItems: {
-          include: { images: { orderBy: { order: 'asc' } } },
-          orderBy: { createdAt: 'desc' },
-        },
-      },
+      include: includeQuery,
     });
 
     if (!profile && !isUuid) {
       // Fallback
       profile = await this.prisma.freelancerProfile.findFirst({
         where: { OR: [{ id: identifier }, { userId: identifier }] },
-        include: {
-          user: {
-            select: {
-              id: true,
-              email: true,
-              createdAt: true,
-              workHistories: { orderBy: { startDate: 'desc' } },
-            },
-          },
-          portfolioItems: {
-            include: { images: { orderBy: { order: 'asc' } } },
-            orderBy: { createdAt: 'desc' },
-          },
-        },
+        include: includeQuery,
       });
     }
 

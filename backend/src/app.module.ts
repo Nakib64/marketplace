@@ -17,6 +17,7 @@ import { JobsModule } from './jobs/jobs.module.js';
 import { ProposalsModule } from './proposals/proposals.module.js';
 import { ReviewsModule } from './reviews/reviews.module.js';
 import { UsersModule } from './users/users.module.js';
+import { UploadModule } from './upload/upload.module.js';
 import { WalletModule } from './wallet/wallet.module.js';
 import { ChatModule } from './chat/chat.module.js';
 import { RedisModule } from './redis/redis.module.js';
@@ -34,6 +35,7 @@ import { MailModule } from './mail/mail.module.js';
     MailModule,
     AuthModule,
     UsersModule,
+    UploadModule,
     JobsModule,
     CategoriesModule,
     ProposalsModule,

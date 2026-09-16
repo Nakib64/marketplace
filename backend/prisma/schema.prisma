@@ -131,6 +131,9 @@ model FreelancerProfile {
   description    String?
   hourlyRate     Decimal?        @db.Decimal(10, 2)
   skills         String[]
+  country        String?         @default("Bangladesh")
+  city           String?
+  address        String?
   totalProjects  Int             @default(0)
   earnings       Decimal         @default(0.00) @db.Decimal(12, 2)
   rating         Float           @default(0.0)
@@ -139,8 +142,42 @@ model FreelancerProfile {
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   portfolioItems PortfolioItem[]
+  certificates   Certificate[]
+  educations     Education[]
 
   @@index([slug])
+}
+
+model Certificate {
+  id                  String            @id @default(uuid())
+  freelancerProfileId String
+  freelancerProfile   FreelancerProfile @relation(fields: [freelancerProfileId], references: [id], onDelete: Cascade)
+  title               String
+  issuer              String
+  issueDate           DateTime
+  credentialUrl       String?
+  imageUrl            String?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  @@index([freelancerProfileId])
+}
+
+model Education {
+  id                  String            @id @default(uuid())
+  freelancerProfileId String
+  freelancerProfile   FreelancerProfile @relation(fields: [freelancerProfileId], references: [id], onDelete: Cascade)
+  institution         String
+  degree              String
+  fieldOfStudy        String?
+  startDate           DateTime
+  endDate             DateTime?
+  isCurrent           Boolean           @default(false)
+  description         String?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  @@index([freelancerProfileId])
 }
 
 model WorkHistory {
@@ -149,6 +186,7 @@ model WorkHistory {
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   title       String
   company     String
+  location    String?
   description String?
   startDate   DateTime
   endDate     DateTime?

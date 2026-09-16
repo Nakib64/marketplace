@@ -20,4 +20,19 @@ export class UpdateFreelancerProfileDto {
   @IsArray()
   @IsString({ each: true, message: 'Each skill must be a string.' })
   skills?: string[];
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(100, { message: 'Country cannot exceed 100 characters.' })
+  country?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(100, { message: 'City cannot exceed 100 characters.' })
+  city?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(255, { message: 'Address cannot exceed 255 characters.' })
+  address?: string;
 }

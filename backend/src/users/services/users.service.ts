@@ -27,6 +27,12 @@ export class UsersService {
               },
               orderBy: { createdAt: 'desc' },
             },
+            certificates: {
+              orderBy: { issueDate: 'desc' },
+            },
+            educations: {
+              orderBy: { startDate: 'desc' },
+            },
           },
         },
         workHistories: {

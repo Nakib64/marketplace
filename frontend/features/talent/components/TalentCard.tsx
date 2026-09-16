@@ -1,8 +1,11 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
-import { Star, ShieldCheck, Zap } from 'lucide-react';
+import { Star, ShieldCheck, Zap, User } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
+import { useAuthStore } from '@/stores/useAuthStore';
 import { FreelancerProfile } from '../types/talentTypes';
 
 interface TalentCardProps {
@@ -10,6 +13,9 @@ interface TalentCardProps {
 }
 
 export function TalentCard({ profile }: TalentCardProps) {
+  const user = useAuthStore((s) => s.user);
+  const isFreelancer = user?.role === 'FREELANCER';
+
   const displayName = profile.title
     ? profile.user.email.split('@')[0]
     : 'Web3 Specialist';
@@ -123,8 +129,17 @@ export function TalentCard({ profile }: TalentCardProps) {
           </Link>
           <Link href={`/freelancers/${profile.slug || profile.id}`}>
             <Button variant="primary" size="sm" className="shadow-sm">
-              <Zap className="w-3.5 h-3.5 mr-1" />
-              <span>Hire Talent</span>
+              {isFreelancer ? (
+                <>
+                  <User className="w-3.5 h-3.5 mr-1" />
+                  <span>View Dossier</span>
+                </>
+              ) : (
+                <>
+                  <Zap className="w-3.5 h-3.5 mr-1" />
+                  <span>Hire Talent</span>
+                </>
+              )}
             </Button>
           </Link>
         </div>

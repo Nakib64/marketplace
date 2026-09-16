@@ -5,6 +5,9 @@ import { FreelancerProfile } from '../types/talentTypes';
 import { TalentDossierHeader } from './TalentDossierHeader';
 import { TalentDossierStats } from './TalentDossierStats';
 import { TalentPortfolioSection } from './TalentPortfolioSection';
+import { TalentExperienceSection } from './TalentExperienceSection';
+import { TalentEducationSection } from './TalentEducationSection';
+import { TalentCertificatesSection } from './TalentCertificatesSection';
 import { TalentReviewsSection } from './TalentReviewsSection';
 import { TalentCredentialsSection } from './TalentCredentialsSection';
 import { TalentSidebarOffer } from './TalentSidebarOffer';
@@ -26,6 +29,9 @@ export function TalentDossierView({ profile }: TalentDossierViewProps) {
           <TalentDossierHeader profile={profile} />
           <TalentDossierStats profile={profile} />
           <TalentPortfolioSection profile={profile} />
+          <TalentExperienceSection profile={profile} />
+          <TalentEducationSection profile={profile} />
+          <TalentCertificatesSection profile={profile} />
           <TalentReviewsSection profile={profile} />
           <TalentCredentialsSection />
         </div>
