@@ -13,15 +13,18 @@ export const ContractWorkSubmissionForm: React.FC<ContractWorkSubmissionFormProp
   onRequestExtension,
   isSubmitting,
 }) => {
-  const [githubUrl, setGithubUrl] = useState('https://github.com/kroma-network/orbit-amm/pull/42');
-  const [ipfsCid, setIpfsCid] = useState('ipfs://bafybeic73klqp9384nslakdfu20485nlqw9eirugkdlsie01');
-  const [notes, setNotes] = useState('### Deliverable Summary:\n- 120,000 fuzz runs passed on OrbitAMM pool core invariant logic\n- Slither triage report: 0 High, 0 Medium, 2 Lows acknowledged\n- Foundry gas profiling benchmarks attached in IPFS bundle');
+  const [githubUrl, setGithubUrl] = useState('');
+  const [ipfsCid, setIpfsCid] = useState('');
+  const [notes, setNotes] = useState('');
   const [activeTab, setActiveTab] = useState<'write' | 'preview'>('write');
   const [isDone, setIsDone] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSubmit({ githubUrl, ipfsCid, notes });
+    if (!githubUrl.trim() && !notes.trim()) {
+      return;
+    }
+    await onSubmit({ githubUrl: githubUrl.trim(), ipfsCid: ipfsCid.trim(), notes: notes.trim() });
     setIsDone(true);
   };
 
@@ -44,7 +47,8 @@ export const ContractWorkSubmissionForm: React.FC<ContractWorkSubmissionFormProp
               required
               value={githubUrl}
               onChange={(e) => setGithubUrl(e.target.value)}
-              className="w-full bg-transparent text-xs text-on-surface  focus:outline-none"
+              placeholder="e.g. https://github.com/org/repo/pull/1 or Figma / Drive link"
+              className="w-full bg-transparent text-xs text-on-surface focus:outline-none placeholder:text-on-surface-variant/50"
             />
           </div>
         </div>
@@ -57,7 +61,8 @@ export const ContractWorkSubmissionForm: React.FC<ContractWorkSubmissionFormProp
               type="text"
               value={ipfsCid}
               onChange={(e) => setIpfsCid(e.target.value)}
-              className="w-full bg-transparent text-xs text-on-surface  focus:outline-none"
+              placeholder="e.g. Live preview link, demo credentials, or cloud build"
+              className="w-full bg-transparent text-xs text-on-surface focus:outline-none placeholder:text-on-surface-variant/50"
             />
           </div>
         </div>
@@ -75,7 +80,8 @@ export const ContractWorkSubmissionForm: React.FC<ContractWorkSubmissionFormProp
               rows={4}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-surface-container border border-outline-variant/30 p-3 rounded-lg text-xs  text-on-surface focus:outline-none resize-y leading-relaxed"
+              placeholder="Detail completed milestones, review instructions, test coverage, and documentation..."
+              className="w-full bg-surface-container border border-outline-variant/30 p-3 rounded-lg text-xs text-on-surface focus:outline-none placeholder:text-on-surface-variant/50 resize-y leading-relaxed"
             />
           ) : (
             <div className="bg-surface-container border border-outline-variant/30 p-3 rounded-lg text-xs text-on-surface  whitespace-pre-line leading-relaxed min-h-[96px]">

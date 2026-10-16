@@ -62,4 +62,17 @@ export const messagesApi = {
       // Gracefully ignore mark-as-read failures
     }
   },
+
+  /**
+   * Get or initialize workroom conversation for a contract
+   */
+  async getContractConversation(contractId: string): Promise<{ id: string } | null> {
+    if (!contractId) return null;
+    try {
+      const { data } = await apiClient.get<{ id: string }>(`/chat/contracts/${contractId}`);
+      return data;
+    } catch {
+      return null;
+    }
+  },
 };

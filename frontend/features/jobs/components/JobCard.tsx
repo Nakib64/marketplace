@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { CheckCircle2, Clock, Building2 } from 'lucide-react';
+import { CheckCircle2, Star, Heart } from 'lucide-react';
 import { Job } from '../types/jobsTypes';
 import { formatCurrency, formatRelativeTime } from '@/lib/utils';
 
@@ -10,81 +10,77 @@ interface JobCardProps {
 
 export function JobCard({ job }: JobCardProps) {
   const proposalsCount = job._count?.proposals || 0;
-  const companyName = job.client?.clientProfile?.companyName || 'Verified Employer';
+  const companyName = job.client?.clientProfile?.companyName || 'Verified Client';
 
   return (
-    <article className="bg-surface-container rounded-2xl p-5 md:p-6 border border-outline-variant/40 hover:bg-surface-container-high hover:border-primary/40 transition-all duration-200 shadow-xs flex flex-col gap-4">
-      {/* Header Badges & Posted Time */}
-      <div className="flex flex-wrap items-center justify-between gap-2 text-xs ">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-            Payment Protected
-          </span>
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-highest text-secondary">
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            Verified Client
-          </span>
-        </div>
-        <span className="text-outline flex items-center gap-1 text-[11px]">
-          <Clock className="w-3.5 h-3.5" />
-          {formatRelativeTime(job.createdAt)}
-        </span>
+    <article className="group p-6 rounded-2xl bg-white border border-[#e4ebe4] hover:border-[#14a800] hover:bg-[#fcfdfc] transition-all duration-150 flex flex-col gap-3.5 shadow-xs">
+      {/* Top Meta & Heart */}
+      <div className="flex items-center justify-between text-xs text-[#5e6d55]">
+        <span>Posted {formatRelativeTime(job.createdAt)}</span>
+        <button
+          type="button"
+          aria-label="Save job"
+          className="w-8 h-8 rounded-full border border-[#e4ebe4] hover:border-[#14a800] hover:text-[#14a800] flex items-center justify-center transition-colors text-[#5e6d55]"
+        >
+          <Heart className="w-4 h-4" />
+        </button>
       </div>
 
-      {/* Title & Client Overview */}
-      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-        <div className="flex-1">
-          <Link href={`/jobs/${job.slug || job.id}`}>
-            <h3 className="text-base md:text-lg font-bold text-on-surface hover:text-primary transition-colors cursor-pointer mb-1.5">
-              {job.title}
-            </h3>
-          </Link>
-          <div className="flex items-center gap-2 text-outline text-xs">
-            <span className="font-semibold text-on-surface flex items-center gap-1">
-              <Building2 className="w-3.5 h-3.5 text-primary" />
-              {companyName}
-            </span>
-            <span>•</span>
-            <span className="text-on-surface-variant ">{job.categoryName || job.category?.name || 'General'}</span>
-          </div>
-        </div>
+      {/* Job Title */}
+      <Link href={`/jobs/${job.slug || job.id}`}>
+        <h3 className="text-lg md:text-xl font-medium text-[#001e00] group-hover:text-[#14a800] group-hover:underline transition-colors leading-snug cursor-pointer">
+          {job.title}
+        </h3>
+      </Link>
 
-        {/* Budget Pill */}
-        <div className="text-left md:text-right  shrink-0">
-          <span className="text-lg md:text-xl font-bold text-primary block">
-            {formatCurrency(job.budget)}
-          </span>
-          <span className="text-[10px] text-on-surface-variant uppercase">Fixed Price (Milestones)</span>
-        </div>
+      {/* Budget & Type Info */}
+      <div className="text-xs text-[#5e6d55] flex flex-wrap items-center gap-2">
+        <span className="font-semibold text-[#001e00]">Fixed-price</span>
+        <span>-</span>
+        <span>Est. budget: <strong className="text-[#001e00] font-semibold">{formatCurrency(job.budget)}</strong></span>
+        <span>-</span>
+        <span>{job.categoryName || job.category?.name || 'Development'}</span>
       </div>
 
-      {/* Job Description */}
-      <p className="text-xs md:text-sm text-on-surface-variant line-clamp-2 leading-relaxed">
+      {/* Description Snippet */}
+      <p className="text-sm text-[#001e00]/90 leading-relaxed line-clamp-2 font-normal">
         {job.description}
       </p>
 
-      {/* Skills & Apply Action */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-3 border-t border-outline-variant/30">
-        <div className="flex flex-wrap items-center gap-1.5 text-xs ">
-          {job.skills?.slice(0, 4).map((skill) => (
-            <span
-              key={skill}
-              className="px-2.5 py-0.5 rounded-lg bg-surface-container-lowest text-on-surface-variant border border-outline-variant/30"
-            >
-              {skill}
-            </span>
-          ))}
-          <span className="text-outline text-[11px] pl-2">
-            {proposalsCount} {proposalsCount === 1 ? 'proposal' : 'proposals'}
+      {/* Skills Pills */}
+      <div className="flex flex-wrap gap-2 pt-1">
+        {job.skills?.slice(0, 5).map((skill) => (
+          <span
+            key={skill}
+            className="px-3 py-1 rounded-full bg-[#f2f7f2] hover:bg-[#e4ebe4] text-xs font-medium text-[#001e00] transition-colors"
+          >
+            {skill}
           </span>
+        ))}
+      </div>
+
+      {/* Client Stats & Apply Footer */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-[#e4ebe4] text-xs text-[#5e6d55]">
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="inline-flex items-center gap-1 text-[#14a800] font-medium">
+            <CheckCircle2 className="w-3.5 h-3.5 fill-[#14a800] text-white" />
+            Payment verified
+          </span>
+          <span className="flex items-center gap-1 font-semibold text-[#001e00]">
+            <Star className="w-3.5 h-3.5 fill-[#14a800] text-[#14a800]" />
+            5.0
+          </span>
+          <span>•</span>
+          <span>{companyName}</span>
+          <span>•</span>
+          <span>Proposals: <strong>{proposalsCount}</strong></span>
         </div>
 
         <Link
           href={`/jobs/${job.slug || job.id}`}
-          className="px-5 py-2 rounded-xl bg-primary text-surface font-semibold text-xs hover:bg-tertiary transition-all duration-200 shadow-xs text-center cursor-pointer whitespace-nowrap"
+          className="inline-flex items-center justify-center px-5 py-2 rounded-full bg-[#14a800] hover:bg-[#108a00] text-white font-medium text-xs transition-colors self-start sm:self-auto cursor-pointer"
         >
-          View &amp; Apply
+          Apply Now
         </Link>
       </div>
     </article>

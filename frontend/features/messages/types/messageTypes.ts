@@ -1,5 +1,6 @@
 export interface WorkroomChannel {
   id: string;
+  jobId?: string;
   title: string;
   contactName: string;
   contactRole?: string;
@@ -109,6 +110,7 @@ export function mapBackendConversation(c: BackendConversationItem): WorkroomChan
 
   return {
     id: c.id,
+    jobId: c.jobId,
     title: c.jobTitle || 'Project Conversation',
     contactName,
     contactRole,

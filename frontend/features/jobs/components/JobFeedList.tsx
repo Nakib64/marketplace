@@ -30,7 +30,7 @@ export function JobFeedList({
     return (
       <div className="flex-1 flex flex-col gap-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-44 rounded-2xl bg-surface-container animate-pulse border border-outline-variant/30" />
+          <div key={i} className="h-44 rounded-2xl bg-white border border-[#e4ebe4] animate-pulse" />
         ))}
       </div>
     );
@@ -53,11 +53,11 @@ export function JobFeedList({
   return (
     <div className="flex-1 flex flex-col gap-4">
       {/* Feed Control Header */}
-      <div className="flex items-center justify-between bg-surface-container rounded-xl px-5 py-3 border border-outline-variant/40 text-xs ">
+      <div className="flex items-center justify-between bg-white rounded-2xl px-6 py-4 border border-[#e4ebe4] text-xs shadow-xs">
         <div className="flex items-center gap-2">
-          <span className="font-bold text-on-surface text-sm">{total} Projects Found</span>
-          <span className="text-outline">•</span>
-          <span className="text-primary font-semibold">Page {page} of {totalPages}</span>
+          <span className="font-semibold text-[#001e00] text-sm">{total} jobs found</span>
+          <span className="text-[#5e6d55]">•</span>
+          <span className="text-[#14a800] font-medium">Page {page} of {totalPages}</span>
         </div>
       </div>
 
@@ -70,10 +70,11 @@ export function JobFeedList({
 
       {/* Pagination Bar */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2 pt-6">
+        <div className="flex items-center justify-center gap-3 pt-6">
           <Button
             variant="outline"
             size="sm"
+            isPill
             disabled={page <= 1}
             onClick={() => onPageChange(page - 1)}
             leftIcon={<ChevronLeft className="w-4 h-4" />}
@@ -81,13 +82,14 @@ export function JobFeedList({
             Previous
           </Button>
 
-          <span className="px-4 text-xs  text-on-surface-variant">
+          <span className="px-4 text-xs font-medium text-[#5e6d55]">
             {page} / {totalPages}
           </span>
 
           <Button
             variant="outline"
             size="sm"
+            isPill
             disabled={page >= totalPages}
             onClick={() => onPageChange(page + 1)}
             rightIcon={<ChevronRight className="w-4 h-4" />}

@@ -2,41 +2,93 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { MessageSquare, ArrowRight } from 'lucide-react';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { connectSocket } from '@/lib/socket/socketClient';
 import {
   WorkroomChannel,
   WorkroomMessage,
+  WorkroomEscrowContext,
   BackendMessageItem,
   mapBackendMessage,
 } from '../types/messageTypes';
 import { messagesApi } from '../api/messagesApi';
+import { contractsApi } from '@/features/contracts/api/contractsApi';
+import { ContractDetail } from '@/features/contracts/types/contractsTypes';
 import { WorkroomChannelSidebar } from './WorkroomChannelSidebar';
 import { WorkroomChatHeader } from './WorkroomChatHeader';
 import { WorkroomMessageBubble } from './WorkroomMessageBubble';
 import { WorkroomMessageComposer } from './WorkroomMessageComposer';
+import { WorkroomTelemetrySidebar } from './WorkroomTelemetrySidebar';
 import { Button } from '@/components/ui/Button';
 
 export const WorkroomsView: React.FC = () => {
+  const searchParams = useSearchParams();
+  const targetConversationId = searchParams.get('conversationId');
+  const targetContractId = searchParams.get('contractId');
+  const targetJobId = searchParams.get('jobId');
+
   const user = useAuthStore((s) => s.user);
   const currentUserId = user?.id;
 
   const [channels, setChannels] = useState<WorkroomChannel[]>([]);
+  const [contracts, setContracts] = useState<ContractDetail[]>([]);
   const [activeChannelId, setActiveChannelId] = useState<string>('');
   const [messages, setMessages] = useState<WorkroomMessage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messagesApi.getConversations().then((data) => {
-      setChannels(data);
-      if (data && data.length > 0) {
-        setActiveChannelId((prev) => (prev && data.some((c) => c.id === prev) ? prev : data[0].id));
+    let isMounted = true;
+
+    const loadData = async () => {
+      try {
+        const [convList, userContracts] = await Promise.all([
+          messagesApi.getConversations(),
+          contractsApi.getUserContracts().catch(() => []),
+        ]);
+
+        if (!isMounted) return;
+        setChannels(convList);
+        setContracts(userContracts);
+
+        // Resolve active conversation by query params if present
+        let matchedId = '';
+        if (targetConversationId && convList.some((c) => c.id === targetConversationId)) {
+          matchedId = targetConversationId;
+        } else if (targetContractId) {
+          const directConv = await messagesApi.getContractConversation(targetContractId);
+          if (directConv?.id) {
+            matchedId = directConv.id;
+            // If direct conversation wasn't in initial list, refresh list
+            if (!convList.some((c) => c.id === directConv.id)) {
+              const refreshed = await messagesApi.getConversations();
+              if (isMounted) setChannels(refreshed);
+            }
+          }
+        } else if (targetJobId) {
+          const matchingChannel = convList.find((c) => c.jobId === targetJobId);
+          if (matchingChannel) matchedId = matchingChannel.id;
+        }
+
+        if (matchedId) {
+          setActiveChannelId(matchedId);
+        } else if (convList.length > 0) {
+          setActiveChannelId((prev) =>
+            prev && convList.some((c) => c.id === prev) ? prev : convList[0].id
+          );
+        }
+      } finally {
+        if (isMounted) setIsLoading(false);
       }
-      setIsLoading(false);
-    });
-  }, []);
+    };
+
+    loadData();
+    return () => {
+      isMounted = false;
+    };
+  }, [targetConversationId, targetContractId, targetJobId]);
 
   useEffect(() => {
     if (!activeChannelId) {
@@ -80,6 +132,27 @@ export const WorkroomsView: React.FC = () => {
 
   const activeChannel = channels.find((c) => c.id === activeChannelId);
 
+  // Match contract context for active conversation
+  const activeContract = contracts.find(
+    (c) =>
+      (c as unknown as { jobId?: string }).jobId === activeChannel?.jobId ||
+      c.title === activeChannel?.title
+  );
+
+  const escrowContext: WorkroomEscrowContext | null = activeContract
+    ? {
+        milestoneTitle: activeContract.title || activeChannel?.title || 'Execution Milestone',
+        lockedAmount: Number(activeContract.amount || 0),
+        currency: activeContract.currency || 'BDT',
+        releasedAmount:
+          activeContract.status === 'COMPLETED' ? Number(activeContract.amount || 0) : 0,
+        remainingAmount:
+          activeContract.status === 'COMPLETED' ? 0 : Number(activeContract.amount || 0),
+        slaGraceRemaining: '48h Review SLA Window',
+        artifacts: [],
+      }
+    : null;
+
   const handleSendMessage = async (text: string) => {
     if (!activeChannelId) return;
     try {
@@ -108,7 +181,7 @@ export const WorkroomsView: React.FC = () => {
         </div>
         <h2 className="text-xl font-bold text-on-surface mb-2">No Active Conversations</h2>
         <p className="text-sm text-on-surface-variant max-w-md mb-6">
-          Conversations are initiated automatically when a proposal is submitted or accepted on a job.
+          Conversations are initiated automatically when messaging a proposal candidate or when a contract is funded.
         </p>
         <Link href={user?.role === 'CLIENT' ? '/client/jobs' : '/jobs'}>
           <Button variant="primary" className="flex items-center gap-2">
@@ -158,6 +231,16 @@ export const WorkroomsView: React.FC = () => {
           </div>
         )}
       </section>
+
+      {/* Right Telemetry Escrow Sidebar (Visible on desktop when contract context is available) */}
+      {activeContract && escrowContext && (
+        <div className="hidden xl:flex h-full border-l border-outline-variant/30">
+          <WorkroomTelemetrySidebar
+            context={escrowContext}
+            contractId={activeContract.id}
+          />
+        </div>
+      )}
     </div>
   );
 };

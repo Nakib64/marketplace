@@ -33,29 +33,29 @@ export function FeaturedJobs() {
     : liveJobs.filter((j) => j.category.includes(filter) || j.tags.some((t) => t.toLowerCase().includes(filter)));
 
   return (
-    <section className="max-w-[1280px] mx-auto px-4 md:px-8 py-16 w-full">
+    <section className="max-w-[1400px] mx-auto px-4 md:px-8 py-16 w-full">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <span className="text-xs text-primary uppercase tracking-widest block mb-1 font-semibold">
-            ACTIVE PROJECTS
-          </span>
-          <h2 className="text-2xl md:text-3xl font-bold text-on-surface tracking-tight">
-            Featured Projects Ready for Bids
+          <h2 className="text-3xl md:text-4xl font-serif text-[#001e00] font-normal tracking-tight">
+            Recent projects ready for bids
           </h2>
+          <p className="text-sm text-[#5e6d55] mt-1">
+            Discover verified jobs with escrow milestones and instant local payouts.
+          </p>
         </div>
 
-        {/* Filter Tabs */}
+        {/* Upwork Filter Tabs */}
         {liveJobs.length > 0 && (
-          <div className="flex items-center p-1 bg-surface-container-low rounded-xl gap-1 border border-outline-variant/30 overflow-x-auto">
+          <div className="flex items-center gap-1 border-b border-[#e4ebe4] pb-1 overflow-x-auto">
             {['all', 'development', 'design'].map((cat) => (
               <button
                 key={cat}
                 type="button"
                 onClick={() => setFilter(cat)}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all cursor-pointer ${
+                className={`px-4 py-2 text-sm font-semibold capitalize transition-colors cursor-pointer border-b-2 -mb-1.5 ${
                   filter === cat
-                    ? 'bg-surface-container-highest text-primary shadow-xs'
-                    : 'text-on-surface-variant hover:text-on-surface'
+                    ? 'border-[#14a800] text-[#14a800]'
+                    : 'border-transparent text-[#5e6d55] hover:text-[#001e00]'
                 }`}
               >
                 {cat === 'all' ? 'All Projects' : cat}
@@ -68,23 +68,23 @@ export function FeaturedJobs() {
       {isLoading ? (
         <div className="flex flex-col gap-4">
           {[1, 2].map((i) => (
-            <div key={i} className="p-6 rounded-2xl bg-surface-container border border-outline-variant/20 animate-pulse h-40" />
+            <div key={i} className="p-7 rounded-2xl bg-[#f9faf9] border border-[#e4ebe4] animate-pulse h-44 shadow-xs" />
           ))}
         </div>
       ) : filteredJobs.length === 0 ? (
-        <div className="p-10 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex flex-col items-center justify-center text-center gap-3 shadow-sm">
-          <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-            <span className="material-symbols-outlined text-[28px]">work_outline</span>
+        <div className="p-12 rounded-2xl bg-white border border-[#e4ebe4] flex flex-col items-center justify-center text-center gap-4 shadow-xs">
+          <div className="w-14 h-14 rounded-full bg-[#f2f7f2] border border-[#e4ebe4] text-[#14a800] flex items-center justify-center">
+            <span className="material-symbols-outlined text-[30px]">work_outline</span>
           </div>
           <div className="flex flex-col gap-1 max-w-md">
-            <h3 className="text-base font-bold text-on-surface">No Featured Jobs at This Moment</h3>
-            <p className="text-xs text-on-surface-variant leading-relaxed">
+            <h3 className="text-lg font-bold text-[#001e00] tracking-tight">No Featured Jobs at This Moment</h3>
+            <p className="text-sm text-[#5e6d55] leading-relaxed">
               Explore all available freelance opportunities or post a new job to hire verified talent with milestone protection.
             </p>
           </div>
           <Link
             href="/jobs"
-            className="mt-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-container text-on-primary text-xs font-semibold transition-colors shadow-sm"
+            className="mt-2 px-6 py-2.5 rounded-full bg-[#14a800] hover:bg-[#108a00] text-white font-semibold text-xs transition-colors shadow-xs"
           >
             Explore All Jobs
           </Link>
@@ -94,48 +94,52 @@ export function FeaturedJobs() {
           {filteredJobs.map((job) => (
             <div
               key={job.id}
-              className="p-6 rounded-2xl bg-surface-container border border-outline-variant/40 hover:bg-surface-container-high hover:border-primary/40 transition-all duration-200 shadow-xs"
+              className="p-6 md:p-7 rounded-2xl bg-white border border-[#e4ebe4] hover:border-[#14a800] hover:shadow-xs transition-all duration-150"
             >
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
                 <div className="flex-1">
-                  <div className="flex flex-wrap items-center gap-2 mb-2 text-xs">
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">
-                      <CheckCircle2 className="w-3.5 h-3.5" /> Verified Client
-                    </span>
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-highest text-secondary">
-                      <Lock className="w-3.5 h-3.5" /> Payment Protected
-                    </span>
-                    <span className="text-outline pl-1">{job.posted}</span>
+                  <div className="flex flex-wrap items-center gap-2 mb-2 text-xs text-[#5e6d55]">
+                    <span className="text-[#5e6d55]">{job.posted}</span>
+                    <span>•</span>
+                    <span className="font-semibold text-[#001e00]">{job.budgetType}</span>
+                    <span>•</span>
+                    <span className="text-[#14a800] font-bold">Est. Budget: {job.budget}</span>
                   </div>
 
                   <Link href={`/jobs/${job.id}`}>
-                    <h3 className="text-lg font-bold text-on-surface mb-2 hover:text-primary transition-colors cursor-pointer">
+                    <h3 className="text-xl font-bold text-[#001e00] mb-2 hover:text-[#14a800] hover:underline transition-colors cursor-pointer tracking-tight">
                       {job.title}
                     </h3>
                   </Link>
 
-                  <p className="text-xs md:text-sm text-on-surface-variant line-clamp-2 mb-4 leading-relaxed">
+                  <p className="text-sm text-[#5e6d55] line-clamp-2 mb-4 leading-relaxed">
                     {job.description}
                   </p>
 
-                  <div className="flex flex-wrap items-center gap-1.5 text-xs">
+                  <div className="flex flex-wrap items-center gap-1.5 text-xs mb-4">
                     {job.tags.map((tag) => (
-                      <span key={tag} className="px-2.5 py-1 rounded-lg bg-surface-container-lowest text-on-surface-variant border border-outline-variant/30">
+                      <span key={tag} className="px-3 py-1 rounded-full bg-[#f2f7f2] hover:bg-[#e4ebe4] text-[#001e00] font-medium border border-[#e4ebe4]">
                         {tag}
                       </span>
                     ))}
-                    <span className="text-outline pl-2 text-[11px]">{job.proposals}</span>
+                  </div>
+
+                  {/* Client Info Line (Upwork Signature) */}
+                  <div className="flex flex-wrap items-center gap-4 text-xs text-[#5e6d55] pt-3 border-t border-[#f2f7f2]">
+                    <span className="inline-flex items-center gap-1 text-[#14a800] font-semibold">
+                      <CheckCircle2 className="w-3.5 h-3.5 fill-[#14a800] text-white" /> Payment verified
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[#001e00] font-medium">
+                      <Lock className="w-3.5 h-3.5 text-[#14a800]" /> Escrow Secured
+                    </span>
+                    <span>{job.proposals}</span>
                   </div>
                 </div>
 
-                <div className="flex lg:flex-col items-center lg:items-end justify-between gap-4 pt-4 lg:pt-0 border-t lg:border-t-0 border-outline-variant/30">
-                  <div className="text-left lg:text-right">
-                    <span className="text-xl lg:text-2xl text-primary font-bold block">{job.budget}</span>
-                    <span className="text-[10px] text-on-surface-variant uppercase">{job.budgetType}</span>
-                  </div>
+                <div className="flex lg:flex-col items-center lg:items-end justify-between gap-4 pt-4 lg:pt-0 border-t lg:border-t-0 border-[#e4ebe4] shrink-0">
                   <Link
                     href={`/jobs/${job.id}`}
-                    className="px-5 py-2.5 rounded-xl bg-primary text-surface text-xs font-semibold hover:bg-tertiary transition-all duration-200 shadow-sm cursor-pointer whitespace-nowrap"
+                    className="px-6 py-2.5 rounded-full bg-[#14a800] hover:bg-[#108a00] text-white font-semibold text-xs transition-colors shadow-xs cursor-pointer whitespace-nowrap"
                   >
                     Apply Now
                   </Link>

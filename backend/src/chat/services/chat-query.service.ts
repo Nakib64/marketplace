@@ -131,6 +131,47 @@ export class ChatQueryService {
   }
 
   /**
+   * Retrieves or creates conversation metadata for a specific contract workroom.
+   */
+  async getContractConversation(userId: string, contractId: string) {
+    const contract = await this.prisma.contract.findUnique({
+      where: { id: contractId },
+    });
+
+    if (!contract) {
+      throw new NotFoundException('Contract not found.');
+    }
+
+    if (contract.clientId !== userId && contract.freelancerId !== userId) {
+      throw new ForbiddenException('You are not a participant in this contract.');
+    }
+
+    let conversation = await this.prisma.conversation.findUnique({
+      where: {
+        jobId_freelancerId: {
+          jobId: contract.jobId,
+          freelancerId: contract.freelancerId,
+        },
+      },
+    });
+
+    if (!conversation) {
+      conversation = await this.prisma.conversation.create({
+        data: {
+          jobId: contract.jobId,
+          proposalId: contract.proposalId,
+          clientId: contract.clientId,
+          freelancerId: contract.freelancerId,
+          lastMessageText: 'Project workroom is active.',
+          lastMessageAt: new Date(),
+        },
+      });
+    }
+
+    return conversation;
+  }
+
+  /**
    * Retrieves paginated chat messages for a conversation.
    */
   async getMessages(userId: string, conversationId: string, query: ChatQueryDto) {

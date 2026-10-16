@@ -9,16 +9,16 @@ export function PlatformMetrics() {
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 rounded-2xl bg-surface-container border border-outline-variant/40 shadow-xs mb-16">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-8 rounded-3xl bg-white border border-[#e4ebe4] shadow-xs mb-20">
       {metrics.map((item) => (
         <div key={item.label} className="flex flex-col items-center text-center p-2">
-          <span className={`text-2xl sm:text-3xl md:text-4xl font-bold  tracking-tight ${item.color}`}>
+          <span className="text-3xl sm:text-4xl md:text-5xl font-black font-mono tracking-tight tabular-nums text-[#001e00]">
             {item.value}
           </span>
-          <span className="text-xs font-semibold text-on-surface uppercase mt-1 tracking-wider">
+          <span className="text-xs font-bold text-[#001e00] uppercase mt-2.5 tracking-wider">
             {item.label}
           </span>
-          <span className="text-[11px] text-on-surface-variant  mt-0.5">
+          <span className="text-xs text-[#5e6d55] mt-1 font-normal">
             {item.sub}
           </span>
         </div>

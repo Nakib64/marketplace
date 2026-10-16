@@ -16,13 +16,13 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full space-y-1.5">
         {label && (
-          <label htmlFor={inputId} className="block text-xs font-semibold text-slate-700">
+          <label htmlFor={inputId} className="block text-xs font-semibold text-[#001e00]">
             {label}
           </label>
         )}
         <div className="relative flex items-center">
           {leftIcon && (
-            <div className="absolute left-3 text-slate-400 pointer-events-none flex items-center">
+            <div className="absolute left-3 text-[#5e6d55] pointer-events-none flex items-center">
               {leftIcon}
             </div>
           )}
@@ -30,24 +30,24 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             id={inputId}
             ref={ref}
             className={cn(
-              'w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 shadow-2xs transition-all focus:border-indigo-600 focus:outline-none focus:ring-3 focus:ring-indigo-500/15 disabled:bg-slate-50 disabled:cursor-not-allowed',
+              'w-full rounded-xl border border-[#d5e0d5] bg-white px-3.5 py-2.5 text-sm text-[#001e00] placeholder:text-[#9aaa97] transition-colors focus:border-[#14a800] focus:outline-none focus:ring-2 focus:ring-[#14a800]/20 disabled:bg-[#f9faf9] disabled:cursor-not-allowed',
               leftIcon && 'pl-10',
               rightIcon && 'pr-10',
-              error && 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/15',
+              error && 'border-[#bc2c1a] focus:border-[#bc2c1a] focus:ring-[#bc2c1a]/20 text-[#bc2c1a]',
               className
             )}
             {...props}
           />
           {rightIcon && (
-            <div className="absolute right-3 text-slate-400 pointer-events-none flex items-center">
+            <div className="absolute right-3 text-[#5e6d55] pointer-events-none flex items-center">
               {rightIcon}
             </div>
           )}
         </div>
         {error ? (
-          <p className="text-xs text-rose-600 font-medium">{error}</p>
+          <p className="text-xs text-[#bc2c1a] font-medium">{error}</p>
         ) : helperText ? (
-          <p className="text-xs text-slate-500">{helperText}</p>
+          <p className="text-xs text-[#5e6d55]">{helperText}</p>
         ) : null}
       </div>
     );

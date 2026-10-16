@@ -78,6 +78,17 @@ export class ChatController {
   }
 
   /**
+   * Get or initialize workroom conversation for a contract.
+   */
+  @Get('contracts/:contractId')
+  async getContractConversation(
+    @CurrentUser('id') userId: string,
+    @Param('contractId') contractId: string,
+  ) {
+    return this.chatService.getContractConversation(userId, contractId);
+  }
+
+  /**
    * Get message history for a conversation.
    */
   @Get('conversations/:id/messages')

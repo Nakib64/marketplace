@@ -17,8 +17,8 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   const isDashboardPage =
-    pathname.startsWith('/client') ||
-    pathname.startsWith('/freelancer') ||
+    (pathname.startsWith('/client/') || pathname === '/client') ||
+    ((pathname.startsWith('/freelancer/') || pathname === '/freelancer') && !pathname.startsWith('/freelancers')) ||
     pathname.startsWith('/contracts') ||
     pathname.startsWith('/wallet') ||
     pathname.startsWith('/messages') ||
@@ -48,7 +48,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   return (
     <>
       <Navbar />
-      <main className="flex-1 pt-20">{children}</main>
+      <main className="flex-1 pt-20 md:pt-28">{children}</main>
       <Footer />
       <MobileNav />
     </>

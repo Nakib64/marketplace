@@ -35,76 +35,74 @@ export function EscrowExplainer() {
   ];
 
   return (
-    <section className="w-full bg-surface-container-lowest py-16 px-4 md:px-8 border-y border-outline-variant/30">
-      <div className="max-w-[1280px] mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs  text-primary uppercase tracking-widest block mb-1.5 font-semibold">
-            FINANCIAL PROTECTION
+    <section className="w-full bg-[#13544e] py-20 px-4 md:px-8 text-white">
+      <div className="max-w-[1400px] mx-auto">
+        <div className="max-w-2xl mb-14">
+          <span className="text-xs uppercase font-bold text-[#14a800] bg-white px-3 py-1 rounded-full inline-block mb-3">
+            TRUST &amp; SAFETY
           </span>
-          <h2 className="text-2xl md:text-3xl font-bold text-on-surface tracking-tight mb-2">
-            How Safe Payment Protects You
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-normal tracking-tight mb-4">
+            Why businesses turn to Banglance
           </h2>
-          <p className="text-xs md:text-sm text-on-surface-variant leading-relaxed">
-            Funds are held securely until you approve deliverables. Clients only pay for approved work, and freelancers are guaranteed payment.
+          <p className="text-base text-emerald-100/80 leading-relaxed">
+            The world’s work marketplace with built-in financial protection, double-blind reviews, and automated local payouts.
           </p>
         </div>
 
-        {/* 4-Step Pipeline */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        {/* Upwork 3-Value Pillars */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-14">
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-[#5eead4]">
+                <CheckCircle2 className="w-5 h-5" />
+              </div>
+              <h3 className="text-xl font-bold font-serif tracking-tight">Proof of quality</h3>
+            </div>
+            <p className="text-sm text-emerald-100/70 leading-relaxed pl-13">
+              Check any pro’s work samples, client reviews, and verified skill badges before you ever make an offer.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-[#5eead4]">
+                <FileEdit className="w-5 h-5" />
+              </div>
+              <h3 className="text-xl font-bold font-serif tracking-tight">No cost until you hire</h3>
+            </div>
+            <p className="text-sm text-emerald-100/70 leading-relaxed pl-13">
+              Interview potential fits for your job, negotiate hourly or milestone rates, and only pay for deliverables you inspect and approve.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-[#5eead4]">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <h3 className="text-xl font-bold font-serif tracking-tight">Safe and secure</h3>
+            </div>
+            <p className="text-sm text-emerald-100/70 leading-relaxed pl-13">
+              Focus on your product knowing our institutional escrow vault holds your funds safely with zero chargeback risk.
+            </p>
+          </div>
+        </div>
+
+        {/* Upwork Escrow 4-Step Pipeline Tray */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-6 rounded-2xl bg-black/20 border border-white/10 backdrop-blur-sm">
           {steps.map((item) => {
             const Icon = item.icon;
             return (
-              <div
-                key={item.step}
-                className="p-6 rounded-2xl bg-surface-container border border-outline-variant/40 shadow-xs flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-[11px]  font-bold text-outline">
-                      {item.step}
-                    </span>
-                    <div className="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-primary">
-                      <Icon className="w-5 h-5" />
-                    </div>
-                  </div>
-                  <h3 className="text-base font-bold text-on-surface mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs text-on-surface-variant leading-relaxed mb-6">
-                    {item.description}
-                  </p>
+              <div key={item.step} className="p-4 rounded-xl bg-white/5 border border-white/5 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold text-emerald-300 font-mono tracking-wider">{item.step}</span>
+                  <Icon className="w-4 h-4 text-[#5eead4]" />
                 </div>
-                <span className="inline-flex items-center text-[11px]  text-primary font-medium">
-                  {item.tag}
-                </span>
+                <h4 className="text-sm font-bold text-white">{item.title}</h4>
+                <p className="text-xs text-emerald-100/70 leading-relaxed">{item.description}</p>
               </div>
             );
           })}
-        </div>
-
-        {/* Highlight Guarantee Banner */}
-        <div className="p-6 rounded-2xl bg-surface-container border border-outline-variant/50 shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
-              <Scale className="w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="text-sm md:text-base font-bold text-on-surface">
-                Zero Chargeback Fraud &amp; Double-Blind Review System
-              </h4>
-              <p className="text-xs text-on-surface-variant mt-0.5 leading-relaxed">
-                Client payments are securely protected until approval. Reviews remain strictly concealed until both parties submit, preventing retaliatory ratings.
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 shrink-0  text-xs">
-            <span className="px-3 py-1.5 rounded-full bg-surface-container-high border border-outline-variant/40 text-primary">
-              SSLCommerz Secure
-            </span>
-            <span className="px-3 py-1.5 rounded-full bg-surface-container-high border border-outline-variant/40 text-secondary">
-              bKash / Nagad
-            </span>
-          </div>
         </div>
       </div>
     </section>

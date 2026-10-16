@@ -1,73 +1,93 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #4edea3;
-  --color-primary-container: #10b981;
-  --color-on-primary: #003824;
-  --color-on-primary-container: #00422b;
+  --color-primary: #14a800;
+  --color-primary-container: #108a00;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #001e00;
   
-  --color-secondary: #62dcad;
-  --color-secondary-container: #18a479;
-  --color-on-secondary: #003827;
-  --color-on-secondary-container: #003121;
+  --color-secondary: #13544e;
+  --color-secondary-container: #001e00;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #ffffff;
   
-  --color-tertiary: #31e193;
-  --color-tertiary-container: #00ba75;
+  --color-tertiary: #108a00;
+  --color-tertiary-container: #e4ebe4;
   
-  --color-background: #051424;
-  --color-on-background: #d4e4fa;
+  --color-background: #ffffff;
+  --color-on-background: #001e00;
   
-  --color-surface: #051424;
-  --color-surface-dim: #051424;
-  --color-surface-bright: #2c3a4c;
+  --color-surface: #ffffff;
+  --color-surface-dim: #f9faf9;
+  --color-surface-bright: #ffffff;
   
-  --color-surface-container-lowest: #010f1f;
-  --color-surface-container-low: #0d1c2d;
-  --color-surface-container: #122131;
-  --color-surface-container-high: #1c2b3c;
-  --color-surface-container-highest: #273647;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f9faf9;
+  --color-surface-container: #f2f7f2;
+  --color-surface-container-high: #e4ebe4;
+  --color-surface-container-highest: #d5e0d5;
   
-  --color-on-surface: #d4e4fa;
-  --color-on-surface-variant: #bbcabf;
+  --color-on-surface: #001e00;
+  --color-on-surface-variant: #5e6d55;
   
-  --color-outline: #86948a;
-  --color-outline-variant: #3c4a42;
+  --color-outline: #9aaa97;
+  --color-outline-variant: #e4ebe4;
   
-  --color-error: #ffb4ab;
-  --color-error-container: #93000a;
+  --color-error: #bc2c1a;
+  --color-error-container: #fdedec;
   
-  --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: var(--font-sans), var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: var(--font-display), Georgia, serif;
+  --font-mono: var(--font-mono), 'JetBrains Mono', monospace;
 }
 
 :root {
-  --background: #051424;
-  --foreground: #d4e4fa;
+  --background: #ffffff;
+  --foreground: #001e00;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  overflow-x: hidden;
+  font-family: var(--font-sans);
+  overflow-x: clip;
 }
 
-/* Custom scrollbar for modern sleek aesthetic */
+/* Custom scrollbar matching Upwork */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #051424;
+  background: #f9faf9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1c2b3c;
+  background: #d5e0d5;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #273647;
+  background: #9aaa97;
+}
+
+/* Upwork border and card utilities */
+.upwork-card {
+  background: #ffffff;
+  border: 1px solid #e4ebe4;
+  border-radius: 1rem;
+  transition: all 150ms ease-in-out;
+}
+
+.upwork-card:hover {
+  border-color: #14a800;
+  box-shadow: 0 4px 20px rgba(0, 30, 0, 0.06);
+}
+
+/* Spring motion transition */
+.transition-spring {
+  transition: all 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Google Material Symbols Outlined */

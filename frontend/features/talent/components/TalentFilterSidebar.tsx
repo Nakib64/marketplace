@@ -18,11 +18,12 @@ const RATE_BRACKETS = [
 ];
 
 const SPECIALIZATIONS = [
-  'Solidity & EVM',
-  'Fullstack Web3',
-  'Rust & Solana',
+  'Fullstack Web',
   'UI/UX Design',
-  'Smart Contract Audit',
+  'Mobile Apps',
+  'Backend & APIs',
+  'AI & Data',
+  'Cybersecurity',
 ];
 
 export function TalentFilterSidebar({
@@ -35,16 +36,16 @@ export function TalentFilterSidebar({
   const currentMax = currentParams.maxRate;
 
   return (
-    <aside className="w-full lg:w-72 shrink-0 flex flex-col gap-6 p-6 rounded-2xl bg-surface-container border border-outline-variant/30 sticky top-24">
+    <aside className="w-full lg:w-72 shrink-0 flex flex-col gap-6 p-6 rounded-2xl bg-white border border-[#e4ebe4] shadow-xs sticky top-28">
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-outline-variant/30">
+      <div className="flex items-center justify-between pb-3 border-b border-[#e4ebe4]">
         <div className="flex items-center gap-2">
-          <SlidersHorizontal className="w-4 h-4 text-primary" />
-          <h3 className="text-sm font-bold text-on-surface">Filter Talent</h3>
+          <SlidersHorizontal className="w-4 h-4 text-[#14a800]" />
+          <h3 className="text-sm font-semibold text-[#001e00]">Filter Talent</h3>
         </div>
         <button
           onClick={onReset}
-          className="text-xs text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 cursor-pointer"
+          className="text-xs text-[#14a800] hover:underline flex items-center gap-1 cursor-pointer"
         >
           <RotateCcw className="w-3 h-3" />
           <span>Reset</span>
@@ -52,21 +53,22 @@ export function TalentFilterSidebar({
       </div>
 
       {/* Specialization List */}
-      <div className="flex flex-col gap-3">
-        <label className="text-xs font-bold text-on-surface uppercase tracking-wider">
+      <div className="flex flex-col gap-2.5">
+        <label className="text-xs font-semibold text-[#5e6d55] uppercase tracking-wider">
           Specialization
         </label>
-        <div className="space-y-1.5">
+        <div className="space-y-1">
           {SPECIALIZATIONS.map((spec) => {
             const isSelected = currentSkill === spec;
             return (
               <button
                 key={spec}
                 onClick={() => onFilterChange({ skills: isSelected ? undefined : spec })}
-                className={`w-full text-left px-3 py-2 rounded-xl text-xs font-medium transition-colors flex items-center justify-between cursor-pointer ${isSelected
-                    ? 'bg-primary-container text-on-primary-container font-semibold'
-                    : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
-                  }`}
+                className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-colors flex items-center justify-between cursor-pointer ${
+                  isSelected
+                    ? 'bg-[#f2f7f2] text-[#14a800] font-semibold'
+                    : 'text-[#001e00] hover:bg-[#f2f7f2]'
+                }`}
               >
                 <span>{spec}</span>
               </button>
@@ -76,12 +78,12 @@ export function TalentFilterSidebar({
       </div>
 
       {/* Hourly Rate (BDT/hr) */}
-      <div className="flex flex-col gap-3 pt-3 border-t border-outline-variant/20">
+      <div className="flex flex-col gap-3 pt-3 border-t border-[#e4ebe4]">
         <div className="flex items-center justify-between">
-          <label className="text-xs font-bold text-on-surface uppercase tracking-wider">
+          <label className="text-xs font-semibold text-[#5e6d55] uppercase tracking-wider">
             Hourly Rate
           </label>
-          <span className="text-xs  text-primary font-semibold">
+          <span className="text-xs text-[#14a800] font-semibold">
             {currentMin || currentMax
               ? `৳${currentMin || 0} - ৳${currentMax || 5000}+`
               : 'Any rate'}
@@ -100,10 +102,11 @@ export function TalentFilterSidebar({
                     maxRate: isMatch ? undefined : bracket.max,
                   })
                 }
-                className={`py-2 px-2.5 rounded-xl border text-xs  text-center transition-colors cursor-pointer ${isMatch
-                    ? 'bg-primary-container border-primary text-on-primary-container font-bold'
-                    : 'bg-surface-container-low border-outline-variant/30 text-on-surface-variant hover:border-primary/40 hover:text-on-surface'
-                  }`}
+                className={`py-2 px-2.5 rounded-full border text-xs text-center transition-colors cursor-pointer ${
+                  isMatch
+                    ? 'bg-[#14a800] border-[#14a800] text-white font-medium'
+                    : 'bg-[#f2f7f2] border-transparent text-[#001e00] hover:bg-[#e4ebe4]'
+                }`}
               >
                 {bracket.label}
               </button>
@@ -113,18 +116,18 @@ export function TalentFilterSidebar({
       </div>
 
       {/* Trust & Verification */}
-      <div className="flex flex-col gap-3 pt-3 border-t border-outline-variant/20">
-        <label className="text-xs font-bold text-on-surface uppercase tracking-wider">
+      <div className="flex flex-col gap-3 pt-3 border-t border-[#e4ebe4]">
+        <label className="text-xs font-semibold text-[#5e6d55] uppercase tracking-wider">
           Trust &amp; Reliability
         </label>
-        <div className="space-y-2 text-xs text-on-surface-variant">
-          <label className="flex items-center gap-2 cursor-pointer hover:text-on-surface">
-            <input type="checkbox" defaultChecked className="accent-primary rounded" />
-            <span>KYC Verified Only</span>
+        <div className="space-y-2 text-xs text-[#001e00]">
+          <label className="flex items-center gap-2.5 cursor-pointer">
+            <input type="checkbox" defaultChecked className="accent-[#14a800] w-4 h-4 rounded cursor-pointer" />
+            <span>Identity Verified</span>
           </label>
-          <label className="flex items-center gap-2 cursor-pointer hover:text-on-surface">
-            <input type="checkbox" defaultChecked className="accent-primary rounded" />
-            <span>100% Job Completion</span>
+          <label className="flex items-center gap-2.5 cursor-pointer">
+            <input type="checkbox" defaultChecked className="accent-[#14a800] w-4 h-4 rounded cursor-pointer" />
+            <span>Top Rated &amp; Rising Talent</span>
           </label>
         </div>
       </div>

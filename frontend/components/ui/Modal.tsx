@@ -47,28 +47,29 @@ export function Modal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity duration-200"
         onClick={onClose}
       />
 
       {/* Modal Dialog */}
       <div
         className={cn(
-          'relative w-full rounded-2xl bg-surface-container-low p-6 shadow-2xl transition-all border border-outline-variant/30 text-on-surface z-10',
+          'relative w-full rounded-2xl bg-white p-6 sm:p-8 shadow-2xl border border-[#e4ebe4] text-[#001e00] z-10 transition-all duration-150',
           maxWidthMap[maxWidth]
         )}
       >
-        <div className="flex items-start justify-between pb-3">
+        <div className="flex items-start justify-between pb-4">
           <div>
-            {title && <h2 className="text-lg font-semibold text-on-surface">{title}</h2>}
-            {description && <p className="text-xs text-on-surface-variant mt-1">{description}</p>}
+            {title && <h2 className="text-xl font-bold tracking-tight text-[#001e00]">{title}</h2>}
+            {description && <p className="text-sm text-[#5e6d55] mt-1 leading-relaxed">{description}</p>}
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"
+            aria-label="Close dialog"
+            className="rounded-full p-2 text-[#5e6d55] hover:bg-[#f2f7f2] hover:text-[#001e00] active:scale-95 transition-all cursor-pointer"
           >
             <X className="h-5 w-5" />
           </button>
@@ -76,7 +77,7 @@ export function Modal({
 
         <div className="py-2">{children}</div>
 
-        {footer && <div className="mt-4 flex items-center justify-end gap-3 pt-3 border-t border-outline-variant/20">{footer}</div>}
+        {footer && <div className="mt-5 flex items-center justify-end gap-3 pt-4 border-t border-[#e4ebe4]">{footer}</div>}
       </div>
     </div>
   );

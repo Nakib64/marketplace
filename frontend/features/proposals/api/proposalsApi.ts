@@ -21,6 +21,17 @@ export const proposalsApi = {
     return data;
   },
 
+  /**
+   * Client sends an initial message to candidate, opening a workroom conversation thread
+   */
+  async replyToProposal(proposalId: string, message: string): Promise<{ conversation: { id: string }; message: unknown }> {
+    const { data } = await apiClient.post<{ conversation: { id: string }; message: unknown }>(
+      `/chat/proposals/${proposalId}/reply`,
+      { message }
+    );
+    return data;
+  },
+
 
   /**
    * Freelancer submits a bid proposal for an open job

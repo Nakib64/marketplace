@@ -15,6 +15,7 @@ import { ContractAuditTrailCard } from './ContractAuditTrailCard';
 import { ContractVaultSidebar } from './ContractVaultSidebar';
 import { ContractExtensionModal } from './ContractExtensionModal';
 import { DoubleBlindReviewModal } from './DoubleBlindReviewModal';
+import { useAuthStore } from '@/stores/useAuthStore';
 import { Button } from '@/components/ui/Button';
 
 interface ContractDetailsViewProps {
@@ -23,6 +24,7 @@ interface ContractDetailsViewProps {
 
 export const ContractDetailsView: React.FC<ContractDetailsViewProps> = ({ contractId }) => {
   const router = useRouter();
+  const user = useAuthStore((s) => s.user);
   const [contract, setContract] = useState<ContractDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -92,6 +94,8 @@ export const ContractDetailsView: React.FC<ContractDetailsViewProps> = ({ contra
     );
   }
 
+  const isClient = user?.id === contract.clientId || user?.role === 'CLIENT';
+
   return (
     <main className="min-h-screen bg-surface px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
@@ -124,7 +128,108 @@ export const ContractDetailsView: React.FC<ContractDetailsViewProps> = ({ contra
                   <span>Submit Double-Blind Review</span>
                 </button>
               </div>
+            ) : contract.status === 'PENDING_APPROVAL' ? (
+              isClient ? (
+                /* Client inspection & approval action card */
+                <div className="bg-surface-container-low border-2 border-primary/40 rounded-2xl p-6 shadow-md flex flex-col gap-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 border border-primary/20">
+                        <span className="material-symbols-outlined text-[28px]">fact_check</span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-base font-bold text-on-surface">Milestone Deliverables Submitted for Review</h3>
+                          <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold">Action Required</span>
+                        </div>
+                        <p className="text-xs text-on-surface-variant leading-relaxed">
+                          The freelancer has completed the work deliverables and submitted them for inspection. Please review the deliverable files and release the protected escrow payment.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-outline-variant/20">
+                    <div className="flex items-center gap-2 text-xs text-on-surface-variant">
+                      <span className="material-symbols-outlined text-primary text-[16px]">schedule</span>
+                      <span>48h Review SLA Window active</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Link
+                        href={`/contracts/${contract.id}/review`}
+                        className="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-container text-on-primary text-xs font-bold transition-all flex items-center gap-2 shadow-md cursor-pointer"
+                      >
+                        <span className="material-symbols-outlined text-[16px]">verified</span>
+                        <span>Review Deliverables &amp; Release Payment</span>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                /* Freelancer waiting state */
+                <div className="bg-surface-container-low border border-outline-variant/30 rounded-2xl p-6 shadow-sm flex flex-col gap-3">
+                  <div className="flex items-start gap-3.5">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                      <span className="material-symbols-outlined text-[22px]">hourglass_top</span>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-on-surface">Deliverables Submitted — Awaiting Hirer Approval</h3>
+                      <p className="text-xs text-on-surface-variant mt-1 leading-relaxed">
+                        Your deliverable has been handed over to the client for inspection. Funds will be credited directly to your wallet upon client approval.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-end gap-2 pt-2 border-t border-outline-variant/20">
+                    <button
+                      type="button"
+                      onClick={() => router.push(`/messages?contractId=${contract.id}`)}
+                      className="px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold transition-colors flex items-center gap-1.5 border border-outline-variant/30 cursor-pointer"
+                    >
+                      <span className="material-symbols-outlined text-[15px] text-primary">chat</span>
+                      <span>Message Hirer</span>
+                    </button>
+                  </div>
+                </div>
+              )
+            ) : contract.status === 'DISPUTED' ? (
+              <div className="bg-surface-container-low border border-amber-500/30 rounded-2xl p-6 shadow-sm flex flex-col gap-3">
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-amber-500 text-[26px]">gavel</span>
+                  <div>
+                    <h3 className="text-sm font-bold text-on-surface">Contract Under Dispute Resolution</h3>
+                    <p className="text-xs text-on-surface-variant">Arbitration has been initiated. Support administrators are reviewing contract deliverables.</p>
+                  </div>
+                </div>
+              </div>
+            ) : isClient ? (
+              /* Client in-progress waiting state */
+              <div className="bg-surface-container-low border border-outline-variant/30 rounded-2xl p-6 shadow-sm flex flex-col gap-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-start gap-3.5">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                      <span className="material-symbols-outlined text-[22px]">motion_photos_on</span>
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-sm font-bold text-on-surface">Freelancer is Actively Working</h3>
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold">100% Escrow Protected</span>
+                      </div>
+                      <p className="text-xs text-on-surface-variant mt-1 leading-relaxed">
+                        Funds are safely held in escrow. You will be notified immediately when the freelancer submits the milestone deliverable for your review.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => router.push(`/messages?contractId=${contract.id}`)}
+                    className="px-3.5 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold transition-colors flex items-center gap-1.5 border border-outline-variant/30 shrink-0 cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-[16px] text-primary">chat</span>
+                    <span>Open Workroom Chat</span>
+                  </button>
+                </div>
+              </div>
             ) : (
+              /* Freelancer active work submission form */
               <ContractWorkSubmissionForm
                 onSubmit={handleWorkSubmit}
                 onRequestExtension={() => setIsExtensionModalOpen(true)}
@@ -138,7 +243,7 @@ export const ContractDetailsView: React.FC<ContractDetailsViewProps> = ({ contra
           <aside className="lg:col-span-4 sticky top-20">
             <ContractVaultSidebar
               contract={contract}
-              onMessageHirer={() => router.push('/messages')}
+              onMessageHirer={() => router.push(`/messages?contractId=${contract.id}`)}
             />
           </aside>
         </div>

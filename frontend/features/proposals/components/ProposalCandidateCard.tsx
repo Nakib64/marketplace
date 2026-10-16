@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { toast } from 'sonner';
 import { ProposalItem } from '../types/proposalsTypes';
 import { ProposalMilestoneList } from './ProposalMilestoneList';
+import { ProposalMessageModal } from './ProposalMessageModal';
 
 interface ProposalCandidateCardProps {
   proposal: ProposalItem;
@@ -13,6 +14,7 @@ interface ProposalCandidateCardProps {
 
 export const ProposalCandidateCard: React.FC<ProposalCandidateCardProps> = ({ proposal, onAccept }) => {
   const [shortlisted, setShortlisted] = useState(proposal.isShortlisted ?? false);
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const initial = proposal.freelancerName?.charAt(0).toUpperCase() || 'T';
 
   return (
@@ -109,25 +111,39 @@ export const ProposalCandidateCard: React.FC<ProposalCandidateCardProps> = ({ pr
           <button
             type="button"
             onClick={() => setShortlisted(!shortlisted)}
-            className="px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors text-xs font-semibold flex items-center gap-1.5 border border-outline-variant/20"
+            className="px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors text-xs font-semibold flex items-center gap-1.5 border border-outline-variant/20 cursor-pointer"
           >
             <span className={`material-symbols-outlined text-[16px] ${shortlisted ? 'text-primary' : 'text-on-surface-variant'}`}>
               bookmark
             </span>
             <span>{shortlisted ? 'Shortlisted' : 'Shortlist'}</span>
           </button>
+          <button
+            type="button"
+            onClick={() => setIsMessageModalOpen(true)}
+            className="px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors text-xs font-semibold flex items-center gap-1.5 border border-outline-variant/20 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[16px] text-primary">forum</span>
+            <span>Message Candidate</span>
+          </button>
         </div>
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => onAccept(proposal.id)}
-            className="px-4 py-2 rounded-xl bg-primary hover:bg-primary-container text-on-primary transition-all text-xs font-bold flex items-center gap-1.5 shadow-sm"
+            className="px-4 py-2 rounded-xl bg-primary hover:bg-primary-container text-on-primary transition-all text-xs font-bold flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <span className="material-symbols-outlined text-[16px]">check_circle</span>
             <span>Accept Proposal &amp; Fund Escrow</span>
           </button>
         </div>
       </div>
+
+      <ProposalMessageModal
+        isOpen={isMessageModalOpen}
+        proposal={proposal}
+        onClose={() => setIsMessageModalOpen(false)}
+      />
     </div>
   );
 };

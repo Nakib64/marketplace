@@ -26,12 +26,22 @@ describe('ContractsService', () => {
       proposal: {
         findUnique: vi.fn(),
         update: vi.fn(),
+        updateMany: vi.fn(),
       },
       contract: {
         findUnique: vi.fn(),
         findMany: vi.fn(),
         create: vi.fn(),
         update: vi.fn(),
+      },
+      conversation: {
+        findUnique: vi.fn().mockResolvedValue(null),
+        findFirst: vi.fn().mockResolvedValue(null),
+        create: vi.fn().mockResolvedValue({ id: 'conv-1' }),
+        update: vi.fn().mockResolvedValue({ id: 'conv-1' }),
+      },
+      message: {
+        create: vi.fn().mockResolvedValue({ id: 'msg-1' }),
       },
       user: {
         findUnique: vi.fn(),

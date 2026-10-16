@@ -15,11 +15,11 @@ export function JobFilterSidebar({ currentParams, onUpdate, onClear }: JobFilter
   const [maxBudget, setMaxBudget] = useState(currentParams.maxBudget || '');
 
   const categories = [
-    { label: 'Fullstack & Backend', slug: 'development', count: '2,110' },
-    { label: 'UI/UX & Design', slug: 'design', count: '890' },
+    { label: 'Development & IT', slug: 'development', count: '2,110' },
+    { label: 'Design & Creative', slug: 'design', count: '890' },
     { label: 'Mobile Applications', slug: 'mobile', count: '1,420' },
-    { label: 'AI & Machine Learning', slug: 'ai', count: '740' },
-    { label: 'Cybersecurity & Audit', slug: 'security', count: '530' },
+    { label: 'AI & Data Science', slug: 'ai', count: '740' },
+    { label: 'Security & Audit', slug: 'security', count: '530' },
   ];
 
   const applyBudget = (min?: number, max?: number) => {
@@ -27,16 +27,16 @@ export function JobFilterSidebar({ currentParams, onUpdate, onClear }: JobFilter
   };
 
   return (
-    <aside className="w-full lg:w-[280px] shrink-0 bg-surface-container rounded-2xl p-5 border border-outline-variant/40 flex flex-col gap-6 shadow-xs">
+    <aside className="w-full lg:w-[280px] shrink-0 bg-white rounded-2xl p-6 border border-[#e4ebe4] flex flex-col gap-6 shadow-xs">
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-outline-variant/30">
+      <div className="flex items-center justify-between pb-3 border-b border-[#e4ebe4]">
         <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-primary" />
-          <h3 className="text-sm font-bold text-on-surface">Filter Results</h3>
+          <Filter className="w-4 h-4 text-[#14a800]" />
+          <h3 className="text-sm font-semibold text-[#001e00]">Filter By</h3>
         </div>
         <button
           onClick={onClear}
-          className="text-xs  text-primary hover:underline flex items-center gap-1 cursor-pointer"
+          className="text-xs text-[#14a800] hover:underline flex items-center gap-1 cursor-pointer"
         >
           <RotateCcw className="w-3 h-3" />
           <span>Clear All</span>
@@ -45,30 +45,30 @@ export function JobFilterSidebar({ currentParams, onUpdate, onClear }: JobFilter
 
       {/* Categories */}
       <div className="flex flex-col gap-2.5">
-        <span className="text-[11px]  uppercase tracking-wider text-outline font-semibold">
-          Category &amp; Domain
+        <span className="text-xs uppercase tracking-wider text-[#5e6d55] font-semibold">
+          Category
         </span>
-        <div className="flex flex-col gap-2 text-xs">
+        <div className="flex flex-col gap-2.5 text-xs">
           {categories.map((cat) => {
             const isSelected = currentParams.category === cat.slug;
             return (
               <label
                 key={cat.slug}
                 onClick={() => onUpdate({ category: isSelected ? undefined : cat.slug })}
-                className="flex items-center justify-between cursor-pointer group py-0.5 select-none"
+                className="flex items-center justify-between cursor-pointer group select-none"
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5">
                   <input
                     type="checkbox"
                     checked={isSelected}
                     readOnly
-                    className="accent-primary w-3.5 h-3.5 rounded"
+                    className="accent-[#14a800] w-4 h-4 rounded cursor-pointer"
                   />
-                  <span className={`transition-colors ${isSelected ? 'text-primary font-semibold' : 'text-on-surface group-hover:text-primary'}`}>
+                  <span className={`transition-colors ${isSelected ? 'text-[#14a800] font-semibold' : 'text-[#001e00] group-hover:text-[#14a800]'}`}>
                     {cat.label}
                   </span>
                 </div>
-                <span className="text-[11px]  text-outline">{cat.count}</span>
+                <span className="text-xs text-[#5e6d55]">{cat.count}</span>
               </label>
             );
           })}
@@ -76,32 +76,32 @@ export function JobFilterSidebar({ currentParams, onUpdate, onClear }: JobFilter
       </div>
 
       {/* Budget Range */}
-      <div className="flex flex-col gap-2.5 pt-2 border-t border-outline-variant/30">
-        <div className="flex items-center justify-between text-xs ">
-          <span className="uppercase text-[11px] text-outline font-semibold">Budget Range</span>
-          <span className="text-primary font-semibold">BDT (৳)</span>
+      <div className="flex flex-col gap-3 pt-3 border-t border-[#e4ebe4]">
+        <div className="flex items-center justify-between text-xs">
+          <span className="uppercase text-xs text-[#5e6d55] font-semibold">Budget Range</span>
+          <span className="text-[#14a800] font-semibold">BDT (৳)</span>
         </div>
         <div className="grid grid-cols-2 gap-2">
-          <div className="flex items-center bg-surface-container-low px-2.5 py-1.5 rounded-lg border border-outline-variant/40">
-            <span className="text-xs text-outline  mr-1">৳</span>
+          <div className="flex items-center bg-[#f2f7f2] px-3 py-2 rounded-xl border border-[#e4ebe4]">
+            <span className="text-xs text-[#5e6d55] mr-1">৳</span>
             <input
               type="number"
               placeholder="Min"
               value={minBudget}
               onChange={(e) => setMinBudget(e.target.value)}
               onBlur={() => onUpdate({ minBudget: minBudget ? Number(minBudget) : undefined })}
-              className="bg-transparent text-xs  text-on-surface w-full focus:outline-none"
+              className="bg-transparent text-xs text-[#001e00] w-full focus:outline-none"
             />
           </div>
-          <div className="flex items-center bg-surface-container-low px-2.5 py-1.5 rounded-lg border border-outline-variant/40">
-            <span className="text-xs text-outline  mr-1">৳</span>
+          <div className="flex items-center bg-[#f2f7f2] px-3 py-2 rounded-xl border border-[#e4ebe4]">
+            <span className="text-xs text-[#5e6d55] mr-1">৳</span>
             <input
               type="number"
               placeholder="Max"
               value={maxBudget}
               onChange={(e) => setMaxBudget(e.target.value)}
               onBlur={() => onUpdate({ maxBudget: maxBudget ? Number(maxBudget) : undefined })}
-              className="bg-transparent text-xs  text-on-surface w-full focus:outline-none"
+              className="bg-transparent text-xs text-[#001e00] w-full focus:outline-none"
             />
           </div>
         </div>
@@ -118,7 +118,7 @@ export function JobFilterSidebar({ currentParams, onUpdate, onClear }: JobFilter
               key={b.label}
               type="button"
               onClick={() => applyBudget(b.min, b.max)}
-              className="text-[11px]  px-2.5 py-1 bg-surface-container-low hover:bg-surface-container-high rounded-lg text-on-surface-variant hover:text-primary transition-colors border border-outline-variant/30 cursor-pointer"
+              className="text-xs px-2.5 py-1 bg-[#f2f7f2] hover:bg-[#e4ebe4] rounded-full text-[#001e00] transition-colors cursor-pointer"
             >
               {b.label}
             </button>

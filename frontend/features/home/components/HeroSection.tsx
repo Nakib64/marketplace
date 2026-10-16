@@ -30,121 +30,167 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden pt-12 pb-16 px-4 md:px-8">
-      {/* Top Ambient Glow Halo from Stitch */}
-      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[720px] h-[360px] bg-gradient-to-b from-primary/10 via-primary-container/5 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
+    <section className="relative w-full bg-white pt-8 pb-16 px-4 md:px-8 border-b border-[#e4ebe4]">
+      <div className="max-w-[1400px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center pt-6 pb-12">
+          {/* Left Column: Upwork Editorial Headline & Actions */}
+          <div className="lg:col-span-7 flex flex-col items-start text-left">
+            {/* Status Pill */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#f2f7f2] border border-[#e4ebe4] text-xs font-semibold text-[#001e00] mb-6">
+              <span className="w-2 h-2 rounded-full bg-[#14a800]" />
+              <span className="text-[#14a800] font-bold">Banglance Marketplace</span>
+              <span className="text-[#9aaa97]">•</span>
+              <span className="text-[#5e6d55]">100% Milestone Protection</span>
+            </div>
 
-      <div className="max-w-[1280px] mx-auto flex flex-col items-center text-center">
-        {/* Status Badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface-container-high border border-outline-variant/40 shadow-sm mb-6">
-          <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-          <span className="text-xs  text-primary uppercase tracking-wider font-semibold">
-            Marketplace Live
-          </span>
-          <span className="text-outline">/</span>
-          <span className="text-xs text-on-surface-variant">100% Payment Protection</span>
+            {/* Upwork Iconic Editorial Headline */}
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-serif text-[#001e00] tracking-tight leading-[1.08] mb-6 font-normal">
+              How work <br className="hidden sm:block" />
+              <span className="italic font-normal text-[#14a800]">should work</span>
+            </h1>
+
+            {/* Subtitle */}
+            <p className="text-lg sm:text-xl text-[#5e6d55] max-w-xl leading-relaxed mb-8">
+              Forget the old rules. You can have the best software engineers, designers, and specialists. Right now. Right here.
+            </p>
+
+            {/* Upwork Dual CTAs */}
+            <div className="flex flex-wrap items-center gap-3.5 mb-10 w-full sm:w-auto">
+              <button
+                type="button"
+                onClick={() => router.push('/freelancers')}
+                className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#14a800] hover:bg-[#108a00] active:bg-[#0d7000] text-white font-semibold text-base transition-colors shadow-xs cursor-pointer text-center"
+              >
+                Find talent
+              </button>
+              <button
+                type="button"
+                onClick={() => router.push('/jobs')}
+                className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-transparent border-2 border-[#14a800] text-[#14a800] hover:bg-[#f2f7f2] font-semibold text-base transition-colors cursor-pointer text-center"
+              >
+                Find work
+              </button>
+            </div>
+
+            {/* Integrated Upwork Search Pill */}
+            <form
+              onSubmit={handleSearch}
+              className="w-full max-w-xl flex items-center bg-white border border-[#d5e0d5] hover:border-[#14a800] rounded-full p-1.5 shadow-2xs transition-colors"
+            >
+              <div className="flex items-center gap-2.5 flex-1 px-3">
+                <Search className="w-5 h-5 text-[#001e00] shrink-0" />
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder={
+                    activeMode === 'talent'
+                      ? 'Try "React Engineer", "Figma Designer"...'
+                      : 'Try "Mobile App", "NestJS Backend"...'
+                  }
+                  className="w-full bg-transparent text-sm text-[#001e00] placeholder:text-[#9aaa97] focus:outline-none py-1.5"
+                />
+              </div>
+
+              <select
+                value={activeMode}
+                onChange={(e) => setSearchMode(e.target.value as 'talent' | 'jobs')}
+                className="hidden sm:block text-xs font-semibold text-[#001e00] bg-[#f2f7f2] border border-[#e4ebe4] rounded-full px-3 py-2 cursor-pointer focus:outline-none mr-1.5"
+              >
+                <option value="talent">Talent</option>
+                <option value="jobs">Projects</option>
+              </select>
+
+              <button
+                type="submit"
+                aria-label="Search"
+                className="w-10 h-10 rounded-full bg-[#14a800] hover:bg-[#108a00] text-white flex items-center justify-center shrink-0 transition-colors cursor-pointer"
+              >
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </form>
+          </div>
+
+          {/* Right Column: Upwork Showcase Card with Floating Talent Pills */}
+          <div className="lg:col-span-5 relative">
+            <div className="relative rounded-3xl bg-[#f2f7f2] border border-[#e4ebe4] p-8 md:p-10 flex flex-col justify-between overflow-hidden shadow-xs">
+              <div className="relative z-10">
+                <span className="text-xs uppercase font-bold text-[#14a800] tracking-wider block mb-2">
+                  FOR CLIENTS &amp; TALENT
+                </span>
+                <h3 className="text-3xl font-serif text-[#001e00] font-normal leading-tight mb-4">
+                  Up your work game, it’s free
+                </h3>
+                <p className="text-sm text-[#5e6d55] leading-relaxed mb-6">
+                  Access top 1% technical talent in Bangladesh. Hire with 100% financial protection and zero payment clearance delay.
+                </p>
+              </div>
+
+              {/* Floating Talent Badges (Upwork Style) */}
+              <div className="space-y-3 relative z-10 pt-2">
+                <div className="flex items-center justify-between p-3.5 bg-white rounded-2xl border border-[#e4ebe4] shadow-xs">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-[#13544e] text-white font-bold flex items-center justify-center text-sm">
+                      N
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-[#001e00] flex items-center gap-1.5">
+                        Nafis A.
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#14a800]" />
+                      </h4>
+                      <p className="text-[11px] text-[#5e6d55]">Fullstack Architect • ৳1,500/hr</p>
+                    </div>
+                  </div>
+                  <span className="text-xs font-bold text-[#14a800] bg-[#eaf5ea] px-2.5 py-1 rounded-full">
+                    ★ 5.0 (140+ jobs)
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between p-3.5 bg-white rounded-2xl border border-[#e4ebe4] shadow-xs">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-[#14a800] text-white font-bold flex items-center justify-center text-sm">
+                      S
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-[#001e00] flex items-center gap-1.5">
+                        Sadia R.
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#14a800]" />
+                      </h4>
+                      <p className="text-[11px] text-[#5e6d55]">Product Designer • ৳1,200/hr</p>
+                    </div>
+                  </div>
+                  <span className="text-xs font-bold text-[#14a800] bg-[#eaf5ea] px-2.5 py-1 rounded-full">
+                    ★ 4.9 (95 jobs)
+                  </span>
+                </div>
+              </div>
+
+              {/* Security Pill */}
+              <div className="mt-6 pt-5 border-t border-[#e4ebe4] flex items-center justify-between text-xs text-[#5e6d55]">
+                <span className="flex items-center gap-1.5 font-semibold text-[#001e00]">
+                  <ShieldCheck className="w-4 h-4 text-[#14a800]" />
+                  SSLCommerz Escrow
+                </span>
+                <span className="flex items-center gap-1 font-semibold text-[#001e00]">
+                  <Zap className="w-4 h-4 text-[#14a800]" />
+                  bKash / Nagad Instant
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Main Headline */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold max-w-4xl text-on-surface tracking-tight mb-4">
-          Where Top Talent Meets <span className="text-primary">Secured Trust</span> &amp; Safe Payments
-        </h1>
-
-        {/* Subtitle */}
-        <p className="text-sm sm:text-base md:text-lg text-on-surface-variant max-w-2xl mb-8 leading-relaxed">
-          Hire verified software engineers, UI/UX designers, and specialists with 100% protected payments and automated mobile payouts.
-        </p>
-
-        {/* Pill Toggle: Find Talent / Find Work */}
-        {!isClient && (
-          <div className="inline-flex p-1 rounded-full bg-surface-container-lowest shadow-inner mb-6 border border-outline-variant/30">
-            <button
-              type="button"
-              onClick={() => setSearchMode('talent')}
-              className={`px-6 py-2 rounded-full text-xs font-semibold transition-all ${
-                searchMode === 'talent'
-                  ? 'bg-surface-container-high text-on-surface shadow-sm font-bold'
-                  : 'text-on-surface-variant hover:text-on-surface'
-              }`}
-            >
-              Find Talent
-            </button>
-            <button
-              type="button"
-              onClick={() => setSearchMode('jobs')}
-              className={`px-6 py-2 rounded-full text-xs font-semibold transition-all ${
-                searchMode === 'jobs'
-                  ? 'bg-surface-container-high text-on-surface shadow-sm font-bold'
-                  : 'text-on-surface-variant hover:text-on-surface'
-              }`}
-            >
-              Find Work
-            </button>
-          </div>
-        )}
-
-        {/* Integrated Search Bar */}
-        <form
-          onSubmit={handleSearch}
-          className="w-full max-w-3xl bg-surface-container p-2.5 rounded-2xl shadow-xl flex flex-col md:flex-row items-center gap-2 mb-8 border border-outline-variant/50"
-        >
-          <div className="flex items-center gap-2 flex-1 px-3 w-full">
-            <Search className="text-primary w-5 h-5 shrink-0" />
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={
-                searchMode === 'talent'
-                  ? 'Fullstack Developer, Figma Designer, NestJS Architect...'
-                  : 'Search fixed bounties, hourly contracts, mobile apps...'
-              }
-              className="w-full bg-transparent text-sm text-on-surface placeholder:text-outline focus:outline-none py-1.5"
-            />
-          </div>
-
-          <div className="h-6 w-[1px] bg-outline-variant/40 hidden md:block" />
-
-          <div className="flex items-center px-3 w-full md:w-auto">
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="bg-transparent text-xs text-on-surface-variant focus:outline-none py-1.5 cursor-pointer pr-4 w-full"
-            >
-              <option value="all" className="bg-surface-container text-on-surface">All Categories</option>
-              <option value="development" className="bg-surface-container text-on-surface">Development &amp; Tech</option>
-              <option value="design" className="bg-surface-container text-on-surface">UI/UX &amp; Design</option>
-              <option value="fullstack" className="bg-surface-container text-on-surface">Fullstack &amp; Mobile</option>
-              <option value="security" className="bg-surface-container text-on-surface">Security &amp; Audit</option>
-            </select>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full md:w-auto px-6 py-3 rounded-xl bg-primary text-surface font-semibold text-xs hover:bg-tertiary transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 shrink-0 cursor-pointer shadow-md"
-          >
-            <span>{searchMode === 'talent' ? 'Search Talent' : 'Search Projects'}</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </form>
-
-        {/* Quick Trust Pills */}
-        <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-on-surface-variant ">
-          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container border border-outline-variant/30">
-            <ShieldCheck className="text-primary w-4 h-4" />
-            <span>SSLCommerz Safe Payment</span>
-          </div>
-          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container border border-outline-variant/30">
-            <Zap className="text-primary w-4 h-4" />
-            <span>bKash &amp; Nagad Payouts</span>
-          </div>
-          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container border border-outline-variant/30">
-            <CheckCircle2 className="text-secondary w-4 h-4" />
-            <span>Verified Talent Dossiers</span>
-          </div>
-          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container border border-outline-variant/30">
-            <Percent className="text-primary-container w-4 h-4" />
-            <span>Double-Blind Reviews</span>
+        {/* Upwork "Trusted by" Bar */}
+        <div className="pt-8 border-t border-[#e4ebe4] flex flex-col md:flex-row items-center gap-6 text-xs text-[#5e6d55]">
+          <span className="font-semibold uppercase tracking-wider text-[11px] shrink-0 text-[#9aaa97]">
+            Trusted by leading teams
+          </span>
+          <div className="flex flex-wrap items-center justify-between gap-8 md:gap-12 flex-1 font-bold text-base text-[#9aaa97]">
+            <span className="hover:text-[#001e00] transition-colors">Microsoft</span>
+            <span className="hover:text-[#001e00] transition-colors">Airbnb</span>
+            <span className="hover:text-[#001e00] transition-colors">Automattic</span>
+            <span className="hover:text-[#001e00] transition-colors">Bissell</span>
+            <span className="hover:text-[#001e00] transition-colors">GoDaddy</span>
           </div>
         </div>
       </div>

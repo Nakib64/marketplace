@@ -44,78 +44,102 @@ export function Navbar() {
 
   const dashboardHref = isClient ? '/client/jobs' : '/freelancer/dashboard';
 
+  const subCategories = [
+    { label: 'Development & IT', href: '/jobs?category=development' },
+    { label: 'AI Services', href: '/jobs?category=ai' },
+    { label: 'Design & Creative', href: '/jobs?category=design' },
+    { label: 'Sales & Marketing', href: '/jobs?category=marketing' },
+    { label: 'Writing & Translation', href: '/jobs?category=writing' },
+    { label: 'Admin & Customer Support', href: '/jobs?category=admin' },
+    { label: 'Finance & Accounting', href: '/jobs?category=finance' },
+    { label: 'Engineering & Architecture', href: '/jobs?category=engineering' },
+  ];
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl border-b border-outline-variant/40">
-      <div className="h-20 max-w-[1280px] mx-auto px-4 md:px-8 flex items-center justify-between gap-4">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-[#e4ebe4] transition-all shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
+      {/* Main Top Header */}
+      <div className="h-18 max-w-[1400px] mx-auto px-4 md:px-8 flex items-center justify-between gap-6">
         {/* Brand Logo */}
-        <div className="flex items-center gap-6 flex-shrink-0">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center font-bold text-surface text-base">
-              B
-            </div>
-            <span className="text-xl font-bold tracking-tight text-on-surface">
-              Bang<span className="text-primary">lance</span>
+        <div className="flex items-center gap-8 flex-shrink-0">
+          <Link href="/" className="flex items-center gap-2 group">
+            <span className="text-2xl font-black tracking-tight text-[#001e00] flex items-center">
+              bang<span className="text-[#14a800]">lance</span>
+              <span className="w-2 h-2 rounded-full bg-[#14a800] ml-0.5 inline-block" />
             </span>
           </Link>
-        </div>
 
-        {/* Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  'px-3.5 py-1.5 rounded-lg text-sm font-medium transition-colors',
-                  isActive
-                    ? 'bg-surface-container-highest text-primary font-semibold'
-                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
-                )}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
+          {/* Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-6">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    'text-sm font-semibold transition-colors',
+                    isActive
+                      ? 'text-[#14a800]'
+                      : 'text-[#001e00] hover:text-[#14a800]'
+                  )}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+            <Link
+              href="/why-banglance"
+              className="text-sm font-semibold text-[#001e00] hover:text-[#14a800] transition-colors"
+            >
+              Why Banglance
+            </Link>
+            <Link
+              href="/enterprise"
+              className="text-sm font-semibold text-[#001e00] hover:text-[#14a800] transition-colors"
+            >
+              Enterprise
+            </Link>
+          </nav>
+        </div>
 
         {/* Search & Actions */}
         <div className="flex items-center gap-3 flex-shrink-0">
+          {/* Upwork-style Search Pill */}
           <Link
             href={isClient ? '/freelancers' : '/jobs'}
-            className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface-variant text-xs hover:border-outline transition-colors"
+            className="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-full bg-white border border-[#d5e0d5] text-[#5e6d55] text-xs hover:border-[#14a800] transition-colors shadow-2xs"
           >
-            <Search className="w-4 h-4 text-primary" />
-            <span className="text-outline pr-4">
-              {isClient ? 'Search talent...' : 'Search jobs...'}
+            <Search className="w-4 h-4 text-[#001e00]" />
+            <span className="text-[#5e6d55] pr-3 text-xs font-normal">
+              {isClient ? 'Search talent' : 'Search jobs'}
             </span>
-            <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high text-outline text-[10px] ">
-              ⌘K
-            </kbd>
+            <span className="h-4 w-[1px] bg-[#d5e0d5]" />
+            <span className="text-[#001e00] font-semibold text-[11px] flex items-center gap-1">
+              {isClient ? 'Talent' : 'Projects'}
+            </span>
           </Link>
 
           {!isAuthenticated ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <Link
                 href="/login"
-                className="px-4 py-2 rounded-lg border border-outline-variant/60 text-xs font-semibold text-on-surface hover:bg-surface-container-high transition-all"
+                className="text-sm font-semibold text-[#001e00] hover:text-[#14a800] px-3 py-2 transition-colors"
               >
                 Log In
               </Link>
               <Link
                 href="/register"
-                className="px-4 py-2 rounded-lg bg-primary text-surface font-semibold text-xs hover:bg-tertiary transition-all shadow-sm"
+                className="px-5 py-2 rounded-full bg-[#14a800] hover:bg-[#108a00] text-white font-semibold text-sm transition-colors shadow-xs"
               >
                 Sign Up
               </Link>
             </div>
           ) : (
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-3">
               {isClient && (
                 <Link
                   href="/client/jobs/new"
-                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-container text-surface text-xs font-semibold hover:bg-primary transition-all"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#14a800] text-[#14a800] hover:bg-[#f2f7f2] text-xs font-semibold transition-colors"
                 >
                   <PlusCircle className="w-3.5 h-3.5" />
                   <span>Post a Job</span>
@@ -125,9 +149,9 @@ export function Navbar() {
               {isFreelancer && (
                 <Link
                   href="/jobs"
-                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high text-on-surface text-xs font-medium hover:bg-surface-container-highest transition-all"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#f2f7f2] text-[#001e00] hover:bg-[#e4ebe4] text-xs font-medium transition-colors"
                 >
-                  <Briefcase className="w-3.5 h-3.5 text-primary" />
+                  <Briefcase className="w-3.5 h-3.5 text-[#14a800]" />
                   <span>Find Work</span>
                 </Link>
               )}
@@ -135,13 +159,28 @@ export function Navbar() {
               {/* Dedicated Dashboard Button */}
               <Link
                 href={dashboardHref}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-primary text-surface text-xs font-bold hover:bg-tertiary shadow-sm transition-all cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#14a800] hover:bg-[#108a00] text-white text-xs font-bold transition-colors shadow-xs cursor-pointer"
               >
                 <LayoutDashboard className="w-3.5 h-3.5" />
                 <span>Dashboard</span>
               </Link>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Upwork Sub-Navbar Category Navigation Strip */}
+      <div className="hidden md:block border-t border-[#e4ebe4] bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-8 flex items-center gap-7 overflow-x-auto py-2 text-xs font-medium text-[#001e00] no-scrollbar">
+          {subCategories.map((sub) => (
+            <Link
+              key={sub.label}
+              href={sub.href}
+              className="whitespace-nowrap hover:text-[#14a800] transition-colors py-0.5"
+            >
+              {sub.label}
+            </Link>
+          ))}
         </div>
       </div>
     </header>

@@ -5,7 +5,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ContractStatus, JobStatus, ProposalStatus } from '@prisma/client';
+import { ContractStatus, JobStatus, MessageType, ProposalStatus } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service.js';
 import { RedisService } from '../../redis/redis.service.js';
 import { SslCommerzService } from './sslcommerz.service.js';
@@ -153,6 +153,59 @@ export class ContractFormationSubService {
         data: { status: ProposalStatus.ACCEPTED },
       });
 
+      // 5. Reject other pending proposals for this job
+      await tx.proposal.updateMany({
+        where: {
+          jobId: proposal.jobId,
+          id: { not: proposalId },
+          status: ProposalStatus.PENDING,
+        },
+        data: { status: ProposalStatus.REJECTED },
+      });
+
+      // 6. Ensure Conversation exists and initialize workroom with system message
+      let conversation = await tx.conversation.findUnique({
+        where: {
+          jobId_freelancerId: {
+            jobId: proposal.jobId,
+            freelancerId: proposal.freelancerId,
+          },
+        },
+      });
+
+      const initialText = `Contract formed and escrow funded (৳${escrowAmount.toLocaleString()} BDT). Project workroom is now active.`;
+
+      if (!conversation) {
+        conversation = await tx.conversation.create({
+          data: {
+            jobId: proposal.jobId,
+            proposalId,
+            clientId,
+            freelancerId: proposal.freelancerId,
+            lastMessageText: initialText,
+            lastMessageAt: new Date(),
+          },
+        });
+      } else {
+        await tx.conversation.update({
+          where: { id: conversation.id },
+          data: {
+            proposalId: conversation.proposalId || proposalId,
+            lastMessageText: initialText,
+            lastMessageAt: new Date(),
+          },
+        });
+      }
+
+      await tx.message.create({
+        data: {
+          conversationId: conversation.id,
+          senderId: clientId,
+          content: initialText,
+          messageType: MessageType.SYSTEM,
+        },
+      });
+
       return createdContract;
     });
 
@@ -230,10 +283,57 @@ export class ContractFormationSubService {
         data: { status: ProposalStatus.ACCEPTED },
       });
 
-      // 4. Update Client Profile total spent
-      await tx.clientProfile.update({
-        where: { userId: intent.clientId },
-        data: { totalSpent: { increment: intent.escrowAmount } },
+      // 4. Reject other pending proposals for this job
+      await tx.proposal.updateMany({
+        where: {
+          jobId: intent.jobId,
+          id: { not: intent.proposalId },
+          status: ProposalStatus.PENDING,
+        },
+        data: { status: ProposalStatus.REJECTED },
+      });
+
+      // 5. Ensure Conversation exists and initialize workroom with system message
+      let conversation = await tx.conversation.findUnique({
+        where: {
+          jobId_freelancerId: {
+            jobId: intent.jobId,
+            freelancerId: intent.freelancerId,
+          },
+        },
+      });
+
+      const initialText = `Contract formed and escrow funded (৳${Number(intent.escrowAmount).toLocaleString()} BDT). Project workroom is now active.`;
+
+      if (!conversation) {
+        conversation = await tx.conversation.create({
+          data: {
+            jobId: intent.jobId,
+            proposalId: intent.proposalId,
+            clientId: intent.clientId,
+            freelancerId: intent.freelancerId,
+            lastMessageText: initialText,
+            lastMessageAt: new Date(),
+          },
+        });
+      } else {
+        await tx.conversation.update({
+          where: { id: conversation.id },
+          data: {
+            proposalId: conversation.proposalId || intent.proposalId,
+            lastMessageText: initialText,
+            lastMessageAt: new Date(),
+          },
+        });
+      }
+
+      await tx.message.create({
+        data: {
+          conversationId: conversation.id,
+          senderId: intent.clientId,
+          content: initialText,
+          messageType: MessageType.SYSTEM,
+        },
       });
 
       return created;

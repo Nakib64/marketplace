@@ -26,6 +26,10 @@ export class ChatService {
     return this.queryService.getConversation(userId, conversationId);
   }
 
+  async getContractConversation(userId: string, contractId: string) {
+    return this.queryService.getContractConversation(userId, contractId);
+  }
+
   async getMessages(userId: string, conversationId: string, query: ChatQueryDto) {
     return this.queryService.getMessages(userId, conversationId, query);
   }

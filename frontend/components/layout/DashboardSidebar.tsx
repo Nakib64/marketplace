@@ -29,18 +29,18 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ isOpen, onCl
 
       {/* Sidebar Container: Fixed on Desktop, Slide-over Drawer on Mobile */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-surface border-r border-outline-variant/40 flex flex-col transition-transform duration-300 ease-in-out md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#090d16] border-r border-white/10 flex flex-col transition-transform duration-300 ease-in-out md:translate-x-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
         {/* Brand Header */}
-        <div className="h-16 px-5 border-b border-outline-variant/30 flex items-center justify-between shrink-0">
+        <div className="h-16 px-5 border-b border-white/10 flex items-center justify-between shrink-0">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center font-bold text-surface text-base">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-[#00b377] flex items-center justify-center font-bold text-surface text-sm shadow-[0_0_15px_-3px_rgba(0,229,153,0.35)]">
               B
             </div>
             <span className="text-lg font-bold tracking-tight text-on-surface">
-              Bang<span className="text-primary">lance</span>
+              Bang<span className="text-primary font-extrabold">lance</span>
             </span>
           </Link>
 
@@ -48,7 +48,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ isOpen, onCl
           <button
             type="button"
             onClick={onClose}
-            className="md:hidden p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
+            className="md:hidden p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>

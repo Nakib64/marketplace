@@ -38,17 +38,17 @@ export function Testimonials() {
   ];
 
   return (
-    <section className="max-w-[1280px] mx-auto px-4 md:px-8 py-16 w-full">
+    <section className="max-w-[1280px] mx-auto px-4 md:px-8 py-20 w-full">
       {/* Platform Metrics */}
       <PlatformMetrics />
 
       {/* Header */}
-      <div className="text-center max-w-xl mx-auto mb-10">
-        <span className="text-xs  text-primary uppercase tracking-widest block mb-1.5 font-semibold">
-          PEER ENDORSEMENTS
+      <div className="text-center max-w-xl mx-auto mb-12">
+        <span className="text-xs text-[#14a800] uppercase tracking-wider block mb-2 font-bold">
+          CUSTOMER STORIES
         </span>
-        <h2 className="text-2xl md:text-3xl font-bold text-on-surface tracking-tight">
-          Vetted by Builders &amp; Engineering Teams
+        <h2 className="text-3xl md:text-4xl font-display text-[#001e00] tracking-tight font-normal">
+          Real results from verified clients &amp; talent
         </h2>
       </div>
 
@@ -57,42 +57,42 @@ export function Testimonials() {
         {reviews.map((r) => (
           <div
             key={r.author}
-            className="p-6 rounded-2xl bg-surface-container border border-outline-variant/40 shadow-xs flex flex-col justify-between"
+            className="group p-7 rounded-2xl bg-white border border-[#e4ebe4] hover:border-[#14a800] hover:shadow-md transition-all duration-200 flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center justify-between mb-4">
-                <div className="flex text-primary gap-0.5">
+                <div className="flex text-[#14a800] gap-0.5">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                    <Star key={i} className="w-4 h-4 fill-[#14a800] text-[#14a800]" />
                   ))}
                 </div>
-                <span className="text-[11px]  px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold">
+                <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#f2f7f2] text-[#14a800] font-semibold">
                   {r.badge}
                 </span>
               </div>
-              <p className="text-xs md:text-sm text-on-surface mb-6 leading-relaxed italic">
+              <p className="text-sm text-[#001e00] mb-8 leading-relaxed italic font-normal">
                 &ldquo;{r.quote}&rdquo;
               </p>
             </div>
 
-            <div className="flex items-center justify-between gap-3 pt-4 border-t border-outline-variant/30">
+            <div className="flex items-center justify-between gap-3 pt-4 border-t border-[#e4ebe4]">
               <div className="flex items-center gap-3 min-w-0">
                 <Image
                   src={r.avatar}
                   alt={r.author}
-                  width={40}
-                  height={40}
+                  width={42}
+                  height={42}
                   unoptimized
-                  className="w-10 h-10 rounded-full object-cover border border-outline-variant/50"
+                  className="w-10 h-10 rounded-full object-cover border border-[#e4ebe4]"
                 />
                 <div className="truncate">
-                  <h4 className="text-xs font-bold text-on-surface truncate">{r.author}</h4>
-                  <p className="text-[11px] text-on-surface-variant truncate">{r.role}</p>
+                  <h4 className="text-xs font-bold text-[#001e00] truncate">{r.author}</h4>
+                  <p className="text-[11px] text-[#5e6d55] truncate">{r.role}</p>
                 </div>
               </div>
-              <div className="text-right shrink-0 ">
-                <span className="text-xs font-bold text-primary block">{r.stat}</span>
-                <span className="text-[10px] text-outline">{r.statLabel}</span>
+              <div className="text-right shrink-0 font-mono">
+                <span className="text-xs font-bold text-[#14a800] block">{r.stat}</span>
+                <span className="text-[10px] text-[#5e6d55] uppercase tracking-wider">{r.statLabel}</span>
               </div>
             </div>
           </div>

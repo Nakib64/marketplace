@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
+import { Search, ArrowUpDown } from 'lucide-react';
 import { JobSearchParams } from '../types/jobsTypes';
 
 interface JobSearchBarProps {
@@ -23,67 +23,66 @@ export function JobSearchBar({ currentParams, onSearch }: JobSearchBarProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Omnisearch Bar Composite */}
+      {/* Upwork Clean Search Bar */}
       <form
         onSubmit={handleSubmit}
-        className="bg-surface-container rounded-2xl p-2 sm:p-2.5 flex flex-col lg:flex-row items-stretch lg:items-center gap-2 border border-outline-variant/40 shadow-md"
+        className="bg-white rounded-full p-2 flex flex-col md:flex-row items-stretch md:items-center gap-2 border border-[#e4ebe4] shadow-xs focus-within:border-[#14a800]"
       >
-        <div className="flex items-center flex-1 bg-surface-container-low rounded-xl px-3.5 py-2 gap-2.5">
-          <Search className="w-4 h-4 text-outline shrink-0" />
+        <div className="flex items-center flex-1 px-4 py-1.5 gap-2.5">
+          <Search className="w-4 h-4 text-[#5e6d55] shrink-0" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search projects, skills (Next.js, NestJS, Figma, Rust, AI)..."
-            className="bg-transparent text-sm text-on-surface placeholder:text-outline focus:outline-none w-full"
+            placeholder="Search for jobs (e.g. Next.js, React, Python, UI/UX design)..."
+            className="bg-transparent text-sm text-[#001e00] placeholder:text-[#5e6d55] focus:outline-none w-full"
           />
         </div>
 
-        <div className="min-w-[200px]">
+        <div className="md:w-56 px-2">
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full bg-surface-container-low text-on-surface px-3.5 py-2.5 rounded-xl text-xs font-medium focus:outline-none cursor-pointer border border-transparent hover:border-outline-variant/50"
+            className="w-full bg-[#f2f7f2] text-[#001e00] px-4 py-2 rounded-full text-xs font-medium focus:outline-none cursor-pointer border border-transparent"
           >
-            <option value="all" className="bg-surface-container text-on-surface">All Categories</option>
-            <option value="development" className="bg-surface-container text-on-surface">Fullstack &amp; Backend</option>
-            <option value="design" className="bg-surface-container text-on-surface">UI/UX &amp; Design</option>
-            <option value="mobile" className="bg-surface-container text-on-surface">Mobile Apps</option>
-            <option value="security" className="bg-surface-container text-on-surface">Security &amp; Audit</option>
+            <option value="all">All Categories</option>
+            <option value="development">Development &amp; IT</option>
+            <option value="design">Design &amp; Creative</option>
+            <option value="mobile">Mobile Apps</option>
+            <option value="security">Security &amp; Audit</option>
           </select>
         </div>
 
         <button
           type="submit"
-          className="bg-primary hover:bg-primary-container text-surface font-semibold text-xs px-6 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer"
+          className="bg-[#14a800] hover:bg-[#108a00] text-white font-medium text-xs px-6 py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors cursor-pointer shrink-0"
         >
-          <SlidersHorizontal className="w-4 h-4" />
-          <span>Search Jobs</span>
+          <span>Search</span>
         </button>
       </form>
 
       {/* Quick Filters & Sort Bar */}
-      <div className="flex items-center justify-between gap-3 text-xs ">
+      <div className="flex items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-2 overflow-x-auto pb-1">
-          <span className="text-outline uppercase text-[11px] font-semibold pl-1">QUICK:</span>
-          <span className="px-3 py-1 rounded-full bg-surface-container-high text-primary font-semibold border border-primary/20 flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+          <span className="text-xs text-[#5e6d55] font-semibold pl-1">FILTER:</span>
+          <span className="px-3 py-1 rounded-full bg-[#f2f7f2] text-[#14a800] font-semibold border border-[#14a800]/20 flex items-center gap-1.5 cursor-pointer">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#14a800]" />
             Payment Protected
           </span>
-          <span className="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant border border-outline-variant/30">
+          <span className="px-3 py-1 rounded-full bg-white text-[#5e6d55] border border-[#e4ebe4] hover:bg-[#f2f7f2] transition-colors cursor-pointer">
             Payment Verified
           </span>
         </div>
 
         {/* Sort selector */}
         <div className="flex items-center gap-1.5 shrink-0">
-          <ArrowUpDown className="w-3.5 h-3.5 text-outline" />
+          <ArrowUpDown className="w-3.5 h-3.5 text-[#5e6d55]" />
           <select
             value={currentParams.sortBy || 'createdAt'}
             onChange={(e) => onSearch({ sortBy: e.target.value as 'createdAt' | 'budget' })}
-            className="bg-surface-container px-2.5 py-1 rounded-lg text-on-surface text-xs focus:outline-none cursor-pointer border border-outline-variant/40"
+            className="bg-white px-3 py-1.5 rounded-full text-[#001e00] text-xs focus:outline-none cursor-pointer border border-[#e4ebe4]"
           >
-            <option value="createdAt">Newest First</option>
+            <option value="createdAt">Newest</option>
             <option value="budget">Highest Budget</option>
           </select>
         </div>

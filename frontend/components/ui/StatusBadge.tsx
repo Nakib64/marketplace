@@ -42,7 +42,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   };
 
   return (
-    <Badge variant={config.variant} className={className}>
+    <Badge variant={config.variant} withDot={true} className={className}>
       {config.label}
     </Badge>
   );
