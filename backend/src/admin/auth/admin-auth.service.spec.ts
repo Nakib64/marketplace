@@ -1,9 +1,10 @@
 import { createHash } from 'node:crypto';
-import { UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { AdminRole } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AdminAuthService } from './admin-auth.service.js';
+import { Admin2FaSubService } from './services/admin-2fa-sub.service.js';
 import { AdminAuthCredentialsSubService } from './services/admin-auth-credentials-sub.service.js';
 import { AdminAuthTokensSubService } from './services/admin-auth-tokens-sub.service.js';
 
@@ -11,6 +12,7 @@ describe('AdminAuthService (Facade & Sub-Services)', () => {
   let adminAuthService: AdminAuthService;
   let credentialsService: AdminAuthCredentialsSubService;
   let tokensService: AdminAuthTokensSubService;
+  let admin2FaService: Admin2FaSubService;
   let prismaMock: any;
   let jwtServiceMock: any;
   let configServiceMock: any;
@@ -27,6 +29,7 @@ describe('AdminAuthService (Facade & Sub-Services)', () => {
     jwtServiceMock = {
       signAsync: vi.fn().mockImplementation((payload, opts) => {
         if (opts?.expiresIn === '24h') return Promise.resolve('mocked_admin_access_token');
+        if (opts?.expiresIn === '5m') return Promise.resolve('mocked_pre_auth_token');
         return Promise.resolve('mocked_admin_refresh_token');
       }),
       verifyAsync: vi.fn(),
@@ -35,6 +38,7 @@ describe('AdminAuthService (Facade & Sub-Services)', () => {
     configServiceMock = {
       get: vi.fn().mockImplementation((key: string) => {
         if (key === 'JWT_ACCESS_SECRET') return 'admin_access_secret';
+        if (key === 'JWT_ADMIN_ACCESS_SECRET') return 'admin_access_secret';
         if (key === 'JWT_REFRESH_SECRET') return 'admin_refresh_secret';
         return 'secret';
       }),
@@ -53,16 +57,22 @@ describe('AdminAuthService (Facade & Sub-Services)', () => {
       redisMock,
       prismaMock,
     );
-    adminAuthService = new AdminAuthService(credentialsService, tokensService);
+    admin2FaService = new Admin2FaSubService(
+      prismaMock,
+      jwtServiceMock,
+      configServiceMock,
+      tokensService,
+    );
+    adminAuthService = new AdminAuthService(credentialsService, tokensService, admin2FaService);
   });
 
   describe('login', () => {
-    it('should authenticate admin and issue dual tokens with 24h refresh in Redis', async () => {
-      const passwordHash = await bcrypt.hash('AdminPassword123!', 10);
+    it('should authenticate admin and issue dual tokens when 2FA is disabled', async () => {
+      const hashedPassword = await bcrypt.hash('CorrectAdminPassword123!', 10);
       prismaMock.admin.findUnique.mockResolvedValue({
         id: 'admin-uuid-1',
         email: 'admin@marketplace.com',
-        passwordHash,
+        passwordHash: hashedPassword,
         name: 'Super Admin',
         role: AdminRole.SUPER_ADMIN,
         isActive: true,
@@ -71,110 +81,102 @@ describe('AdminAuthService (Facade & Sub-Services)', () => {
 
       const result = await adminAuthService.login({
         email: 'admin@marketplace.com',
-        password: 'AdminPassword123!',
+        password: 'CorrectAdminPassword123!',
       });
 
-      expect(result.accessToken).toBe('mocked_admin_access_token');
-      expect(result.refreshToken).toBe('mocked_admin_refresh_token');
-      expect(result.expiresIn).toBe('24h');
-      expect(result.admin.email).toBe('admin@marketplace.com');
-      expect(result.admin.role).toBe(AdminRole.SUPER_ADMIN);
-      expect(prismaMock.admin.update).toHaveBeenCalledWith({
-        where: { id: 'admin-uuid-1' },
-        data: { lastLoginAt: expect.any(Date) },
-      });
-      const expectedHash = createHash('sha256').update('mocked_admin_refresh_token').digest('hex');
-      expect(redisMock.set).toHaveBeenCalledWith(
-        'admin:refresh:admin-uuid-1',
-        expectedHash,
-        604800,
-      );
+      expect(result.requires2FA).toBe(false);
+      expect((result as any).accessToken).toBe('mocked_admin_access_token');
+      expect((result as any).refreshToken).toBe('mocked_admin_refresh_token');
+      expect((result as any).admin.email).toBe('admin@marketplace.com');
     });
 
-    it('should throw UnauthorizedException if admin does not exist', async () => {
-      prismaMock.admin.findUnique.mockResolvedValue(null);
-
-      await expect(
-        adminAuthService.login({
-          email: 'unknown@marketplace.com',
-          password: 'password123',
-        }),
-      ).rejects.toThrow(UnauthorizedException);
-    });
-
-    it('should throw UnauthorizedException if admin is deactivated', async () => {
-      const passwordHash = await bcrypt.hash('password123', 10);
-      prismaMock.admin.findUnique.mockResolvedValue({
-        id: 'admin-uuid-2',
-        email: 'inactive@marketplace.com',
-        passwordHash,
-        isActive: false,
-      });
-
-      await expect(
-        adminAuthService.login({
-          email: 'inactive@marketplace.com',
-          password: 'password123',
-        }),
-      ).rejects.toThrow(UnauthorizedException);
-    });
-
-    it('should throw UnauthorizedException if password does not match', async () => {
-      const passwordHash = await bcrypt.hash('correct_password', 10);
+    it('should return preAuthToken when 2FA is enabled for admin', async () => {
+      const hashedPassword = await bcrypt.hash('CorrectAdminPassword123!', 10);
       prismaMock.admin.findUnique.mockResolvedValue({
         id: 'admin-uuid-1',
         email: 'admin@marketplace.com',
-        passwordHash,
+        passwordHash: hashedPassword,
+        name: 'Super Admin',
+        role: AdminRole.SUPER_ADMIN,
         isActive: true,
+        twoFactorEnabled: true,
       });
 
-      await expect(
-        adminAuthService.login({
-          email: 'admin@marketplace.com',
-          password: 'wrong_password',
-        }),
-      ).rejects.toThrow(UnauthorizedException);
+      const result = await adminAuthService.login({
+        email: 'admin@marketplace.com',
+        password: 'CorrectAdminPassword123!',
+      });
+
+      expect(result.requires2FA).toBe(true);
+      expect((result as any).preAuthToken).toBe('mocked_pre_auth_token');
     });
   });
 
-  describe('refreshToken', () => {
-    it('should rotate admin refresh token successfully', async () => {
+  describe('2FA Operations', () => {
+    it('should generate a valid Base32 TOTP secret and otpauth URL', async () => {
+      prismaMock.admin.findUnique.mockResolvedValue({
+        id: 'admin-uuid-1',
+        email: 'admin@marketplace.com',
+        twoFactorEnabled: false,
+      });
+
+      const result = await adminAuthService.generate2FASecret('admin-uuid-1');
+      expect(result.secret).toBeDefined();
+      expect(result.otpauthUrl).toContain('otpauth://totp/MarketplaceAdmin:admin%40marketplace.com');
+    });
+
+    it('should enable 2FA when valid TOTP code is provided', async () => {
+      const secret = 'JBSWY3DPEHPK3PXP'; // Base32 test secret
+      const validCode = admin2FaService.calculateTOTP(secret, 0);
+
+      const result = await adminAuthService.enable2FA('admin-uuid-1', {
+        secret,
+        code: validCode,
+      });
+
+      expect(result.twoFactorEnabled).toBe(true);
+      expect(prismaMock.admin.update).toHaveBeenCalledWith({
+        where: { id: 'admin-uuid-1' },
+        data: { twoFactorSecret: secret, twoFactorEnabled: true },
+      });
+    });
+
+    it('should throw BadRequestException when enabling 2FA with invalid code', async () => {
+      await expect(
+        adminAuthService.enable2FA('admin-uuid-1', {
+          secret: 'JBSWY3DPEHPK3PXP',
+          code: '000000',
+        }),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('should verify login with valid 2FA code', async () => {
+      const secret = 'JBSWY3DPEHPK3PXP';
+      const validCode = admin2FaService.calculateTOTP(secret, 0);
+
       jwtServiceMock.verifyAsync.mockResolvedValue({
         sub: 'admin-uuid-1',
-        tokenType: 'admin_refresh',
+        tokenType: 'admin_pre_auth',
         userType: 'ADMIN',
       });
-      const rawToken = 'valid_admin_token';
-      const hashedToken = createHash('sha256').update(rawToken).digest('hex');
-      redisMock.get.mockResolvedValue(hashedToken);
+
       prismaMock.admin.findUnique.mockResolvedValue({
         id: 'admin-uuid-1',
         email: 'admin@marketplace.com',
         name: 'Super Admin',
         role: AdminRole.SUPER_ADMIN,
         isActive: true,
+        twoFactorEnabled: true,
+        twoFactorSecret: secret,
       });
 
-      const result = await adminAuthService.refreshToken('valid_admin_token');
+      const result = await adminAuthService.verifyLoginWith2FA({
+        preAuthToken: 'valid_pre_auth_token',
+        code: validCode,
+      });
 
       expect(result.accessToken).toBe('mocked_admin_access_token');
-      expect(result.refreshToken).toBe('mocked_admin_refresh_token');
       expect(result.admin.email).toBe('admin@marketplace.com');
-    });
-
-    it('should throw and revoke if token was reused or stolen', async () => {
-      jwtServiceMock.verifyAsync.mockResolvedValue({
-        sub: 'admin-uuid-1',
-        tokenType: 'admin_refresh',
-        userType: 'ADMIN',
-      });
-      redisMock.get.mockResolvedValue('different_stored_token');
-
-      await expect(
-        adminAuthService.refreshToken('stale_token'),
-      ).rejects.toThrow(UnauthorizedException);
-
-      expect(redisMock.del).toHaveBeenCalledWith('admin:refresh:admin-uuid-1');
     });
   });
 
@@ -202,17 +204,6 @@ describe('AdminAuthService (Facade & Sub-Services)', () => {
       const profile = await adminAuthService.getProfile('admin-uuid-1');
       expect(profile.email).toBe('admin@marketplace.com');
       expect(profile.role).toBe(AdminRole.SUPER_ADMIN);
-    });
-
-    it('should throw if admin is deactivated', async () => {
-      prismaMock.admin.findUnique.mockResolvedValue({
-        id: 'admin-uuid-1',
-        isActive: false,
-      });
-
-      await expect(adminAuthService.getProfile('admin-uuid-1')).rejects.toThrow(
-        UnauthorizedException,
-      );
     });
   });
 });

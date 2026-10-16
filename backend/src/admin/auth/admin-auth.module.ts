@@ -4,6 +4,7 @@ import { PrismaModule } from '../../prisma/prisma.module.js';
 import { RedisModule } from '../../redis/redis.module.js';
 import { AdminAuthController } from './admin-auth.controller.js';
 import { AdminAuthService } from './admin-auth.service.js';
+import { Admin2FaSubService } from './services/admin-2fa-sub.service.js';
 import { AdminAuthCredentialsSubService } from './services/admin-auth-credentials-sub.service.js';
 import { AdminAuthTokensSubService } from './services/admin-auth-tokens-sub.service.js';
 
@@ -13,11 +14,13 @@ import { AdminAuthTokensSubService } from './services/admin-auth-tokens-sub.serv
   providers: [
     AdminAuthCredentialsSubService,
     AdminAuthTokensSubService,
+    Admin2FaSubService,
     AdminAuthService,
   ],
   exports: [
     AdminAuthCredentialsSubService,
     AdminAuthTokensSubService,
+    Admin2FaSubService,
     AdminAuthService,
   ],
 })

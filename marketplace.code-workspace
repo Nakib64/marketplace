@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"name": "Frontend (Next.js 16)",
+			"path": "frontend"
+		},
+		{
+			"name": "Backend (NestJS)",
+			"path": "backend"
+		},
+		{
+			"name": "Documentation & Plans",
+			"path": "docs"
+		}
+	],
+	"settings": {
+		"typescript.tsdk": "frontend/node_modules/typescript/lib",
+		"editor.formatOnSave": true
+	}
+}

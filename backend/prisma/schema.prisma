@@ -351,6 +351,9 @@ model Contract {
   @@index([clientId])
   @@index([freelancerId])
   @@index([status])
+  @@index([status, createdAt])
+  @@index([clientId, status])
+  @@index([freelancerId, status])
 }
 
 model Review {
@@ -426,6 +429,7 @@ model AuditLog {
   @@index([adminId])
   @@index([action])
   @@index([targetType])
+  @@index([targetType, targetId])
   @@index([createdAt])
 }
 

@@ -1,5 +1,7 @@
 # Freelance Marketplace - Backend API
 
+> 📚 **Complete Documentation:** Full system specifications, architecture blueprints, API schemas, and SRE runbooks are centralized in [**`docs/backend/`**](../docs/backend/README.md).
+
 A high-performance, enterprise-grade RESTful and Real-Time Backend API for a Freelance Marketplace platform (similar to Upwork / Fiverr) built with **NestJS 12**, **PostgreSQL**, **Prisma ORM**, **Redis**, and **Socket.io**.
 
 ---

@@ -22,6 +22,7 @@ import {
   REFRESH_TOKEN_MAX_AGE,
 } from '../../auth/utils/cookie.util.js';
 import { AdminAuthService } from './admin-auth.service.js';
+import { Enable2FaDto, Login2FaDto, Verify2FaDto } from './dto/admin-2fa.dto.js';
 import { AdminLoginDto } from './dto/admin-login.dto.js';
 import { AdminRefreshDto } from './dto/admin-refresh.dto.js';
 
@@ -39,6 +40,15 @@ export class AdminAuthController {
   ) {
     const result = await this.adminAuthService.login(dto);
 
+    if (result.requires2FA) {
+      return {
+        requires2FA: true,
+        preAuthToken: result.preAuthToken,
+        message: result.message,
+        admin: result.admin,
+      };
+    }
+
     res.cookie(
       ADMIN_ACCESS_TOKEN_COOKIE,
       result.accessToken,
@@ -51,9 +61,61 @@ export class AdminAuthController {
     );
 
     return {
+      requires2FA: false,
       message: 'Admin login successful',
       admin: result.admin,
     };
+  }
+
+  @Public()
+  @RateLimit({ limit: 5, ttlSeconds: 300 })
+  @Post('2fa/verify-login')
+  @HttpCode(HttpStatus.OK)
+  async verifyLoginWith2FA(
+    @Body() dto: Login2FaDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const result = await this.adminAuthService.verifyLoginWith2FA(dto);
+
+    res.cookie(
+      ADMIN_ACCESS_TOKEN_COOKIE,
+      result.accessToken,
+      getCookieOptions(ACCESS_TOKEN_MAX_AGE),
+    );
+    res.cookie(
+      ADMIN_REFRESH_TOKEN_COOKIE,
+      result.refreshToken,
+      getCookieOptions(REFRESH_TOKEN_MAX_AGE),
+    );
+
+    return {
+      message: 'Two-factor authentication verified successfully',
+      admin: result.admin,
+    };
+  }
+
+  @Post('2fa/generate')
+  @HttpCode(HttpStatus.OK)
+  async generate2FASecret(@CurrentUser('id') adminId: string) {
+    return this.adminAuthService.generate2FASecret(adminId);
+  }
+
+  @Post('2fa/enable')
+  @HttpCode(HttpStatus.OK)
+  async enable2FA(
+    @CurrentUser('id') adminId: string,
+    @Body() dto: Enable2FaDto,
+  ) {
+    return this.adminAuthService.enable2FA(adminId, dto);
+  }
+
+  @Post('2fa/disable')
+  @HttpCode(HttpStatus.OK)
+  async disable2FA(
+    @CurrentUser('id') adminId: string,
+    @Body() dto: Verify2FaDto,
+  ) {
+    return this.adminAuthService.disable2FA(adminId, dto);
   }
 
   @Public()

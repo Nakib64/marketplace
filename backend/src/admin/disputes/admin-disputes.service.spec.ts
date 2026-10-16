@@ -31,6 +31,12 @@ describe('Admin Disputes Sub-Services', () => {
       refund: {
         create: vi.fn(),
       },
+      conversation: {
+        findFirst: vi.fn().mockResolvedValue({
+          id: 'conv-1',
+          messages: [{ id: 'm-1', content: 'Workroom chat message' }],
+        }),
+      },
       $transaction: vi.fn((cb) => cb(prismaMock)),
     };
 
@@ -51,6 +57,21 @@ describe('Admin Disputes Sub-Services', () => {
       const res = await queryService.getDisputes();
       expect(res).toHaveLength(1);
       expect(res[0].id).toBe('c-1');
+    });
+
+    it('should return complete dispute dossier with workroom conversation transcript', async () => {
+      prismaMock.contract.findUnique.mockResolvedValue({
+        id: 'c-1',
+        jobId: 'j-1',
+        clientId: 'client-1',
+        freelancerId: 'free-1',
+        status: ContractStatus.DISPUTED,
+      });
+
+      const dossier = await queryService.getDisputeDossier('c-1');
+      expect(dossier.id).toBe('c-1');
+      expect(dossier.conversation).toBeDefined();
+      expect(dossier.conversation.messages).toHaveLength(1);
     });
 
     it('should throw NotFoundException if dispute dossier not found', async () => {

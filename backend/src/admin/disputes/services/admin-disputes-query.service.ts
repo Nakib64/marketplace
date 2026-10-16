@@ -18,6 +18,13 @@ export class AdminDisputesQueryService {
     });
   }
 
+  /**
+   * Compiles complete evidentiary dossier:
+   * - Contract financial details & milestones
+   * - Client & Freelancer profiles
+   * - Original Job and Proposal scope
+   * - Chronological Workroom Chat conversation transcript with attachments
+   */
   async getDisputeDossier(contractId: string) {
     const contract = await this.prisma.contract.findUnique({
       where: { id: contractId },
@@ -37,6 +44,14 @@ export class AdminDisputesQueryService {
           },
         },
         job: true,
+        proposal: {
+          select: {
+            id: true,
+            bidAmount: true,
+            coverLetter: true,
+            createdAt: true,
+          },
+        },
         refund: true,
       },
     });
@@ -45,6 +60,31 @@ export class AdminDisputesQueryService {
       throw new NotFoundException('Contract dispute record not found.');
     }
 
-    return contract;
+    const conversation = await this.prisma.conversation.findFirst({
+      where: {
+        jobId: contract.jobId,
+        OR: [
+          { clientId: contract.clientId, freelancerId: contract.freelancerId },
+          { proposalId: contract.proposalId },
+        ],
+      },
+      include: {
+        messages: {
+          orderBy: { createdAt: 'asc' },
+          take: 150,
+          include: {
+            sender: {
+              select: { id: true, email: true, role: true },
+            },
+            attachments: true,
+          },
+        },
+      },
+    });
+
+    return {
+      ...contract,
+      conversation,
+    };
   }
 }

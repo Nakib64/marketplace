@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { AuthModule } from './auth/auth.module.js';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard.js';
-import { RolesGuard } from './auth/guards/roles.guard.js';
-import { RateLimitGuard } from './auth/guards/rate-limit.guard.js';
 import { EmailVerifiedGuard } from './auth/guards/email-verified.guard.js';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard.js';
+import { RateLimitGuard } from './auth/guards/rate-limit.guard.js';
+import { RolesGuard } from './auth/guards/roles.guard.js';
+import { CircuitBreakerGuard } from './common/guards/circuit-breaker.guard.js';
+import { AdminAuditInterceptor } from './admin/audit/interceptors/admin-audit.interceptor.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 
 import { AdminModule } from './admin/admin.module.js';
@@ -54,6 +56,10 @@ import { MailModule } from './mail/mail.module.js';
     },
     {
       provide: APP_GUARD,
+      useClass: CircuitBreakerGuard,
+    },
+    {
+      provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
     {
@@ -63,6 +69,10 @@ import { MailModule } from './mail/mail.module.js';
     {
       provide: APP_GUARD,
       useClass: EmailVerifiedGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AdminAuditInterceptor,
     },
   ],
 })
