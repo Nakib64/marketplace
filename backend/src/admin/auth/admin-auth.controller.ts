@@ -64,6 +64,8 @@ export class AdminAuthController {
       requires2FA: false,
       message: 'Admin login successful',
       admin: result.admin,
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
     };
   }
 
@@ -91,6 +93,8 @@ export class AdminAuthController {
     return {
       message: 'Two-factor authentication verified successfully',
       admin: result.admin,
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
     };
   }
 
@@ -147,6 +151,8 @@ export class AdminAuthController {
 
     return {
       message: 'Admin token refreshed successfully',
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
     };
   }
 

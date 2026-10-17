@@ -24,13 +24,22 @@ async function bootstrap() {
   app.use(cookieParser());
 
   // Strict CORS policy allowing both customer frontend and admin frontend
-  const allowedOrigins = [
+  const rawOrigins = [
     process.env.FRONTEND_URL || 'http://localhost:3000',
     process.env.ADMIN_FRONTEND_URL || 'http://localhost:3001',
-  ];
+    process.env.ADDITIONAL_ORIGINS || '',
+  ]
+    .flatMap((entry) => entry.split(','))
+    .map((s) => s.trim().replace(/\/$/, ''))
+    .filter(Boolean);
+
+  const allowedOrigins = Array.from(new Set(rawOrigins));
+
   app.enableCors({
     origin: (origin: any, callback: any) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin) return callback(null, true);
+      const normalized = origin.replace(/\/$/, '');
+      if (allowedOrigins.includes(normalized) || allowedOrigins.includes('*')) {
         callback(null, true);
       } else {
         callback(new Error(`Origin ${origin} not allowed by CORS`));

@@ -65,6 +65,8 @@ export class AuthController {
     return {
       message: 'Login successful',
       user: result.user,
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
     };
   }
 
@@ -97,6 +99,8 @@ export class AuthController {
 
     return {
       message: 'Token refreshed successfully',
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
     };
   }
 

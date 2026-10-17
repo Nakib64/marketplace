@@ -11,7 +11,10 @@ export const ACCESS_TOKEN_MAX_AGE = 24 * 60 * 60 * 1000;
 export const REFRESH_TOKEN_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
 
 export function getCookieOptions(maxAgeMs: number): CookieOptions {
-  const isProduction = process.env.NODE_ENV === 'production';
+  const isProduction =
+    process.env.NODE_ENV === 'production' ||
+    Boolean(process.env.RAILWAY_ENVIRONMENT) ||
+    Boolean(process.env.RAILWAY_STATIC_URL);
   return {
     httpOnly: true,
     secure: isProduction,
@@ -22,7 +25,10 @@ export function getCookieOptions(maxAgeMs: number): CookieOptions {
 }
 
 export function getClearCookieOptions(): CookieOptions {
-  const isProduction = process.env.NODE_ENV === 'production';
+  const isProduction =
+    process.env.NODE_ENV === 'production' ||
+    Boolean(process.env.RAILWAY_ENVIRONMENT) ||
+    Boolean(process.env.RAILWAY_STATIC_URL);
   return {
     httpOnly: true,
     secure: isProduction,

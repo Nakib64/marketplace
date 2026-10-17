@@ -33,7 +33,7 @@ export function AdminLoginForm() {
         setIs2FAStep(true);
         toast.info('Two-Factor Authentication code required');
       } else if (res.admin) {
-        setAdminAuth(res.admin);
+        setAdminAuth(res.admin, res.accessToken);
         toast.success(`Welcome back, ${res.admin.name}`);
         router.push('/dashboard');
       }
@@ -58,7 +58,7 @@ export function AdminLoginForm() {
         setIs2FAStep(true);
         toast.info('Two-Factor Authentication code required');
       } else if (res.admin) {
-        setAdminAuth(res.admin);
+        setAdminAuth(res.admin, res.accessToken);
         toast.success(`Welcome back, ${res.admin.name}`);
         router.push('/dashboard');
       }
@@ -77,7 +77,7 @@ export function AdminLoginForm() {
     setIsLoading(true);
     try {
       const res = await adminAuthApi.verify2FA({ preAuthToken, token: totpCode });
-      setAdminAuth(res.admin);
+      setAdminAuth(res.admin, (res as any).accessToken);
       toast.success(`2FA Verified. Welcome back, ${res.admin.name}`);
       router.push('/dashboard');
     } catch (err: any) {

@@ -11,18 +11,30 @@ export const adminApiClient = axios.create({
   withCredentials: true,
 });
 
+// Request Interceptor: Attach Access Token as Bearer header for resilient cross-domain auth
+adminApiClient.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
+    const token = useAdminAuthStore.getState().accessToken;
+    if (token && config.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (value?: unknown) => void;
   reject: (reason?: unknown) => void;
 }> = [];
 
-const processQueue = (error: AxiosError | null) => {
+const processQueue = (error: AxiosError | null, token: string | null = null) => {
   failedQueue.forEach((promise) => {
     if (error) {
       promise.reject(error);
     } else {
-      promise.resolve();
+      promise.resolve(token);
     }
   });
   failedQueue = [];
@@ -43,7 +55,12 @@ adminApiClient.interceptors.response.use(
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         })
-          .then(() => adminApiClient(originalRequest))
+          .then((token) => {
+            if (token && originalRequest.headers) {
+              originalRequest.headers.Authorization = `Bearer ${token}`;
+            }
+            return adminApiClient(originalRequest);
+          })
           .catch((err) => Promise.reject(err));
       }
 
@@ -51,12 +68,19 @@ adminApiClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        await axios.post(
+        const refreshRes = await axios.post(
           `${BASE_URL}/admin/auth/refresh`,
           {},
           { withCredentials: true }
         );
-        processQueue(null);
+        const newAccessToken = refreshRes.data?.accessToken;
+        if (newAccessToken) {
+          useAdminAuthStore.getState().setAccessToken(newAccessToken);
+          if (originalRequest.headers) {
+            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          }
+        }
+        processQueue(null, newAccessToken);
         return adminApiClient(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError as AxiosError);
