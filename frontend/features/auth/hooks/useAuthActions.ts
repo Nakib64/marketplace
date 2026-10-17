@@ -16,7 +16,7 @@ export function useAuthActions() {
   const loginMutation = useMutation({
     mutationFn: (payload: LoginPayload) => authApi.login(payload),
     onSuccess: (res) => {
-      setAuth(res.user as User);
+      setAuth(res.user as User, res.accessToken, res.refreshToken);
       toast.success('Signed in successfully!');
       if (res.user.role === 'CLIENT') {
         router.push('/client/jobs');

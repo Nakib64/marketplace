@@ -20,6 +20,8 @@ export interface AuthSuccessResponse {
     isEmailVerified: boolean;
     createdAt?: string;
   };
+  accessToken?: string;
+  refreshToken?: string;
 }
 
 export interface VerifyEmailPayload {
