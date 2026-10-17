@@ -1,8 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { useAdminAuthStore } from '@/stores/useAdminAuthStore';
+import { adminAuthApi } from '@/lib/api/adminApi';
+import { toast } from 'sonner';
 import {
   LayoutDashboard,
   WalletCards,
@@ -33,6 +36,7 @@ import {
   ShieldCheck,
   FileCheck,
   Bell,
+  LogOut,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -197,6 +201,21 @@ export function AdminSidebar() {
 
   const [isHovered, setIsHovered] = useState(false);
 
+  const router = useRouter();
+  const { admin, logout } = useAdminAuthStore();
+
+  const handleLogout = async () => {
+    try {
+      await adminAuthApi.logout();
+    } catch {
+      // Ignore network errors on logout
+    } finally {
+      logout();
+      toast.success('Admin session ended securely');
+      router.replace('/login');
+    }
+  };
+
   const toggleGroup = (id: string) => {
     setOpenGroups((prev) => ({
       ...prev,
@@ -209,38 +228,38 @@ export function AdminSidebar() {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={cn(
-        'flex-shrink-0 border-r border-outline-variant bg-white flex flex-col justify-between select-none transition-all duration-300 ease-in-out z-30',
+        'flex-shrink-0 border-r border-outline-variant bg-white flex flex-col justify-between select-none transition-all duration-300 ease-in-out z-30 h-full',
         isHovered ? 'w-[296px] shadow-xl' : 'w-[76px]'
       )}
     >
-      <div className="flex flex-col h-full overflow-y-auto overflow-x-hidden">
-        {/* Brand Header */}
+      {/* Brand Header */}
+      <div
+        className={cn(
+          'h-16 border-b border-outline-variant flex items-center shrink-0 transition-all duration-300',
+          isHovered ? 'px-6 gap-3' : 'px-0 justify-center'
+        )}
+      >
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-[#00b377] flex items-center justify-center font-bold text-white text-base shadow-[0_0_15px_-3px_rgba(20,168,0,0.35)] shrink-0">
+          B
+        </div>
         <div
           className={cn(
-            'h-16 border-b border-outline-variant flex items-center shrink-0 transition-all duration-300',
-            isHovered ? 'px-6 gap-3' : 'px-0 justify-center'
+            'overflow-hidden transition-all duration-300 whitespace-nowrap min-w-0',
+            isHovered ? 'opacity-100 max-w-[210px]' : 'opacity-0 max-w-0 pointer-events-none'
           )}
         >
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-[#00b377] flex items-center justify-center font-bold text-white text-base shadow-[0_0_15px_-3px_rgba(20,168,0,0.35)] shrink-0">
-            B
-          </div>
-          <div
-            className={cn(
-              'overflow-hidden transition-all duration-300 whitespace-nowrap min-w-0',
-              isHovered ? 'opacity-100 max-w-[210px]' : 'opacity-0 max-w-0 pointer-events-none'
-            )}
-          >
-            <span className="text-lg font-bold tracking-tight text-on-surface leading-tight block truncate">
-              bang<span className="text-primary font-black">lance</span>
-            </span>
-            <span className="text-xs uppercase font-bold text-on-surface-variant tracking-wider block truncate">
-              Admin Gateway
-            </span>
-          </div>
+          <span className="text-lg font-bold tracking-tight text-on-surface leading-tight block truncate">
+            bang<span className="text-primary font-black">lance</span>
+          </span>
+          <span className="text-xs uppercase font-bold text-on-surface-variant tracking-wider block truncate">
+            Admin Gateway
+          </span>
         </div>
+      </div>
 
-        {/* Navigation List */}
-        <nav className={cn('space-y-1.5 flex-1 transition-all duration-300', isHovered ? 'p-3.5' : 'p-2.5')}>
+      {/* Navigation List (Scrollable) */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden">
+        <nav className={cn('space-y-1.5 transition-all duration-300', isHovered ? 'p-3.5' : 'p-2.5')}>
           {/* Dashboard Direct Link */}
           <Link
             href="/dashboard"
@@ -368,6 +387,61 @@ export function AdminSidebar() {
             );
           })}
         </nav>
+      </div>
+
+      {/* Admin Profile & Logout Footer */}
+      <div className="p-3 border-t border-outline-variant/60 shrink-0 bg-white">
+        <div
+          className={cn(
+            'flex items-center transition-all duration-300',
+            isHovered ? 'justify-between gap-3 px-1' : 'flex-col gap-2 justify-center'
+          )}
+        >
+          {/* Profile Badge */}
+          <div
+            title={!isHovered ? (admin?.name || 'Administrator') : undefined}
+            className={cn('flex items-center min-w-0', isHovered ? 'gap-2.5 flex-1' : 'justify-center')}
+          >
+            <div className="h-9 w-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-sm shrink-0 shadow-2xs">
+              {admin?.name?.charAt(0).toUpperCase() || 'A'}
+            </div>
+            <div
+              className={cn(
+                'flex flex-col min-w-0 overflow-hidden transition-all duration-300',
+                isHovered ? 'opacity-100 max-w-[155px]' : 'opacity-0 max-w-0 pointer-events-none'
+              )}
+            >
+              <span className="text-xs font-bold text-on-surface truncate leading-tight">
+                {admin?.name || 'Administrator'}
+              </span>
+              <span className="text-[10px] font-semibold text-primary flex items-center gap-1 uppercase tracking-wider truncate">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                {admin?.role || 'SUPER_ADMIN'}
+              </span>
+            </div>
+          </div>
+
+          {/* Logout Button */}
+          <button
+            type="button"
+            onClick={handleLogout}
+            title="Terminate Admin Session"
+            className={cn(
+              'rounded-xl text-on-surface-variant hover:text-error hover:bg-error-container transition-all duration-150 cursor-pointer flex items-center justify-center shrink-0 group',
+              isHovered ? 'p-2 gap-1.5 px-2.5 bg-surface-container/60' : 'p-2'
+            )}
+          >
+            <LogOut className="h-4 w-4 shrink-0 text-on-surface-variant group-hover:text-error transition-colors" />
+            <span
+              className={cn(
+                'text-xs font-bold text-on-surface-variant group-hover:text-error transition-all duration-300 overflow-hidden whitespace-nowrap',
+                isHovered ? 'opacity-100 max-w-[70px]' : 'opacity-0 max-w-0 pointer-events-none'
+              )}
+            >
+              Logout
+            </span>
+          </button>
+        </div>
       </div>
     </aside>
   );
