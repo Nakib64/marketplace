@@ -65,7 +65,7 @@ export const MilestoneArtifactsInspectionCard: React.FC<MilestoneArtifactsInspec
               </div>
               <div className="min-w-0">
                 <span className="text-xs font-bold text-on-surface truncate">Build Package Reference</span>
-                <span className="text-[11px] text-on-surface-variant truncate block mt-0.5 font-mono">
+                <span className="text-[11px] text-on-surface-variant truncate block mt-0.5">
                   {ipfsCid}
                 </span>
               </div>

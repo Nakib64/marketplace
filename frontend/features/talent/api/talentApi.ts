@@ -23,4 +23,12 @@ export const talentApi = {
     const { data } = await apiClient.get<FreelancerProfile>(`/users/freelancers/${id}`);
     return data;
   },
+
+  /**
+   * Get public verified reviews for a freelancer
+   */
+  async getUserReviews(userId: string): Promise<{ totalReviews: number; averageRating: number; reviews: any[] }> {
+    const { data } = await apiClient.get<{ totalReviews: number; averageRating: number; reviews: any[] }>(`/reviews/user/${userId}`);
+    return data;
+  },
 };

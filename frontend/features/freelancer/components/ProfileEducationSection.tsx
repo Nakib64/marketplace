@@ -170,7 +170,7 @@ export const ProfileEducationSection: React.FC<ProfileEducationSectionProps> = (
                       {edu.degree} {edu.fieldOfStudy ? `in ${edu.fieldOfStudy}` : ''}
                     </h4>
                     <p className="text-xs text-on-surface-variant font-medium mt-0.5">{edu.institution}</p>
-                    <span className="inline-flex items-center gap-1 text-[11px] text-outline mt-1 font-mono">
+                    <span className="inline-flex items-center gap-1 text-[11px] text-outline mt-1 font-medium">
                       <Calendar className="w-3 h-3" />
                       {startYear} – {endYear}
                     </span>

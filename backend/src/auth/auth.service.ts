@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto.js';
 import { RegisterDto } from './dto/register.dto.js';
+import { ForgotPasswordDto } from './dto/forgot-password.dto.js';
+import { ResetPasswordDto } from './dto/reset-password.dto.js';
 import { AuthCredentialsService } from './services/auth-credentials.service.js';
 import { AuthTokensService } from './services/auth-tokens.service.js';
 
@@ -45,6 +47,14 @@ export class AuthService {
 
   async resendVerification(identifier: { userId?: string; email?: string }) {
     return this.credentialsService.resendVerification(identifier);
+  }
+
+  async forgotPassword(dto: ForgotPasswordDto) {
+    return this.credentialsService.forgotPassword(dto);
+  }
+
+  async resetPassword(dto: ResetPasswordDto) {
+    return this.credentialsService.resetPassword(dto);
   }
 }
 

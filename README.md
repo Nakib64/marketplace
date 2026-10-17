@@ -10,12 +10,17 @@ This repository is structured as a modular full-stack monorepo:
 
 ```
 marketplace/
-├── frontend/                          # Next.js 16 (App Router), React 19, Tailwind CSS v4
-│   ├── app/                           # Route trees: (auth), (public), (dashboard), admin
+├── frontend/                          # Consumer Next.js 16 (App Router), Port 3000
+│   ├── app/                           # Route trees: (auth), client, freelancer, contracts, wallet
 │   ├── features/                      # Domain-driven feature slices (contracts, messages, proposals)
 │   └── components/                    # Design system components, layouts, UI primitives
 │
-├── backend/                           # NestJS 12, PostgreSQL, Prisma ORM, Redis, BullMQ
+├── admin/                             # Dedicated Admin Command Center (Next.js 16), Port 3001
+│   ├── app/                           # Route trees: login, dashboard, payouts, disputes, users, settings, audit
+│   ├── components/                    # Operations consoles, arbitration modals, circuit breaker controls
+│   └── lib/api/                       # Isolated, cookie-aware admin API client and services
+│
+├── backend/                           # NestJS 12, PostgreSQL, Prisma ORM, Redis, Port 4000
 │   ├── src/admin/                     # Back-office admin, 2FA, disputes, moderation, audit
 │   ├── src/contracts/                 # Escrow holding vaults, milestone approvals, SSLCommerz IPN
 │   ├── src/wallet/                    # Atomic ledger balances, bKash & Nagad payout queues

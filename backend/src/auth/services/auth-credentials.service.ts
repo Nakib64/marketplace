@@ -14,6 +14,8 @@ import { RedisService } from '../../redis/redis.service.js';
 import { MailService } from '../../mail/mail.service.js';
 import { LoginDto } from '../dto/login.dto.js';
 import { RegisterDto } from '../dto/register.dto.js';
+import { ForgotPasswordDto } from '../dto/forgot-password.dto.js';
+import { ResetPasswordDto } from '../dto/reset-password.dto.js';
 
 // Unambiguous 30-character uppercase alphabet (excluding confusing characters: 0, O, 1, I)
 const CODE_ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
@@ -289,6 +291,138 @@ export class AuthCredentialsService {
 
     return {
       message: `A new 6-character verification code has been sent to ${user.email}.`,
+    };
+  }
+
+  /**
+   * Generates and dispatches a 6-character password reset code to user's email with rate limiting.
+   */
+  async forgotPassword(dto: ForgotPasswordDto) {
+    const normalizedEmail = dto.email.toLowerCase().trim();
+    const user = await this.prisma.user.findUnique({
+      where: { email: normalizedEmail },
+    });
+
+    // If user does not exist, return generic success message to prevent user enumeration
+    if (!user) {
+      return {
+        message: 'If an account exists with this email address, a password reset code has been sent.',
+      };
+    }
+
+    if (user.isBanned) {
+      throw new UnauthorizedException('Account suspended. Please contact platform support.');
+    }
+
+    const cooldownKey = `password:reset:cooldown:${normalizedEmail}`;
+    const hourlyKey = `password:reset:hourly:${normalizedEmail}`;
+
+    // 1. Check 60-second cooldown
+    const inCooldown = await this.redis.get(cooldownKey);
+    if (inCooldown) {
+      throw new HttpException(
+        'Please wait 60 seconds before requesting another password reset code.',
+        HttpStatus.TOO_MANY_REQUESTS,
+      );
+    }
+
+    // 2. Check hourly limit (max 5 per hour)
+    const hourlyCountStr = await this.redis.get(hourlyKey);
+    const hourlyCount = hourlyCountStr ? parseInt(hourlyCountStr, 10) : 0;
+    if (hourlyCount >= MAX_HOURLY_RESENDS) {
+      throw new HttpException(
+        'Hourly password reset limit reached. Please check your inbox or try again later.',
+        HttpStatus.TOO_MANY_REQUESTS,
+      );
+    }
+
+    // 3. Generate secure code and store in Redis (10 min TTL)
+    const code = this.generateVerificationCode();
+    await this.redis.set(`password:reset:code:${normalizedEmail}`, code, CODE_TTL_SECONDS);
+    await this.redis.del(`password:reset:attempts:${normalizedEmail}`);
+    await this.redis.set(cooldownKey, '1', RESEND_COOLDOWN_SECONDS);
+    await this.redis.set(hourlyKey, (hourlyCount + 1).toString(), 3600);
+
+    // 4. Dispatch password reset email
+    await this.mailService.sendPasswordResetEmail(user.email, code);
+
+    return {
+      message: 'If an account exists with this email address, a password reset code has been sent.',
+    };
+  }
+
+  /**
+   * Verifies the 6-character code and updates the user's password with bcrypt hash.
+   */
+  async resetPassword(dto: ResetPasswordDto) {
+    const normalizedEmail = dto.email.toLowerCase().trim();
+    const user = await this.prisma.user.findUnique({
+      where: { email: normalizedEmail },
+    });
+
+    if (!user) {
+      throw new BadRequestException('Invalid password reset request.');
+    }
+
+    const codeKey = `password:reset:code:${normalizedEmail}`;
+    const attemptsKey = `password:reset:attempts:${normalizedEmail}`;
+
+    // Check failed attempt count
+    const attemptsStr = await this.redis.get(attemptsKey);
+    let attempts = attemptsStr ? parseInt(attemptsStr, 10) : 0;
+
+    if (attempts >= MAX_VERIFICATION_ATTEMPTS) {
+      await this.redis.del(codeKey);
+      throw new BadRequestException(
+        'Too many failed attempts. For your security, this reset code has been invalidated. Please request a new code.',
+      );
+    }
+
+    // Retrieve active code from Redis
+    const storedCode = await this.redis.get(codeKey);
+    if (!storedCode) {
+      throw new BadRequestException(
+        'Password reset code has expired or does not exist. Please request a new code.',
+      );
+    }
+
+    // Constant-time comparison
+    const isValid = this.timingSafeCompare(dto.code, storedCode);
+
+    if (!isValid) {
+      attempts += 1;
+      await this.redis.set(attemptsKey, attempts.toString(), CODE_TTL_SECONDS);
+      const remainingAttempts = MAX_VERIFICATION_ATTEMPTS - attempts;
+
+      if (remainingAttempts <= 0) {
+        await this.redis.del(codeKey);
+        throw new BadRequestException(
+          'Too many failed attempts. This reset code has been invalidated. Please request a new code.',
+        );
+      }
+
+      throw new BadRequestException(
+        `Invalid reset code. ${remainingAttempts} attempt(s) remaining.`,
+      );
+    }
+
+    // Reset code is valid: Hash new password
+    const hashedPassword = await bcrypt.hash(dto.newPassword, 10);
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        passwordHash: hashedPassword,
+      },
+    });
+
+    // Cleanup Redis keys
+    await this.redis.del(codeKey);
+    await this.redis.del(attemptsKey);
+    await this.redis.del(`password:reset:cooldown:${normalizedEmail}`);
+
+    return {
+      message: 'Password has been reset successfully. You can now log in with your new password.',
     };
   }
 }

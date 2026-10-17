@@ -136,7 +136,7 @@ export function VerifyEmailView() {
                 <KeyRound className="w-3.5 h-3.5 text-primary" />
                 <span>Verification Code</span>
               </label>
-              <span className="text-[11px] text-on-surface-variant font-mono">6 characters</span>
+              <span className="text-[11px] text-on-surface-variant">6 characters</span>
             </div>
             <div className="relative">
               <input
@@ -147,7 +147,7 @@ export function VerifyEmailView() {
                 onChange={(e) => setCode(e.target.value.toUpperCase())}
                 autoFocus
                 required
-                className="w-full h-12 text-center text-lg font-mono font-bold tracking-[0.35em] uppercase bg-surface-container-high border border-outline-variant rounded-xl text-on-surface placeholder:tracking-normal placeholder:font-normal placeholder:text-sm placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                className="w-full h-12 text-center text-lg font-bold tracking-[0.35em] uppercase bg-surface-container-high border border-outline-variant rounded-xl text-on-surface placeholder:tracking-normal placeholder:font-normal placeholder:text-sm placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
               />
             </div>
           </div>

@@ -57,7 +57,7 @@ export function TalentExperienceSection({ profile }: TalentExperienceSectionProp
                   <p className="text-xs text-primary font-medium">{work.company}</p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3 text-xs text-on-surface-variant font-mono">
+                <div className="flex flex-wrap items-center gap-3 text-xs text-on-surface-variant font-medium">
                   <span className="flex items-center gap-1">
                     <Calendar className="w-3.5 h-3.5 text-outline" />
                     {startStr} – {endStr}

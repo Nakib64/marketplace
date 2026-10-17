@@ -3,9 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { FileText, ArrowLeft } from 'lucide-react';
+import { FileText, ArrowLeft, Star } from 'lucide-react';
 import { toast } from 'sonner';
-import { ContractDetail, WorkSubmissionPayload, mapBackendContract } from '../types/contractsTypes';
+import { ContractDetail, WorkSubmissionPayload, ReviewResponse, mapBackendContract } from '../types/contractsTypes';
 import { contractsApi } from '../api/contractsApi';
 import { ContractDetailsHeader } from './ContractDetailsHeader';
 import { ContractOverviewCard } from './ContractOverviewCard';
@@ -26,10 +26,19 @@ export const ContractDetailsView: React.FC<ContractDetailsViewProps> = ({ contra
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const [contract, setContract] = useState<ContractDetail | null>(null);
+  const [reviews, setReviews] = useState<ReviewResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isExtensionModalOpen, setIsExtensionModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+
+  const fetchReviews = () => {
+    contractsApi.getContractReviews(contractId)
+      .then((data) => {
+        if (Array.isArray(data)) setReviews(data);
+      })
+      .catch(() => setReviews([]));
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -45,6 +54,8 @@ export const ContractDetailsView: React.FC<ContractDetailsViewProps> = ({ contra
       .finally(() => {
         if (isMounted) setIsLoading(false);
       });
+
+    fetchReviews();
     return () => { isMounted = false; };
   }, [contractId]);
 
@@ -111,22 +122,77 @@ export const ContractDetailsView: React.FC<ContractDetailsViewProps> = ({ contra
             <ContractMilestoneTimeline milestones={contract.milestones} />
             
             {contract.status === 'COMPLETED' ? (
-              <div className="bg-surface-container-low border border-primary/30 rounded-xl p-5 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary text-[28px]">verified</span>
-                  <div>
-                    <h3 className="text-sm font-bold text-on-surface">Contract Successfully Completed</h3>
-                    <p className="text-xs text-on-surface-variant">All project milestone funds have been completed and released.</p>
+              <div className="flex flex-col gap-4">
+                <div className="bg-surface-container-low border border-primary/30 rounded-xl p-5 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <span className="material-symbols-outlined text-primary text-[28px]">verified</span>
+                    <div>
+                      <h3 className="text-sm font-bold text-on-surface">Contract Successfully Completed</h3>
+                      <p className="text-xs text-on-surface-variant">All project milestone funds have been completed and released.</p>
+                    </div>
                   </div>
+                  {!reviews.some((r) => r.reviewerId === user?.id) ? (
+                    <button
+                      type="button"
+                      onClick={() => setIsReviewModalOpen(true)}
+                      className="px-4 py-2 bg-primary hover:bg-primary-container text-on-primary text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">rate_review</span>
+                      <span>Submit Double-Blind Review</span>
+                    </button>
+                  ) : !(reviews.length >= 2 && reviews.every((r) => r.status === 'PUBLISHED')) ? (
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-semibold">
+                      <span className="material-symbols-outlined text-[16px]">lock</span>
+                      <span>Your Review is Sealed (Awaiting Counterpart)</span>
+                    </div>
+                  ) : null}
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setIsReviewModalOpen(true)}
-                  className="px-4 py-2 bg-primary hover:bg-primary-container text-on-primary text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer"
-                >
-                  <span className="material-symbols-outlined text-[16px]">rate_review</span>
-                  <span>Submit Double-Blind Review</span>
-                </button>
+
+                {reviews.length >= 2 && reviews.every((r) => r.status === 'PUBLISHED') && (
+                  <div className="bg-surface-container-low border border-emerald-500/30 rounded-2xl p-6 shadow-sm flex flex-col gap-5">
+                    <div className="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+                      <div className="flex items-center gap-2.5">
+                        <span className="material-symbols-outlined text-emerald-500 text-[22px]">verified_user</span>
+                        <div>
+                          <h4 className="text-sm font-bold text-on-surface">Double-Blind Reviews Published</h4>
+                          <p className="text-[11px] text-on-surface-variant">Both parties completed reviews independently. Ratings and feedback are unsealed with zero retaliation.</p>
+                        </div>
+                      </div>
+                      <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold uppercase tracking-wider">
+                        Mutual 5.0 ★
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {reviews.map((rev) => {
+                        const isReviewerClient = rev.reviewerId === contract.clientId;
+                        return (
+                          <div key={rev.id} className="bg-surface-container p-4 rounded-xl border border-outline-variant/30 flex flex-col justify-between gap-3">
+                            <div>
+                              <div className="flex items-center justify-between mb-2">
+                                <span className="text-xs font-bold text-on-surface">
+                                  {isReviewerClient ? 'Client Review (Hirer)' : 'Freelancer Review (Talent)'}
+                                </span>
+                                <div className="flex items-center gap-0.5">
+                                  {[...Array(rev.rating)].map((_, i) => (
+                                    <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                                  ))}
+                                </div>
+                              </div>
+                              <p className="text-xs text-on-surface-variant italic leading-relaxed">
+                                &ldquo;{rev.feedback}&rdquo;
+                              </p>
+                            </div>
+                            <div className="text-[10px] text-on-surface-variant/70 pt-2 border-t border-outline-variant/10 flex items-center justify-between">
+                              <span>Verified Double-Blind Feedback</span>
+                              <span>Published</span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             ) : contract.status === 'PENDING_APPROVAL' ? (
               isClient ? (
@@ -260,8 +326,9 @@ export const ContractDetailsView: React.FC<ContractDetailsViewProps> = ({ contra
       <DoubleBlindReviewModal
         isOpen={isReviewModalOpen}
         contractId={contract.id}
-        counterPartyName={contract.clientName}
+        counterPartyName={isClient ? 'the freelancer' : contract.clientName}
         onClose={() => setIsReviewModalOpen(false)}
+        onSuccess={fetchReviews}
       />
     </main>
   );

@@ -79,7 +79,7 @@ export const MilestoneContributorCard: React.FC<MilestoneContributorCardProps> =
                 <button
                   type="button"
                   onClick={() => onCopyHash?.(commitHash)}
-                  className="text-primary hover:underline flex items-center gap-0.5 text-[11px] font-mono"
+                  className="text-primary hover:underline flex items-center gap-0.5 text-[11px]"
                 >
                   <span>{commitHash.slice(0, 8)}...</span>
                   <span className="material-symbols-outlined text-[13px]">content_copy</span>

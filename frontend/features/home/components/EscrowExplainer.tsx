@@ -95,7 +95,7 @@ export function EscrowExplainer() {
             return (
               <div key={item.step} className="p-4 rounded-xl bg-white/5 border border-white/5 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold text-emerald-300 font-mono tracking-wider">{item.step}</span>
+                  <span className="text-[11px] font-bold text-emerald-300 tracking-wider">{item.step}</span>
                   <Icon className="w-4 h-4 text-[#5eead4]" />
                 </div>
                 <h4 className="text-sm font-bold text-white">{item.title}</h4>

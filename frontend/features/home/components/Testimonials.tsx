@@ -1,10 +1,15 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import { Star } from 'lucide-react';
 import { PlatformMetrics } from './PlatformMetrics';
+import { useHomepageCms } from '../hooks/useHomepageCms';
 
 export function Testimonials() {
-  const reviews = [
+  const { data: cms } = useHomepageCms();
+
+  const defaultReviews = [
     {
       author: 'Marcus Vance',
       role: 'Co-Founder, Synthetix Hub',
@@ -36,6 +41,11 @@ export function Testimonials() {
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&h=120&q=80',
     },
   ];
+
+  const reviews =
+    cms?.testimonials && Array.isArray(cms.testimonials) && cms.testimonials.length > 0
+      ? cms.testimonials
+      : defaultReviews;
 
   return (
     <section className="max-w-[1280px] mx-auto px-4 md:px-8 py-20 w-full">
@@ -90,7 +100,7 @@ export function Testimonials() {
                   <p className="text-[11px] text-[#5e6d55] truncate">{r.role}</p>
                 </div>
               </div>
-              <div className="text-right shrink-0 font-mono">
+              <div className="text-right shrink-0">
                 <span className="text-xs font-bold text-[#14a800] block">{r.stat}</span>
                 <span className="text-[10px] text-[#5e6d55] uppercase tracking-wider">{r.statLabel}</span>
               </div>

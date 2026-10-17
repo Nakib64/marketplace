@@ -56,5 +56,21 @@ export const authApi = {
     const { data } = await apiClient.post<{ message: string }>('/auth/resend-verification', payload || {});
     return data;
   },
+
+  /**
+   * Requests a password reset code to be sent to user's email
+   */
+  async forgotPassword(payload: { email: string }): Promise<{ message: string }> {
+    const { data } = await apiClient.post<{ message: string }>('/auth/forgot-password', payload);
+    return data;
+  },
+
+  /**
+   * Resets user password using the 6-character code
+   */
+  async resetPassword(payload: { email: string; code: string; newPassword: string }): Promise<{ message: string }> {
+    const { data } = await apiClient.post<{ message: string }>('/auth/reset-password', payload);
+    return data;
+  },
 };
 

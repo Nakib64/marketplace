@@ -9,6 +9,10 @@
 			"path": "backend"
 		},
 		{
+			"name": "Admin Panel (Next.js)",
+			"path": "admin"
+		},
+		{
 			"name": "Documentation & Plans",
 			"path": "docs"
 		}

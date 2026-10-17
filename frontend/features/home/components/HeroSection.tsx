@@ -2,13 +2,15 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, ArrowRight, ShieldCheck, Zap, CheckCircle2, Percent } from 'lucide-react';
+import { Search, ArrowRight, ShieldCheck, Zap, CheckCircle2 } from 'lucide-react';
 import { useAuthStore } from '@/stores/useAuthStore';
+import { useHomepageCms } from '../hooks/useHomepageCms';
 
 export function HeroSection() {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const isClient = user?.role === 'CLIENT';
+  const { data: cms } = useHomepageCms();
 
   const [searchMode, setSearchMode] = useState<'talent' | 'jobs'>('talent');
   const [query, setQuery] = useState('');
@@ -29,6 +31,26 @@ export function HeroSection() {
     }
   };
 
+  const heroBadge = cms?.heroBadge || 'Banglance Marketplace • 100% Milestone Protection';
+  const heroTitle = cms?.heroTitle || 'How work should work';
+  const heroSubtitle =
+    cms?.heroSubtitle ||
+    'Forget the old rules. You can have the best software engineers, designers, and specialists. Right now. Right here.';
+  const primaryCtaText = cms?.heroPrimaryCtaText || 'Find talent';
+  const primaryCtaLink = cms?.heroPrimaryCtaLink || '/freelancers';
+  const secondaryCtaText = cms?.heroSecondaryCtaText || 'Find work';
+  const secondaryCtaLink = cms?.heroSecondaryCtaLink || '/jobs';
+
+  const showcaseBadge = cms?.showcaseBadge || 'FOR CLIENTS & TALENT';
+  const showcaseTitle = cms?.showcaseTitle || 'Up your work game, it’s free';
+  const showcaseDesc =
+    cms?.showcaseDescription ||
+    'Access top 1% technical talent in Bangladesh. Hire with 100% financial protection and zero payment clearance delay.';
+  const trustedBrands =
+    cms?.trustedBrands && cms.trustedBrands.length > 0
+      ? cms.trustedBrands
+      : ['Microsoft', 'Airbnb', 'Automattic', 'Bissell', 'GoDaddy'];
+
   return (
     <section className="relative w-full bg-white pt-8 pb-16 px-4 md:px-8 border-b border-[#e4ebe4]">
       <div className="max-w-[1400px] mx-auto">
@@ -38,37 +60,34 @@ export function HeroSection() {
             {/* Status Pill */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#f2f7f2] border border-[#e4ebe4] text-xs font-semibold text-[#001e00] mb-6">
               <span className="w-2 h-2 rounded-full bg-[#14a800]" />
-              <span className="text-[#14a800] font-bold">Banglance Marketplace</span>
-              <span className="text-[#9aaa97]">•</span>
-              <span className="text-[#5e6d55]">100% Milestone Protection</span>
+              <span className="text-[#14a800] font-bold">{heroBadge}</span>
             </div>
 
             {/* Upwork Iconic Editorial Headline */}
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-serif text-[#001e00] tracking-tight leading-[1.08] mb-6 font-normal">
-              How work <br className="hidden sm:block" />
-              <span className="italic font-normal text-[#14a800]">should work</span>
+              {heroTitle}
             </h1>
 
             {/* Subtitle */}
             <p className="text-lg sm:text-xl text-[#5e6d55] max-w-xl leading-relaxed mb-8">
-              Forget the old rules. You can have the best software engineers, designers, and specialists. Right now. Right here.
+              {heroSubtitle}
             </p>
 
             {/* Upwork Dual CTAs */}
             <div className="flex flex-wrap items-center gap-3.5 mb-10 w-full sm:w-auto">
               <button
                 type="button"
-                onClick={() => router.push('/freelancers')}
+                onClick={() => router.push(primaryCtaLink)}
                 className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#14a800] hover:bg-[#108a00] active:bg-[#0d7000] text-white font-semibold text-base transition-colors shadow-xs cursor-pointer text-center"
               >
-                Find talent
+                {primaryCtaText}
               </button>
               <button
                 type="button"
-                onClick={() => router.push('/jobs')}
+                onClick={() => router.push(secondaryCtaLink)}
                 className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-transparent border-2 border-[#14a800] text-[#14a800] hover:bg-[#f2f7f2] font-semibold text-base transition-colors cursor-pointer text-center"
               >
-                Find work
+                {secondaryCtaText}
               </button>
             </div>
 
@@ -116,13 +135,13 @@ export function HeroSection() {
             <div className="relative rounded-3xl bg-[#f2f7f2] border border-[#e4ebe4] p-8 md:p-10 flex flex-col justify-between overflow-hidden shadow-xs">
               <div className="relative z-10">
                 <span className="text-xs uppercase font-bold text-[#14a800] tracking-wider block mb-2">
-                  FOR CLIENTS &amp; TALENT
+                  {showcaseBadge}
                 </span>
                 <h3 className="text-3xl font-serif text-[#001e00] font-normal leading-tight mb-4">
-                  Up your work game, it’s free
+                  {showcaseTitle}
                 </h3>
                 <p className="text-sm text-[#5e6d55] leading-relaxed mb-6">
-                  Access top 1% technical talent in Bangladesh. Hire with 100% financial protection and zero payment clearance delay.
+                  {showcaseDesc}
                 </p>
               </div>
 
@@ -186,14 +205,15 @@ export function HeroSection() {
             Trusted by leading teams
           </span>
           <div className="flex flex-wrap items-center justify-between gap-8 md:gap-12 flex-1 font-bold text-base text-[#9aaa97]">
-            <span className="hover:text-[#001e00] transition-colors">Microsoft</span>
-            <span className="hover:text-[#001e00] transition-colors">Airbnb</span>
-            <span className="hover:text-[#001e00] transition-colors">Automattic</span>
-            <span className="hover:text-[#001e00] transition-colors">Bissell</span>
-            <span className="hover:text-[#001e00] transition-colors">GoDaddy</span>
+            {trustedBrands.map((brand: string) => (
+              <span key={brand} className="hover:text-[#001e00] transition-colors">
+                {brand}
+              </span>
+            ))}
           </div>
         </div>
       </div>
     </section>
   );
 }
+

@@ -6,6 +6,7 @@ import express from 'express';
 import helmet from 'helmet';
 import { AppModule } from './app.module.js';
 
+// Security HTTP Headers
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -22,9 +23,19 @@ async function bootstrap() {
   // Parse Cookie headers
   app.use(cookieParser());
 
-  // Strict CORS policy
+  // Strict CORS policy allowing both customer frontend and admin frontend
+  const allowedOrigins = [
+    process.env.FRONTEND_URL || 'http://localhost:3000',
+    process.env.ADMIN_FRONTEND_URL || 'http://localhost:3001',
+  ];
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: (origin: any, callback: any) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Origin ${origin} not allowed by CORS`));
+      }
+    },
     credentials: true,
   });
 

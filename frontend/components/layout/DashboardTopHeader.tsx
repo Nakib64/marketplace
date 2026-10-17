@@ -45,7 +45,7 @@ export const DashboardTopHeader: React.FC<DashboardTopHeaderProps> = ({ onOpenMo
           <span className="flex-1 text-outline text-xs">
             {isClient ? 'Search talent, skills, builders...' : 'Search marketplace jobs, skills, builders...'}
           </span>
-          <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high text-outline text-[10px] border border-white/5 font-mono">
+          <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high text-outline text-[10px] border border-white/5 font-semibold">
             ⌘K
           </kbd>
         </Link>
@@ -86,7 +86,7 @@ export const DashboardTopHeader: React.FC<DashboardTopHeaderProps> = ({ onOpenMo
         <Link
           href="/wallet"
           title="Wallet"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container border border-white/10 hover:border-primary/40 text-xs font-mono text-on-surface hover:-translate-y-0.5 active:scale-95 transition-all duration-200"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container border border-white/10 hover:border-primary/40 text-xs text-on-surface hover:-translate-y-0.5 active:scale-95 transition-all duration-200"
         >
           <Wallet className="w-3.5 h-3.5 text-primary" />
           <span className="hidden sm:inline text-xs font-sans font-semibold">Wallet</span>

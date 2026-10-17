@@ -27,4 +27,4 @@ export interface FreelancerTokenBalance {
   icon: string;
 }
 
-export type ContractFilterTab = 'ALL' | 'PENDING' | 'IN_PROGRESS';
+export type ContractFilterTab = 'ALL' | 'PENDING' | 'IN_PROGRESS' | 'COMPLETED';

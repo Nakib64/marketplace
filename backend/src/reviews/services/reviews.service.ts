@@ -202,6 +202,23 @@ export class ReviewsService {
             id: true,
             email: true,
             role: true,
+            clientProfile: {
+              select: {
+                companyName: true,
+              },
+            },
+          },
+        },
+        contract: {
+          select: {
+            id: true,
+            escrowAmount: true,
+            job: {
+              select: {
+                id: true,
+                title: true,
+              },
+            },
           },
         },
       },

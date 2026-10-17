@@ -70,6 +70,7 @@ export interface FreelancerUser {
   email: string;
   createdAt: string;
   workHistories?: WorkHistory[];
+  receivedReviews?: any[];
 }
 
 export interface FreelancerProfile {

@@ -25,6 +25,14 @@ export class ContractsService {
     return this.formationService.updatePlatformFeePercentage(percentage);
   }
 
+  async getEnterpriseSettings() {
+    return this.formationService.getEnterpriseSettings();
+  }
+
+  async updateEnterpriseSettings(payload: any) {
+    return this.formationService.updateEnterpriseSettings(payload);
+  }
+
   /**
    * Accepts a proposal, creates a contract or initiates SSLCommerz gateway.
    */

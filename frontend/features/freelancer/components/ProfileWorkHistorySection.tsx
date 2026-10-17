@@ -183,7 +183,7 @@ export const ProfileWorkHistorySection: React.FC<ProfileWorkHistorySectionProps>
                     </p>
 
                     <div className="flex flex-wrap items-center gap-3 mt-1.5 text-[11px] text-outline">
-                      <span className="flex items-center gap-1 font-mono">
+                      <span className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
                         {startStr} – {endStr}
                       </span>

@@ -1,10 +1,12 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../../../prisma/prisma.service.js';
 import { AuditLoggerService } from '../../audit/services/audit-logger.service.js';
-import { UpdateClientProfileDto } from '../../../users/dto/update-client-profile.dto.js';
-import { UpdateFreelancerProfileDto } from '../../../users/dto/update-freelancer-profile.dto.js';
+import { AdminUpdateUserDto } from '../dto/admin-update-user.dto.js';
+import { AdminUpdateClientProfileDto } from '../dto/admin-update-client-profile.dto.js';
+import { AdminUpdateFreelancerProfileDto } from '../dto/admin-update-freelancer-profile.dto.js';
 import { UpdateUserStatusDto } from '../dto/update-user-status.dto.js';
 
 @Injectable()
@@ -93,18 +95,56 @@ export class AdminUsersActionsService {
     };
   }
 
-  async updateClientProfile(adminId: string, targetUserId: string, dto: UpdateClientProfileDto) {
-    const clientProfile = await this.prisma.clientProfile.findUnique({
-      where: { userId: targetUserId },
-    });
+  async updateUser(adminId: string, targetUserId: string, dto: AdminUpdateUserDto) {
+    const user = await this.prisma.user.findUnique({ where: { id: targetUserId } });
+    if (!user) throw new NotFoundException('User not found.');
 
-    if (!clientProfile) {
-      throw new NotFoundException('Client profile not found for this user.');
+    const dataToUpdate: any = {};
+    if (dto.email !== undefined) dataToUpdate.email = dto.email;
+    if (dto.role !== undefined) dataToUpdate.role = dto.role;
+    if (dto.isEmailVerified !== undefined) dataToUpdate.isEmailVerified = dto.isEmailVerified;
+    if (dto.isBanned !== undefined) dataToUpdate.isBanned = dto.isBanned;
+    if (dto.walletBalance !== undefined) dataToUpdate.walletBalance = dto.walletBalance;
+    if (dto.password) {
+      dataToUpdate.passwordHash = await bcrypt.hash(dto.password, 10);
     }
 
-    const updated = await this.prisma.clientProfile.update({
+    const updatedUser = await this.prisma.user.update({
+      where: { id: targetUserId },
+      data: dataToUpdate,
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        isBanned: true,
+        isEmailVerified: true,
+        walletBalance: true,
+        updatedAt: true,
+      },
+    });
+
+    await this.auditLogger.logAction({
+      adminId,
+      action: 'USER_ACCOUNT_UPDATED',
+      targetType: 'USER',
+      targetId: targetUserId,
+      details: 'User account details updated by administrator',
+    });
+
+    return updatedUser;
+  }
+
+  async updateClientProfile(adminId: string, targetUserId: string, dto: AdminUpdateClientProfileDto) {
+    const user = await this.prisma.user.findUnique({ where: { id: targetUserId } });
+    if (!user) throw new NotFoundException('User not found.');
+
+    const updated = await this.prisma.clientProfile.upsert({
       where: { userId: targetUserId },
-      data: dto,
+      create: {
+        userId: targetUserId,
+        ...dto,
+      },
+      update: dto,
     });
 
     await this.auditLogger.logAction({
@@ -118,18 +158,17 @@ export class AdminUsersActionsService {
     return updated;
   }
 
-  async updateFreelancerProfile(adminId: string, targetUserId: string, dto: UpdateFreelancerProfileDto) {
-    const freelancerProfile = await this.prisma.freelancerProfile.findUnique({
-      where: { userId: targetUserId },
-    });
+  async updateFreelancerProfile(adminId: string, targetUserId: string, dto: AdminUpdateFreelancerProfileDto) {
+    const user = await this.prisma.user.findUnique({ where: { id: targetUserId } });
+    if (!user) throw new NotFoundException('User not found.');
 
-    if (!freelancerProfile) {
-      throw new NotFoundException('Freelancer profile not found for this user.');
-    }
-
-    const updated = await this.prisma.freelancerProfile.update({
+    const updated = await this.prisma.freelancerProfile.upsert({
       where: { userId: targetUserId },
-      data: dto,
+      create: {
+        userId: targetUserId,
+        ...dto,
+      },
+      update: dto,
     });
 
     await this.auditLogger.logAction({

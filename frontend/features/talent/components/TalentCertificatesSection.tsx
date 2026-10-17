@@ -57,7 +57,7 @@ export function TalentCertificatesSection({ profile }: TalentCertificatesSection
                 <p className="text-xs text-on-surface-variant font-medium mt-0.5 truncate">{cert.issuer}</p>
 
                 <div className="flex items-center justify-between mt-2 pt-2 border-t border-outline-variant/10 text-xs">
-                  <span className="flex items-center gap-1 text-[11px] text-outline font-mono">
+                  <span className="flex items-center gap-1 text-[11px] text-outline font-medium">
                     <Calendar className="w-3 h-3" />
                     {formattedDate}
                   </span>

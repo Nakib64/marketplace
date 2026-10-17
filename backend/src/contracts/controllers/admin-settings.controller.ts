@@ -69,4 +69,24 @@ export class AdminSettingsController {
       state: dto.state,
     };
   }
+
+  @Get('enterprise')
+  async getEnterpriseSettings() {
+    return this.contractsService.getEnterpriseSettings();
+  }
+
+  @Patch('enterprise')
+  async updateEnterpriseSettings(
+    @CurrentUser('id') adminId: string,
+    @Body() payload: any,
+  ) {
+    const updated = await this.contractsService.updateEnterpriseSettings(payload);
+    await this.auditLogger.logAction({
+      adminId,
+      action: 'ENTERPRISE_SETTINGS_UPDATED',
+      targetType: 'SETTING',
+      details: 'Enterprise platform policies and configurations updated',
+    });
+    return updated;
+  }
 }

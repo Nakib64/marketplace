@@ -14,6 +14,7 @@ import { PrismaModule } from './prisma/prisma.module.js';
 
 import { AdminModule } from './admin/admin.module.js';
 import { CategoriesModule } from './categories/categories.module.js';
+import { CmsModule } from './cms/cms.module.js';
 import { ContractsModule } from './contracts/contracts.module.js';
 import { JobsModule } from './jobs/jobs.module.js';
 import { ProposalsModule } from './proposals/proposals.module.js';
@@ -40,6 +41,7 @@ import { MailModule } from './mail/mail.module.js';
     UploadModule,
     JobsModule,
     CategoriesModule,
+    CmsModule,
     ProposalsModule,
     ContractsModule,
     ReviewsModule,

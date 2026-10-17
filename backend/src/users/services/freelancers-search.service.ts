@@ -70,6 +70,36 @@ export class FreelancersSearchService {
           email: true,
           createdAt: true,
           workHistories: { orderBy: { startDate: 'desc' as const } },
+          receivedReviews: {
+            where: { status: 'PUBLISHED' as const },
+            orderBy: { createdAt: 'desc' as const },
+            include: {
+              reviewer: {
+                select: {
+                  id: true,
+                  email: true,
+                  role: true,
+                  clientProfile: {
+                    select: {
+                      companyName: true,
+                    },
+                  },
+                },
+              },
+              contract: {
+                select: {
+                  id: true,
+                  escrowAmount: true,
+                  job: {
+                    select: {
+                      id: true,
+                      title: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       },
       portfolioItems: {

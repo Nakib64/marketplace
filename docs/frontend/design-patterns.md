@@ -8,9 +8,7 @@ You NEVER build basic, generic, or boring interfaces. Every screen must look int
 
 ## 1. 🔤 Typography & Hierarchy
 - **Font Selection**:
-  - Primary Sans: Modern, geometric, clean grotesque (e.g., `Inter`, `Plus Jakarta Sans`, `Outfit`, `Geist`, or `General Sans`).
-  - Display / Editorial (if applicable): Expressive serif or tight architectural sans (e.g., `Cabinet Grotesk`, `Playfair Display`, `Syne`).
-  - Monospace (Code/Stats): High-clarity tabular figures (e.g., `JetBrains Mono`, `Geist Mono`).
+  - Sole Font: `Montserrat` is used exclusively across all headings, body text, figures, and data displays with tabular numeric styling. No monospace fonts are used.
 - **Scale & Rhythm**:
   - Implement a mathematical type scale (1.25x or 1.33x).
   - High-contrast hierarchy: Headlines should be bold, tight (`tracking-tight` or `tracking-tighter`), with `leading-none` or `leading-tight`.

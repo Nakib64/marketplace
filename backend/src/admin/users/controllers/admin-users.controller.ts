@@ -2,8 +2,9 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestj
 import { Role } from '@prisma/client';
 import { CurrentUser } from '../../../auth/decorators/current-user.decorator.js';
 import { Roles } from '../../../auth/decorators/roles.decorator.js';
-import { UpdateClientProfileDto } from '../../../users/dto/update-client-profile.dto.js';
-import { UpdateFreelancerProfileDto } from '../../../users/dto/update-freelancer-profile.dto.js';
+import { AdminUpdateUserDto } from '../dto/admin-update-user.dto.js';
+import { AdminUpdateClientProfileDto } from '../dto/admin-update-client-profile.dto.js';
+import { AdminUpdateFreelancerProfileDto } from '../dto/admin-update-freelancer-profile.dto.js';
 import { UpdateUserStatusDto } from '../dto/update-user-status.dto.js';
 import { UserQueryDto } from '../dto/user-query.dto.js';
 import { AdminUsersActionsService } from '../services/admin-users-actions.service.js';
@@ -25,6 +26,15 @@ export class AdminUsersController {
   @Get(':id')
   async getUserDossier(@Param('id') id: string) {
     return this.queryService.getUserDossier(id);
+  }
+
+  @Patch(':id')
+  async updateUser(
+    @CurrentUser('id') adminId: string,
+    @Param('id') targetUserId: string,
+    @Body() dto: AdminUpdateUserDto,
+  ) {
+    return this.actionsService.updateUser(adminId, targetUserId, dto);
   }
 
   @Patch(':id/status')
@@ -56,7 +66,7 @@ export class AdminUsersController {
   async updateClientProfile(
     @CurrentUser('id') adminId: string,
     @Param('id') targetUserId: string,
-    @Body() dto: UpdateClientProfileDto,
+    @Body() dto: AdminUpdateClientProfileDto,
   ) {
     return this.actionsService.updateClientProfile(adminId, targetUserId, dto);
   }
@@ -65,7 +75,7 @@ export class AdminUsersController {
   async updateFreelancerProfile(
     @CurrentUser('id') adminId: string,
     @Param('id') targetUserId: string,
-    @Body() dto: UpdateFreelancerProfileDto,
+    @Body() dto: AdminUpdateFreelancerProfileDto,
   ) {
     return this.actionsService.updateFreelancerProfile(adminId, targetUserId, dto);
   }

@@ -38,7 +38,7 @@ export const ProposalCandidateCard: React.FC<ProposalCandidateCardProps> = ({ pr
           <div className="min-w-0">
             <div className="flex items-center flex-wrap gap-2">
               <h3 className="text-base font-bold text-on-surface">{proposal.freelancerName}</h3>
-              <span className="text-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-md font-mono">
+              <span className="text-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-md font-medium">
                 {proposal.freelancerHandle}
               </span>
               <span className="px-2 py-0.5 rounded-md bg-surface-container text-primary text-xs font-semibold">

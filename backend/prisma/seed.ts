@@ -430,6 +430,10 @@ async function main() {
   }
 
   console.log(`[Seed] Seeded ${INITIAL_SKILLS.length} targeted skills.`);
+
+  // --- Seed Realistic Interconnected Live Marketplace Demo Data ---
+  const { seedDemoData } = await import('./seed-demo-data.js');
+  await seedDemoData();
 }
 
 main()

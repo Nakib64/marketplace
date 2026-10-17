@@ -1,17 +1,13 @@
-import { IsDateString, IsEnum, IsOptional } from 'class-validator';
-
-export enum Timeframe {
-  TODAY = 'today',
-  WEEK = 'week',
-  MONTH = 'month',
-  YEAR = 'year',
-  CUSTOM = 'custom',
-}
+import { IsDateString, IsOptional, IsString } from 'class-validator';
 
 export class AnalyticsQueryDto {
   @IsOptional()
-  @IsEnum(Timeframe)
-  timeframe?: Timeframe = Timeframe.MONTH;
+  @IsString()
+  timeframe?: string = '30d';
+
+  @IsOptional()
+  @IsString()
+  months?: string;
 
   @IsOptional()
   @IsDateString()
@@ -21,3 +17,4 @@ export class AnalyticsQueryDto {
   @IsDateString()
   endDate?: string;
 }
+

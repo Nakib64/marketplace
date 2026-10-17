@@ -48,7 +48,7 @@ export function TalentEducationSection({ profile }: TalentEducationSectionProps)
                 <p className="text-xs text-on-surface-variant font-medium mt-0.5">{edu.institution}</p>
               </div>
 
-              <div className="pt-2 border-t border-outline-variant/10 flex items-center justify-between text-xs text-outline font-mono">
+              <div className="pt-2 border-t border-outline-variant/10 flex items-center justify-between text-xs text-outline font-medium">
                 <span className="flex items-center gap-1">
                   <Calendar className="w-3 h-3" />
                   {startYear} – {endYear}

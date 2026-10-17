@@ -400,6 +400,33 @@ model PlatformSetting {
   updatedAt             DateTime @updatedAt
 }
 
+model HomepageCms {
+  id                  String   @id @default("default")
+  heroBadge           String   @default("Banglance Marketplace • 100% Milestone Protection")
+  heroTitle           String   @default("How work should work")
+  heroSubtitle        String   @default("Forget the old rules. You can have the best software engineers, designers, and specialists. Right now. Right here.")
+  heroPrimaryCtaText  String   @default("Find talent")
+  heroPrimaryCtaLink  String   @default("/freelancers")
+  heroSecondaryCtaText String  @default("Find work")
+  heroSecondaryCtaLink String  @default("/jobs")
+
+  showcaseBadge       String   @default("FOR CLIENTS & TALENT")
+  showcaseTitle       String   @default("Up your work game, it’s free")
+  showcaseDescription String   @default("Access top 1% technical talent in Bangladesh. Hire with 100% financial protection and zero payment clearance delay.")
+
+  metrics             Json     @default("[]")
+  testimonials        Json     @default("[]")
+  trustedBrands       Json     @default("[]")
+
+  clientCtaTitle      String   @default("Find talent your way")
+  clientCtaText       String   @default("Work with the largest network of independent professionals and get things done—from quick turnarounds to complex fullstack transformations.")
+  talentCtaTitle      String   @default("Find great work")
+  talentCtaText       String   @default("Meet clients you’re excited to work with and take your career or business to new heights with 100% milestone payment protection.")
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
 model Refund {
   id         String   @id @default(uuid())
   contractId String   @unique

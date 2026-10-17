@@ -45,6 +45,83 @@ export class ContractFormationSubService {
     });
   }
 
+  private readonly DEFAULT_ENTERPRISE_SETTINGS = {
+    // 1. Security & Access
+    enforce2FA: true,
+    enableSSO: true,
+    ssoProvider: 'GOOGLE_WORKSPACE',
+    ssoDomain: 'banglance.com',
+    sessionTimeoutMinutes: 60,
+    maxConcurrentSessions: 2,
+    ipWhitelistEnabled: false,
+    ipWhitelist: '103.204.0.0/16, 127.0.0.1',
+    passwordRotationDays: 90,
+    failedLoginLockoutThreshold: 5,
+
+    // 2. Escrow, Billing & Gateways
+    standardCommissionRate: 10.0,
+    highVolumeCommissionRate: 7.0,
+    enterpriseCommissionRate: 5.0,
+    escrowClearingPeriodDays: 7,
+    instantReleaseTopRated: true,
+    minWithdrawalAmount: 500,
+    maxDailyWithdrawalPerUser: 100000,
+    sslCommerzEnabled: true,
+    sslCommerzStoreId: 'saasf6a9eadb9dc075',
+    sslCommerzSandbox: true,
+    bKashMerchantEnabled: true,
+    bKashAppKey: 'bKash_prod_sec_9941x',
+    nagadMerchantEnabled: true,
+    disputeArbitrationFee: 500,
+
+    // 3. KYC, AML & Compliance
+    requireKycBeforePayout: true,
+    kycVerificationLevel: 'ENHANCED',
+    amlSinglePayoutThreshold: 50000,
+    amlDailyVelocityThreshold: 100000,
+    automatedVatWithholding: true,
+    vatRatePercentage: 5.0,
+    disputeWindowDays: 14,
+    dataRetentionYears: 7,
+    privacyRightToErasure: true,
+
+    // 4. Notifications, Webhooks & Alerts
+    smtpHost: 'smtp.gmail.com',
+    smtpPort: 587,
+    smtpSenderEmail: 'support@banglance.com',
+    smsGatewayProvider: 'GREENWEB',
+    smsOtpEnabled: true,
+    outboundWebhooksEnabled: true,
+    webhookEndpointUrl: 'https://enterprise.banglance.com/api/v1/webhooks',
+    webhookSecret: 'whsec_enterprise_banglance_live_token_7721',
+    webhookEvents: ['contract.funded', 'milestone.released', 'payout.approved', 'dispute.opened'],
+    slackAlertWebhook: 'https://hooks.slack.com/services/T00/B00/X00',
+    slackAlertCriticalThreshold: 'HIGH_SEVERITY_ONLY',
+  };
+
+  async getEnterpriseSettings() {
+    try {
+      const raw = await this.redis.get('enterprise_settings:config');
+      if (raw) {
+        return { ...this.DEFAULT_ENTERPRISE_SETTINGS, ...JSON.parse(raw) };
+      }
+    } catch {
+      // Fallback
+    }
+    return this.DEFAULT_ENTERPRISE_SETTINGS;
+  }
+
+  async updateEnterpriseSettings(payload: any) {
+    const current = await this.getEnterpriseSettings();
+    const merged = { ...current, ...payload };
+    try {
+      await this.redis.set('enterprise_settings:config', JSON.stringify(merged));
+    } catch {
+      // Fallback
+    }
+    return merged;
+  }
+
   /**
    * Accepts a proposal, creates a contract, and locks client escrow funds.
    */
