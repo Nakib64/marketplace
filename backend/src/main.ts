@@ -39,7 +39,16 @@ async function bootstrap() {
     origin: (origin: any, callback: any) => {
       if (!origin) return callback(null, true);
       const normalized = origin.replace(/\/$/, '');
-      if (allowedOrigins.includes(normalized) || allowedOrigins.includes('*')) {
+      const domainSuffix = process.env.COOKIE_DOMAIN?.replace(/^\./, '');
+      const matchesCookieDomain =
+        domainSuffix &&
+        (normalized.endsWith(`.${domainSuffix}`) || normalized.endsWith(`://${domainSuffix}`));
+
+      if (
+        allowedOrigins.includes(normalized) ||
+        allowedOrigins.includes('*') ||
+        matchesCookieDomain
+      ) {
         callback(null, true);
       } else {
         callback(new Error(`Origin ${origin} not allowed by CORS`));

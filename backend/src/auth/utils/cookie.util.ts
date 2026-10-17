@@ -15,10 +15,13 @@ export function getCookieOptions(maxAgeMs: number): CookieOptions {
     process.env.NODE_ENV === 'production' ||
     Boolean(process.env.RAILWAY_ENVIRONMENT) ||
     Boolean(process.env.RAILWAY_STATIC_URL);
+  const cookieDomain = process.env.COOKIE_DOMAIN || undefined;
+
   return {
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? 'none' : 'lax',
+    sameSite: cookieDomain ? 'lax' : isProduction ? 'none' : 'lax',
+    domain: cookieDomain,
     maxAge: maxAgeMs,
     path: '/',
   };
@@ -29,10 +32,13 @@ export function getClearCookieOptions(): CookieOptions {
     process.env.NODE_ENV === 'production' ||
     Boolean(process.env.RAILWAY_ENVIRONMENT) ||
     Boolean(process.env.RAILWAY_STATIC_URL);
+  const cookieDomain = process.env.COOKIE_DOMAIN || undefined;
+
   return {
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? 'none' : 'lax',
+    sameSite: cookieDomain ? 'lax' : isProduction ? 'none' : 'lax',
+    domain: cookieDomain,
     path: '/',
   };
 }
