@@ -10,17 +10,36 @@ interface PageProps {
   params: Promise<{ jobId: string }>;
 }
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://banglance.saasfactry.com';
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { jobId } = await params;
   try {
     const job = await jobsApi.getJobDetails(jobId);
+    const cleanDesc = job.description?.slice(0, 160) || 'Verified freelance job opportunity on Banglance.';
+    const jobUrl = `${siteUrl}/jobs/${job.slug || jobId}`;
+
     return {
       title: `${job.title} | Banglance Marketplace`,
-      description: job.description.slice(0, 155),
+      description: cleanDesc,
+      alternates: {
+        canonical: jobUrl,
+      },
+      openGraph: {
+        title: `${job.title} | Banglance`,
+        description: cleanDesc,
+        url: jobUrl,
+        type: 'article',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${job.title} | Banglance`,
+        description: cleanDesc,
+      },
     };
   } catch {
     return {
-      title: 'Job Posting | Banglance Marketplace',
+      title: 'Job Opportunity | Banglance Marketplace',
       description: 'View verified escrow-protected job opportunities on Banglance.',
     };
   }
@@ -55,5 +74,46 @@ export default async function JobDetailsPage({ params }: PageProps) {
     );
   }
 
-  return <JobDetailsView job={job} />;
+  // Google JobPosting Structured Data for rich search snippets
+  const postedDate = job.createdAt ? new Date(job.createdAt).toISOString() : new Date().toISOString();
+  const validUntil = new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString();
+  const jobSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'JobPosting',
+    title: job.title,
+    description: job.description,
+    datePosted: postedDate,
+    validThrough: validUntil,
+    employmentType: 'CONTRACTOR',
+    hiringOrganization: {
+      '@type': 'Organization',
+      name: 'Banglance Verified Client',
+      sameAs: siteUrl,
+    },
+    jobLocationType: 'TELECOMMUTE',
+    applicantLocationRequirements: {
+      '@type': 'Country',
+      name: 'Bangladesh',
+    },
+    baseSalary: {
+      '@type': 'MonetaryAmount',
+      currency: 'BDT',
+      value: {
+        '@type': 'QuantitativeValue',
+        value: Number(job.budget || 0),
+        unitText: 'PROJECT',
+      },
+    },
+    directApply: true,
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jobSchema) }}
+      />
+      <JobDetailsView job={job} />
+    </>
+  );
 }

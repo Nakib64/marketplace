@@ -10,14 +10,34 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://banglance.saasfactry.com';
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   try {
     const profile = await talentApi.getFreelancerProfile(id);
     const name = profile.user?.email.split('@')[0] || 'Freelancer';
+    const title = `${name} – ${profile.title || 'Specialist'} | Banglance Dossier`;
+    const description = profile.description?.slice(0, 160) || 'Verified technical freelancer on Banglance.';
+    const profileUrl = `${siteUrl}/freelancers/${id}`;
+
     return {
-      title: `${name} – ${profile.title || 'Specialist'} | Banglance Dossier`,
-      description: profile.description?.slice(0, 155),
+      title,
+      description,
+      alternates: {
+        canonical: profileUrl,
+      },
+      openGraph: {
+        title,
+        description,
+        url: profileUrl,
+        type: 'profile',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+      },
     };
   } catch {
     return {
@@ -56,5 +76,27 @@ export default async function FreelancerDossierPage({ params }: PageProps) {
     );
   }
 
-  return <TalentDossierView profile={profile} />;
+  const name = profile.user?.email.split('@')[0] || 'Freelancer';
+  const personSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    mainEntity: {
+      '@type': 'Person',
+      name: name,
+      jobTitle: profile.title || 'Independent Specialist',
+      description: profile.description || undefined,
+      url: `${siteUrl}/freelancers/${id}`,
+      knowsAbout: profile.skills || [],
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
+      <TalentDossierView profile={profile} />
+    </>
+  );
 }

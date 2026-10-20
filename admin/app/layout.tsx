@@ -13,6 +13,12 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: 'Banglance | Admin Command Center',
   description: 'Operations, escrow mediation, payout authorizations, and risk controls.',
+  robots: {
+    index: false,
+    follow: false,
+    noarchive: true,
+    nosnippet: true,
+  },
 };
 
 export default function RootLayout({

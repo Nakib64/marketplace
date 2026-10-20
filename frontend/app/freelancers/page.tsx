@@ -6,6 +6,15 @@ export const metadata: Metadata = {
   title: 'Hire Verified Freelancers & Developers | Banglance',
   description:
     'Discover top-tier freelance engineers, designers, and specialists with verified track records on Banglance.',
+  alternates: {
+    canonical: '/freelancers',
+  },
+  openGraph: {
+    title: 'Hire Verified Freelancers & Developers | Banglance',
+    description:
+      'Discover top-tier freelance engineers, designers, and specialists with verified track records on Banglance.',
+    url: '/freelancers',
+  },
 };
 
 export default function FreelancersPage() {

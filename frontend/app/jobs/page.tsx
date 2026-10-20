@@ -6,6 +6,15 @@ export const metadata: Metadata = {
   title: 'Search Freelance Jobs & Bounties | Banglance',
   description:
     'Explore verified open jobs, software engineering contracts, and design bounties with guaranteed escrow protection and local mobile payouts.',
+  alternates: {
+    canonical: '/jobs',
+  },
+  openGraph: {
+    title: 'Search Freelance Jobs & Bounties | Banglance',
+    description:
+      'Explore verified open jobs, software engineering contracts, and design bounties with guaranteed escrow protection.',
+    url: '/jobs',
+  },
 };
 
 export default function JobsPage() {
