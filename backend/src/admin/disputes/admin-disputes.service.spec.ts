@@ -71,7 +71,7 @@ describe('Admin Disputes Sub-Services', () => {
       const dossier = await queryService.getDisputeDossier('c-1');
       expect(dossier.id).toBe('c-1');
       expect(dossier.conversation).toBeDefined();
-      expect(dossier.conversation.messages).toHaveLength(1);
+      expect(dossier.conversation!.messages).toHaveLength(1);
     });
 
     it('should throw NotFoundException if dispute dossier not found', async () => {

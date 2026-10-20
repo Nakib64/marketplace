@@ -12,6 +12,10 @@ export class EmailVerifiedGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
+    if (typeof context.getType === 'function' && context.getType() !== 'http') {
+      return true;
+    }
+
     const isRequired = this.reflector.getAllAndOverride<boolean>(
       REQUIRE_EMAIL_VERIFIED_KEY,
       [context.getHandler(), context.getClass()],

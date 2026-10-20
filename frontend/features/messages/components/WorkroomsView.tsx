@@ -100,7 +100,15 @@ export const WorkroomsView: React.FC = () => {
     messagesApi.markAsRead(activeChannelId);
 
     const socket = connectSocket();
-    socket.emit('join_conversation', { conversationId: activeChannelId });
+
+    const joinActiveRoom = () => {
+      socket.emit('join_conversation', { conversationId: activeChannelId });
+    };
+
+    if (socket.connected) {
+      joinActiveRoom();
+    }
+    socket.on('connect', joinActiveRoom);
 
     const handleNewMessage = (rawMsg: BackendMessageItem) => {
       if (rawMsg.conversationId === activeChannelId) {
@@ -118,11 +126,35 @@ export const WorkroomsView: React.FC = () => {
       );
     };
 
+    const handleConversationUpdated = (data: {
+      conversationId: string;
+      lastMessage: BackendMessageItem;
+    }) => {
+      if (data?.conversationId === activeChannelId && data?.lastMessage) {
+        setMessages((prev) => {
+          if (prev.some((m) => m.id === data.lastMessage.id)) return prev;
+          return [...prev, mapBackendMessage(data.lastMessage, currentUserId)];
+        });
+      }
+      if (data?.conversationId && data?.lastMessage) {
+        setChannels((prev) =>
+          prev.map((c) =>
+            c.id === data.conversationId
+              ? { ...c, lastMessage: data.lastMessage.content, timestamp: 'Just now' }
+              : c
+          )
+        );
+      }
+    };
+
     socket.on('new_message', handleNewMessage);
+    socket.on('conversation_updated', handleConversationUpdated);
 
     return () => {
+      socket.off('connect', joinActiveRoom);
       socket.emit('leave_conversation', { conversationId: activeChannelId });
       socket.off('new_message', handleNewMessage);
+      socket.off('conversation_updated', handleConversationUpdated);
     };
   }, [activeChannelId, currentUserId]);
 

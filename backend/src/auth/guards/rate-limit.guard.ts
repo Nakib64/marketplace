@@ -18,6 +18,10 @@ export class RateLimitGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    if (typeof context.getType === 'function' && context.getType() !== 'http') {
+      return true;
+    }
+
     const options = this.reflector.getAllAndOverride<RateLimitOptions>(RATE_LIMIT_KEY, [
       context.getHandler(),
       context.getClass(),

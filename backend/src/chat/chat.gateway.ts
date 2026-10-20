@@ -15,7 +15,11 @@ import { ChatService } from './services/chat.service.js';
 @Injectable()
 @WebSocketGateway({
   cors: {
-    origin: '*',
+    origin: (origin: string, callback: (err: Error | null, allow?: boolean) => void) => {
+      // Allow any origin and reflect it back to satisfy withCredentials requirement
+      callback(null, true);
+    },
+    credentials: true,
   },
   namespace: '/chat',
 })
@@ -89,7 +93,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() data: { conversationId: string },
   ) {
     if (data?.conversationId) {
-      client.join(`conversation_${data.conversationId}`);
+      const room = `conversation_${data.conversationId}`;
+      client.join(room);
+      this.logger.log(`Socket [${client.id}] joined room: ${room}`);
       return { status: 'joined', conversationId: data.conversationId };
     }
   }
@@ -100,7 +106,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() data: { conversationId: string },
   ) {
     if (data?.conversationId) {
-      client.leave(`conversation_${data.conversationId}`);
+      const room = `conversation_${data.conversationId}`;
+      client.leave(room);
+      this.logger.log(`Socket [${client.id}] left room: ${room}`);
       return { status: 'left', conversationId: data.conversationId };
     }
   }
@@ -179,11 +187,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
    */
   broadcastNewMessage(conversationId: string, recipientId: string, message: any) {
     if (this.server) {
+      this.logger.log(`Broadcasting new_message to conversation_${conversationId} and user_${recipientId}`);
       this.server.to(`conversation_${conversationId}`).emit('new_message', message);
       this.server.to(`user_${recipientId}`).emit('conversation_updated', {
         conversationId,
         lastMessage: message,
       });
+    } else {
+      this.logger.warn(`broadcastNewMessage: this.server is undefined! Cannot broadcast.`);
     }
   }
 }

@@ -1,6 +1,5 @@
 import { ContractStatus, WithdrawalStatus } from '@prisma/client';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { Timeframe } from './dto/analytics-query.dto.js';
 import { AdminCategoriesStatsService } from './services/admin-categories-stats.service.js';
 import { AdminFinancialsService } from './services/admin-financials.service.js';
 import { AdminLiquidityService } from './services/admin-liquidity.service.js';
@@ -36,11 +35,11 @@ describe('Admin Analytics Sub-Services', () => {
         .mockResolvedValueOnce({ _sum: { escrowAmount: 15000 } })
         .mockResolvedValueOnce({ _sum: { platformFee: 1500 } });
 
-      const res = await financialsService.getTreasuryOverview({ timeframe: Timeframe.MONTH });
+      const res = await financialsService.getTreasuryOverview({ timeframe: '30d' });
 
       expect(res.grossMarketplaceVolume).toBe(15000);
       expect(res.netPlatformRevenue).toBe(1500);
-      expect(res.period.timeframe).toBe(Timeframe.MONTH);
+      expect(res.period.timeframe).toBe('30d');
       expect(res.period.startDate).toBeDefined();
       expect(res.period.endDate).toBeDefined();
     });
@@ -104,7 +103,7 @@ describe('Admin Analytics Sub-Services', () => {
         },
       ]);
 
-      const res = await categoriesStatsService.getCategoryPerformance({ timeframe: Timeframe.MONTH });
+      const res = await categoriesStatsService.getCategoryPerformance({ timeframe: '30d' });
 
       expect(res).toHaveLength(2);
       expect(res[0].categoryId).toBe('cat-web');

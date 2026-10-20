@@ -17,9 +17,13 @@ export class AdminAuditInterceptor implements NestInterceptor {
   constructor(private readonly auditLogger: AuditLoggerService) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    if (typeof context.getType === 'function' && context.getType() !== 'http') {
+      return next.handle();
+    }
+
     const req = context.switchToHttp().getRequest<Request>();
-    const method = req.method.toUpperCase();
-    const url = req.originalUrl || req.url || '';
+    const method = req?.method ? req.method.toUpperCase() : '';
+    const url = req?.originalUrl || req?.url || '';
 
     // Only audit mutating HTTP actions on /admin routes
     const isMutation = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method);

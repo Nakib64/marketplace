@@ -12,9 +12,13 @@ export class CircuitBreakerGuard implements CanActivate {
   constructor(private readonly circuitBreaker: CircuitBreakerService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    if (typeof context.getType === 'function' && context.getType() !== 'http') {
+      return true;
+    }
+
     const req = context.switchToHttp().getRequest<Request>();
-    const url = req.originalUrl || req.url || '';
-    const method = req.method.toUpperCase();
+    const url = req?.originalUrl || req?.url || '';
+    const method = req?.method?.toUpperCase() || '';
 
     // 1. Staff and Admin routes are NEVER blocked by circuit breakers or maintenance mode
     if (url.startsWith('/admin') || url.startsWith('/health')) {
